@@ -9,7 +9,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import tghtechnology.tiendavirtual.Models.Enums.TipoPlato;
+import tghtechnology.tiendavirtual.Enums.TipoPlato;
 
 @Getter
 @Setter

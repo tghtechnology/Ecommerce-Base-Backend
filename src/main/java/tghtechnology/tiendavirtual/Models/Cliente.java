@@ -1,11 +1,14 @@
 package tghtechnology.tiendavirtual.Models;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -50,8 +53,8 @@ public class Cliente {
 	private boolean estado;
 	
 	
-	@OneToOne(mappedBy = "cliente")
-	private Pedido pedido;
+	@OneToMany(mappedBy = "cliente")
+	private Set<Pedido> pedidos = new HashSet<>();
 	 
 	
 	

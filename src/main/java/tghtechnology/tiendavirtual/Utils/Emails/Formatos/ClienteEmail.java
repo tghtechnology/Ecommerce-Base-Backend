@@ -2,8 +2,8 @@ package tghtechnology.tiendavirtual.Utils.Emails.Formatos;
 
 import org.springframework.core.io.ByteArrayResource;
 
+import tghtechnology.tiendavirtual.Enums.TipoDelivery;
 import tghtechnology.tiendavirtual.Models.Pedido;
-import tghtechnology.tiendavirtual.Models.Enums.TipoDelivery;
 import tghtechnology.tiendavirtual.Utils.TghUtils;
 import tghtechnology.tiendavirtual.Utils.Emails.BaseEmail;
 

@@ -14,8 +14,8 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.AllArgsConstructor;
+import tghtechnology.tiendavirtual.Enums.TipoCargo;
 import tghtechnology.tiendavirtual.Models.Usuario;
-import tghtechnology.tiendavirtual.Models.Enums.TipoCargo;
 import tghtechnology.tiendavirtual.Repository.UsuarioRepository;
 import tghtechnology.tiendavirtual.Utils.CustomBeanValidator;
 import tghtechnology.tiendavirtual.Utils.Exceptions.CustomValidationFailedException;

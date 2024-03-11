@@ -16,7 +16,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
-import tghtechnology.tiendavirtual.Models.Enums.TipoPlato;
+import tghtechnology.tiendavirtual.Enums.TipoPlato;
 
 @Entity
 @Table(name = "tbl_plato")
@@ -26,22 +26,16 @@ public class Item {
 
     @Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id_plato;
+    private Integer id_item;
     
     @Column(nullable = false, unique = true, length = 100)
 	private String text_id;
 
     @Column(nullable = false)
-    private String nombre_plato;
+    private String nombre;
 
     @Column(nullable = false, length = 150)
     private String descripcion;
-
-    @Column(nullable = false)
-    private String imagen_primaria;
-
-    @Column(nullable = false)
-    private String imagen_secundaria;
 
     @Column(nullable = false)
     private BigDecimal precio;
@@ -58,18 +52,15 @@ public class Item {
     @Column(nullable = false)
     private Boolean estado;
 
-    @Column(nullable = false)
-    private TipoPlato tipoPlato;
-
     @ManyToOne
     @JoinColumn(name = "id_categoria", nullable = false)
     private Categoria categoria;
 
-    @OneToMany(mappedBy = "plato")
+    @OneToMany(mappedBy = "item")
     private Set<DetallePedido> detalle_pedido = new HashSet<>();
 
-    public static String transform_id(String nombre_plato) {
-		return nombre_plato.strip()				// sin espacios al inicio o final
+    public static String transform_id(String nombre_item) {
+		return nombre_item.strip()				// sin espacios al inicio o final
 				.replace(' ', '_')			// espacios y guiones por _
 				.replace('-', '_')
 				.replaceAll("(\\+|,|')+","")// simbolos por vacio

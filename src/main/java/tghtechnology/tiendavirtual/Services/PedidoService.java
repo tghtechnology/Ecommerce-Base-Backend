@@ -11,12 +11,12 @@ import org.springframework.stereotype.Service;
 
 import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
+import tghtechnology.tiendavirtual.Enums.EstadoPedido;
+import tghtechnology.tiendavirtual.Enums.TipoDelivery;
 import tghtechnology.tiendavirtual.Models.Cliente;
 import tghtechnology.tiendavirtual.Models.DetallePedido;
 import tghtechnology.tiendavirtual.Models.Pedido;
 import tghtechnology.tiendavirtual.Models.Item;
-import tghtechnology.tiendavirtual.Models.Enums.EstadoPedido;
-import tghtechnology.tiendavirtual.Models.Enums.TipoDelivery;
 import tghtechnology.tiendavirtual.Repository.ClienteRepository;
 import tghtechnology.tiendavirtual.Repository.DetallePedidoRepository;
 import tghtechnology.tiendavirtual.Repository.PedidoRepository;

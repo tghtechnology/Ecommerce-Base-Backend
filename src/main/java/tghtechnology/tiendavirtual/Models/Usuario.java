@@ -20,7 +20,7 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
-import tghtechnology.tiendavirtual.Models.Enums.TipoCargo;
+import tghtechnology.tiendavirtual.Enums.TipoCargo;
 
 @Getter
 @Setter
@@ -35,7 +35,7 @@ public class Usuario implements UserDetails {
 	private Integer id_usuario;
 	
 	@Column(unique = true, nullable = false)
-	private String username;
+	private String email;
 	
 	@Column(nullable = false, length = 70)
 	private String password; 
@@ -61,7 +61,7 @@ public class Usuario implements UserDetails {
 
 	@Override
 	public String getUsername() {
-		return username;
+		return email;
 	}
 
 	@Override
@@ -88,9 +88,5 @@ public class Usuario implements UserDetails {
 	// Relación con tabla empleado 1,1
 	@OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
 	private Empleado empleado;
-	
-	// Reserva
-	@OneToMany(mappedBy = "usuario")
-	private Set<Reserva> reserva = new HashSet<>();
 	
 }

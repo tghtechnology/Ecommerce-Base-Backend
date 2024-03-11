@@ -7,8 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
+import tghtechnology.tiendavirtual.Enums.EstadoPedido;
 import tghtechnology.tiendavirtual.Models.Pedido;
-import tghtechnology.tiendavirtual.Models.Enums.EstadoPedido;
 public interface PedidoRepository extends CrudRepository<Pedido, Integer>{
 
 	@Query("SELECT p FROM Pedido p WHERE p.estado = true")

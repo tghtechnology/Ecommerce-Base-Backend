@@ -7,8 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
+import tghtechnology.tiendavirtual.Enums.EstadoReserva;
 import tghtechnology.tiendavirtual.Models.Reserva;
-import tghtechnology.tiendavirtual.Models.Enums.EstadoReserva;
 
 public interface ReservaRepository extends CrudRepository<Reserva, Integer>{
     

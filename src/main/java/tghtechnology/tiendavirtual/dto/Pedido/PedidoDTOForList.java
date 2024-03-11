@@ -8,9 +8,9 @@ import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import tghtechnology.tiendavirtual.Enums.EstadoPedido;
+import tghtechnology.tiendavirtual.Enums.TipoDelivery;
 import tghtechnology.tiendavirtual.Models.Pedido;
-import tghtechnology.tiendavirtual.Models.Enums.EstadoPedido;
-import tghtechnology.tiendavirtual.Models.Enums.TipoDelivery;
 import tghtechnology.tiendavirtual.dto.Cliente.ClienteDTOForList;
 import tghtechnology.tiendavirtual.dto.Pedido.DetallePedido.DetallePedidoDTOForList;
 

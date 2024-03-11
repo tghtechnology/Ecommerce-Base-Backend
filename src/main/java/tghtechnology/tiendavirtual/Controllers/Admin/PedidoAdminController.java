@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
-import tghtechnology.tiendavirtual.Models.Enums.EstadoPedido;
+import tghtechnology.tiendavirtual.Enums.EstadoPedido;
 import tghtechnology.tiendavirtual.Services.PedidoService;
 import tghtechnology.tiendavirtual.Utils.ApisPeru.Exceptions.ApisPeruResponseException;
 import tghtechnology.tiendavirtual.Utils.ApisPeru.Objects.Boleta;

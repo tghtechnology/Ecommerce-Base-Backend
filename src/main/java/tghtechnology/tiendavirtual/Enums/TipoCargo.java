@@ -1,11 +1,14 @@
-package tghtechnology.tiendavirtual.Models.Enums;
+package tghtechnology.tiendavirtual.Enums;
 
 import org.springframework.security.core.GrantedAuthority;
 
 public enum TipoCargo implements GrantedAuthority{
 	
+	ADMIN,
 	GERENTE,
-	EMPLEADO;
+	EMPLEADO,
+	CLIENTE
+	;
 
 	@Override
 	public String getAuthority() {

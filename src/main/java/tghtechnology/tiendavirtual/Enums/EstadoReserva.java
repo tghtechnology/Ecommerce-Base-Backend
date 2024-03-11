@@ -1,4 +1,4 @@
-package tghtechnology.tiendavirtual.Models.Enums;
+package tghtechnology.tiendavirtual.Enums;
 
 public enum EstadoReserva {
 

@@ -10,7 +10,7 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
-import tghtechnology.tiendavirtual.Models.Enums.Mes;
+import tghtechnology.tiendavirtual.Enums.Mes;
 
 
 @Getter

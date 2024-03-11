@@ -37,7 +37,7 @@ public class Categoria {
     private Boolean estado;
 
     @OneToMany(mappedBy = "categoria")
-    private Set<Item> plato = new HashSet<>();
+    private Set<Item> item = new HashSet<>();
     
     public static String transform_id(String desc) {
     	return desc.strip().replace(' ', '_');

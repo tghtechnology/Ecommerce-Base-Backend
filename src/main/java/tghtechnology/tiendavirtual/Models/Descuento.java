@@ -1,6 +1,7 @@
 package tghtechnology.tiendavirtual.Models;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,25 +15,31 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "tbl_detalle_pedido")
+@Table(name = "tbl_descuento")
 @Getter
 @Setter
-public class DetallePedido {
+public class Descuento {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id_detalle;
+    private Integer id_descuento;
 
     @Column(nullable = false)
-    private Integer cantidad;
-    @Column(nullable = false)
-    private BigDecimal sub_total;
+    private Integer cantidad_descuento;
+    @Column(nullable = true)
+    private BigDecimal porcentaje;
+    @Column(nullable = true)
+	private LocalDate programacion_inicio;
+	@Column(nullable = true)
+	private LocalDate programacion_final;
     
+	@Column(nullable = false)
+	private Boolean activo;
+	@Column(nullable = false)
+	private Boolean estado;
+	
     @ManyToOne
     @JoinColumn(name = "id_item" )
     private Item item;
 
-    @ManyToOne
-    @JoinColumn(name = "id_pedido")
-    private Pedido pedido;
 }

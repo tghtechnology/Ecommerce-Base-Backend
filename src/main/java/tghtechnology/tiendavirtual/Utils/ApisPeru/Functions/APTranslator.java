@@ -6,9 +6,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import tghtechnology.tiendavirtual.Enums.TipoDelivery;
 import tghtechnology.tiendavirtual.Models.DetallePedido;
 import tghtechnology.tiendavirtual.Models.Pedido;
-import tghtechnology.tiendavirtual.Models.Enums.TipoDelivery;
 import tghtechnology.tiendavirtual.Utils.ApisPeru.CompanyData;
 import tghtechnology.tiendavirtual.Utils.ApisPeru.Enums.AfectacionIGV;
 import tghtechnology.tiendavirtual.Utils.ApisPeru.Enums.Leyenda;

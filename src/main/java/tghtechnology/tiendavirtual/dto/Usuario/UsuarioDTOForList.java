@@ -5,8 +5,8 @@ import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import tghtechnology.tiendavirtual.Enums.TipoCargo;
 import tghtechnology.tiendavirtual.Models.Usuario;
-import tghtechnology.tiendavirtual.Models.Enums.TipoCargo;
 
 @Getter
 @Setter

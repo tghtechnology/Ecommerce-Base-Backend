@@ -20,7 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.validation.Valid;
-import tghtechnology.tiendavirtual.Models.Enums.TipoPlato;
+import tghtechnology.tiendavirtual.Enums.TipoPlato;
 import tghtechnology.tiendavirtual.Services.PlatoService;
 import tghtechnology.tiendavirtual.Utils.CustomBeanValidator;
 import tghtechnology.tiendavirtual.Utils.Exceptions.CustomValidationFailedException;

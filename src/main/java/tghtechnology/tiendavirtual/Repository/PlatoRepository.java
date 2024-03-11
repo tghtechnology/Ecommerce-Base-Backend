@@ -8,8 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
+import tghtechnology.tiendavirtual.Enums.TipoPlato;
 import tghtechnology.tiendavirtual.Models.Item;
-import tghtechnology.tiendavirtual.Models.Enums.TipoPlato;
 
 public interface PlatoRepository extends CrudRepository<Item, Integer>{
 

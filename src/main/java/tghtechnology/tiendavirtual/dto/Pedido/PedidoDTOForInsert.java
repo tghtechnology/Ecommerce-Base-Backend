@@ -10,7 +10,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import tghtechnology.tiendavirtual.Models.Enums.TipoDelivery;
+import tghtechnology.tiendavirtual.Enums.TipoDelivery;
 import tghtechnology.tiendavirtual.Utils.ApisPeru.Enums.TipoDocumento;
 import tghtechnology.tiendavirtual.dto.Cliente.ClienteDTOForInsert;
 import tghtechnology.tiendavirtual.dto.Pedido.DetallePedido.DetallePedidoDTOForInsert;

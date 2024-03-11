@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
-import tghtechnology.tiendavirtual.Models.Enums.EstadoReserva;
+import tghtechnology.tiendavirtual.Enums.EstadoReserva;
 import tghtechnology.tiendavirtual.Services.ReservaService;
 import tghtechnology.tiendavirtual.Utils.Security.Interfaces.Empleado;
 import tghtechnology.tiendavirtual.dto.Reserva.ReservaDTOForInsert;

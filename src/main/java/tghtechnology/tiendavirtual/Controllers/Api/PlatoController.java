@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import tghtechnology.tiendavirtual.Models.Enums.TipoPlato;
+import tghtechnology.tiendavirtual.Enums.TipoPlato;
 import tghtechnology.tiendavirtual.Services.PlatoService;
 import tghtechnology.tiendavirtual.Utils.ApisPeru.Functions.DineroALetras;
 import tghtechnology.tiendavirtual.dto.Plato.PlatoDTOForList;

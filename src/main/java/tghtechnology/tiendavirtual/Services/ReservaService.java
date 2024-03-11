@@ -7,10 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
+import tghtechnology.tiendavirtual.Enums.EstadoReserva;
 import tghtechnology.tiendavirtual.Models.Cliente;
 import tghtechnology.tiendavirtual.Models.Reserva;
 import tghtechnology.tiendavirtual.Models.Usuario;
-import tghtechnology.tiendavirtual.Models.Enums.EstadoReserva;
 import tghtechnology.tiendavirtual.Repository.ClienteRepository;
 import tghtechnology.tiendavirtual.Repository.ReservaRepository;
 import tghtechnology.tiendavirtual.Repository.UsuarioRepository;

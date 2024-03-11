@@ -12,9 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.AllArgsConstructor;
+import tghtechnology.tiendavirtual.Enums.TipoPlato;
 import tghtechnology.tiendavirtual.Models.Categoria;
 import tghtechnology.tiendavirtual.Models.Item;
-import tghtechnology.tiendavirtual.Models.Enums.TipoPlato;
 import tghtechnology.tiendavirtual.Repository.CategoriaRepository;
 import tghtechnology.tiendavirtual.Repository.PlatoRepository;
 import tghtechnology.tiendavirtual.Utils.Cloudinary.Img;

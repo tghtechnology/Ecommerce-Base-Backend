@@ -7,8 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
+import tghtechnology.tiendavirtual.Enums.Mes;
 import tghtechnology.tiendavirtual.Models.MenuCumple;
-import tghtechnology.tiendavirtual.Models.Enums.Mes;
 
 public interface MenuRepository extends CrudRepository<MenuCumple, Integer>{
 

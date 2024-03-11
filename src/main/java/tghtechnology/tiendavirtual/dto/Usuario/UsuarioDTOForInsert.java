@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import tghtechnology.tiendavirtual.Models.Enums.TipoCargo;
+import tghtechnology.tiendavirtual.Enums.TipoCargo;
 
 @Getter
 @Setter

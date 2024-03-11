@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import tghtechnology.tiendavirtual.Models.Enums.Mes;
+import tghtechnology.tiendavirtual.Enums.Mes;
 import tghtechnology.tiendavirtual.Services.MenuService;
 import tghtechnology.tiendavirtual.dto.MenuCumple.MenuCumpleDTOForList;
 
