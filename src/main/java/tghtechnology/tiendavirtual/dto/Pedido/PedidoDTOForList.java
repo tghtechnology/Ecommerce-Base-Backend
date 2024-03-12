@@ -1,45 +1,42 @@
 package tghtechnology.tiendavirtual.dto.Pedido;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import tghtechnology.tiendavirtual.Enums.EstadoPedido;
-import tghtechnology.tiendavirtual.Enums.TipoDelivery;
+import tghtechnology.tiendavirtual.Models.DetallePedido;
 import tghtechnology.tiendavirtual.Models.Pedido;
+import tghtechnology.tiendavirtual.Utils.DTOInterfaces.DTOForList;
 import tghtechnology.tiendavirtual.dto.Cliente.ClienteDTOForList;
 import tghtechnology.tiendavirtual.dto.Pedido.DetallePedido.DetallePedidoDTOForList;
 
 @Getter
 @Setter
 @NoArgsConstructor
-public class PedidoDTOForList {
+public class PedidoDTOForList implements DTOForList<Pedido>{
 
 	private Integer id_pedido;
-	private ClienteDTOForList cliente;
-    private LocalDateTime fecha_pedido;
-    private EstadoPedido estado_pedido;
     private BigDecimal precio_total;
-    private String num_comprobante;
-    private Boolean antesDeIGV;
-    private TipoDelivery tipo_delivery;
+    private ClienteDTOForList cliente;
     private List<DetallePedidoDTOForList> detalles;
-    
-    /*Reestructuración para listar pedido*/ 
-    public PedidoDTOForList(Pedido pedido){
-        this.setId_pedido(pedido.getId_pedido());
-        this.cliente = new ClienteDTOForList(pedido.getCliente());
-        this.setFecha_pedido(pedido.getFecha_pedido());
-        this.setEstado_pedido(pedido.getEstado_pedido());
-        this.setPrecio_total(pedido.getPrecio_total());
-        this.setNum_comprobante(pedido.getNum_comprobante());
-        this.setAntesDeIGV(pedido.getAntesDeIGV());
-        this.setTipo_delivery(pedido.getTipo_delivery());
+
+	@Override
+	public DTOForList<Pedido> from(Pedido pedido) {
+		this.setId_pedido(pedido.getId_pedido());
+        this.cliente = new ClienteDTOForList().from(pedido.getCliente());
+        //this.setPrecio_total(pedido.getPrecio_total());
+        BigDecimal precio_total = new BigDecimal(0);
+        
         this.detalles = new ArrayList<>();
+        for( DetallePedido dp : pedido.getDetallePedido()) {
+        	detalles.add(new DetallePedidoDTOForList(dp));
+        	precio_total = precio_total.add(dp.getSub_total());
+        }
+        
         pedido.getDetallePedido().forEach(dp -> detalles.add(new DetallePedidoDTOForList(dp)));
-    }
+        return this;
+	}
 }

@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import tghtechnology.tiendavirtual.Enums.TipoCargo;
+import tghtechnology.tiendavirtual.Enums.TipoUsuario;
 
 @Getter
 @Setter
@@ -23,5 +23,5 @@ public class UsuarioDTOForInsert {
     private PasswordDTO password;
 
     @NotNull(message = "El campo no debe estar vacío")
-    private TipoCargo cargo;
+    private TipoUsuario cargo;
 }

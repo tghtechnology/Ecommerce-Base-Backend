@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tghtechnology.tiendavirtual.Models.Composite.PromocionPlato;
-import tghtechnology.tiendavirtual.dto.Plato.PlatoDTOMinimal;
+import tghtechnology.tiendavirtual.dto.Item.PlatoDTOMinimal;
 
 @Getter
 @Setter

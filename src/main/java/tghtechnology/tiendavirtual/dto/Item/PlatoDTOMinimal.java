@@ -1,4 +1,4 @@
-package tghtechnology.tiendavirtual.dto.Plato;
+package tghtechnology.tiendavirtual.dto.Item;
 
 import java.math.BigDecimal;
 

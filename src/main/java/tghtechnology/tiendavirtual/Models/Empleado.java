@@ -11,12 +11,13 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
+import tghtechnology.tiendavirtual.Utils.ApisPeru.Enums.TipoDocIdentidad;
 
 
 @Getter
 @Setter
 @Entity
-@Table(name = "tbl_empleado")
+@Table(name = "empleado")
 public class Empleado {
 
 	@Id
@@ -24,16 +25,22 @@ public class Empleado {
 	private Integer id_empleado;
 	
 	@Column(nullable = false)
+	private TipoDocIdentidad tipo_documento;
+	
+	@Column(nullable = false, length = 15)
+	private String numero_documento;
+	
+	@Column(nullable = false, length = 50)
 	private String nombres;
 	
-	@Column(nullable = false)
+	@Column(nullable = false, length = 50)
 	private String apellidos;
 
-	@Column(nullable = false)
+	@Column(nullable = false, length = 15)
 	private String telefono;
 	
-	@Column(nullable = false)
-	private String correo;
+	@Column(nullable = false, length = 80)
+	private String correo_personal;
 	
 	@Column(nullable = false)
 	private LocalDateTime fecha_creacion;
@@ -41,10 +48,9 @@ public class Empleado {
 	@Column(nullable = false)
 	private boolean estado;
 	
-	
 	// Usuario
 	@OneToOne
-	@JoinColumn(name = "id_usuario")
+	@JoinColumn(name = "id_usuario", nullable = false)
 	private Usuario usuario;
 	
 }

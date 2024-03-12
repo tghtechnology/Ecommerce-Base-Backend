@@ -2,7 +2,7 @@ package tghtechnology.tiendavirtual.Enums;
 
 import org.springframework.security.core.GrantedAuthority;
 
-public enum TipoCargo implements GrantedAuthority{
+public enum TipoUsuario implements GrantedAuthority{
 	
 	ADMIN,
 	GERENTE,

@@ -25,8 +25,8 @@ import tghtechnology.tiendavirtual.Services.PlatoService;
 import tghtechnology.tiendavirtual.Utils.CustomBeanValidator;
 import tghtechnology.tiendavirtual.Utils.Exceptions.CustomValidationFailedException;
 import tghtechnology.tiendavirtual.Utils.Security.Interfaces.Empleado;
-import tghtechnology.tiendavirtual.dto.Plato.PlatoDTOForInsert;
-import tghtechnology.tiendavirtual.dto.Plato.PlatoDTOForList;
+import tghtechnology.tiendavirtual.dto.Item.PlatoDTOForInsert;
+import tghtechnology.tiendavirtual.dto.Item.PlatoDTOForList;
 
 @RequestMapping("/admin/plato")
 @RestController

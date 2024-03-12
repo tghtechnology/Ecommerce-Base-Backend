@@ -1,6 +1,5 @@
 package tghtechnology.tiendavirtual.Services;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,15 +8,10 @@ import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
 import tghtechnology.tiendavirtual.Models.Empleado;
-import tghtechnology.tiendavirtual.Models.Usuario;
 import tghtechnology.tiendavirtual.Repository.EmpleadoRepository;
-import tghtechnology.tiendavirtual.Repository.UsuarioRepository;
 import tghtechnology.tiendavirtual.Utils.Exceptions.IdNotFoundException;
 import tghtechnology.tiendavirtual.dto.Empleado.EmpleadoDTOForInsert;
 import tghtechnology.tiendavirtual.dto.Empleado.EmpleadoDTOForList;
-import tghtechnology.tiendavirtual.dto.Empleado.EmpleadoDTOForModify;
-import tghtechnology.tiendavirtual.dto.Usuario.UsuarioDTOForList;
-import tghtechnology.tiendavirtual.dto.Usuario.UsuarioDTOForModify;
 
 @Service
 @AllArgsConstructor
@@ -25,8 +19,8 @@ public class EmpleadoService {
     
     @Autowired
     private EmpleadoRepository empRepository;
-    private UsuarioRepository userRepository;
-    private UsuarioService userService;
+    //private UsuarioRepository userRepository;
+    //private UsuarioService userService;
 
 
     /*Listar empleado */
@@ -34,8 +28,8 @@ public class EmpleadoService {
         List<EmpleadoDTOForList> empDto = new ArrayList<>();
         List<Empleado> emp = (List<Empleado>) empRepository.listarEmpleados();
 
-        emp.forEach(item ->{
-            empDto.add(new EmpleadoDTOForList(item));
+        emp.forEach(empleado ->{
+            empDto.add(new EmpleadoDTOForList().from(empleado));
         });
 
         return empDto;
@@ -44,41 +38,29 @@ public class EmpleadoService {
     /*Obtener un empleado especifico*/
     public EmpleadoDTOForList listarUno( Integer id){
         Empleado empleado = buscarPorId(id);
-        return new EmpleadoDTOForList(empleado);
+        return new EmpleadoDTOForList().from(empleado);
     }
 
     /*Registrar Empleado */
-    public EmpleadoDTOForList crearEmpleado(EmpleadoDTOForInsert emp){
-        UsuarioDTOForList usuario  = userService.crearUsuario(emp.getUsuario());
-        Usuario user = userRepository.listarUno(usuario.getId_usuario()).orElseThrow( () -> new IdNotFoundException("usuario"));
+    public EmpleadoDTOForList crearEmpleado(EmpleadoDTOForInsert iEmp){
+        //UsuarioDTOForList usuario  = userService.crearUsuario(emp.getUsuario());
+        //Usuario user = userRepository.listarUno(usuario.getId_usuario()).get();
 
-        Empleado newEmpleado = new Empleado();
-        newEmpleado.setNombres(emp.getNombres());
-        newEmpleado.setApellidos(emp.getApellidos());
-        newEmpleado.setCorreo(emp.getCorreo());
-        newEmpleado.setUsuario(user);
-        newEmpleado.setTelefono(emp.getTelefono());
-        newEmpleado.setEstado(true);
-        newEmpleado.setFecha_creacion(LocalDateTime.now());
+        Empleado emp = iEmp.toModel();
+        //newEmpleado.setUsuario(user);
 
-        empRepository.save(newEmpleado);
+        empRepository.save(emp);
 
-        return new EmpleadoDTOForList(newEmpleado);
+        return new EmpleadoDTOForList().from(emp);
     } 
     
     /*Actualizar empleado */
-    public void actualizarEmpleado(Integer id, EmpleadoDTOForModify body){
+    public void actualizarEmpleado(Integer id, EmpleadoDTOForInsert mEmp){
         Empleado empleado = buscarPorId(id);        
         
-        UsuarioDTOForModify us = body.getUsuario();
+        empleado = mEmp.updateModel(empleado);
         
-        empleado.setNombres(body.getNombres());
-        empleado.setApellidos(body.getApellidos());
-        empleado.setCorreo(body.getCorreo());
-        empleado.setTelefono(body.getTelefono());
-        empleado.setEstado(true);
-        
-        userService.actualizarUsuario(empleado.getUsuario().getId_usuario(), us);
+        //userService.actualizarUsuario(empleado.getUsuario().getId_usuario(), us);
         
         empRepository.save(empleado);
     }
@@ -86,13 +68,9 @@ public class EmpleadoService {
     /**Eliminar empleado */
     public void eliminarEmpleado(Integer id){
         Empleado emp = buscarPorId(id);
-        
-        userService.eliminarUsuario(emp.getUsuario().getId_usuario());
-        
+        //userService.eliminarUsuario(emp.getUsuario().getId_usuario());
         emp.setEstado(false);
         empRepository.save(emp);
-        
-        
     }
     
     

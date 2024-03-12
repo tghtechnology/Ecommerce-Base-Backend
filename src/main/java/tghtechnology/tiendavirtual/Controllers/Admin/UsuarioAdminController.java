@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
-import tghtechnology.tiendavirtual.Enums.TipoCargo;
+import tghtechnology.tiendavirtual.Enums.TipoUsuario;
 import tghtechnology.tiendavirtual.Services.UsuarioService;
 import tghtechnology.tiendavirtual.Utils.Security.Interfaces.Empleado;
 import tghtechnology.tiendavirtual.Utils.Security.Interfaces.Gerente;
@@ -30,7 +30,7 @@ public class UsuarioAdminController {
     @Autowired
     private UsuarioService userService;
 
-    TipoCargo tipo = TipoCargo.EMPLEADO;
+    TipoUsuario tipo = TipoUsuario.EMPLEADO;
     
     @Empleado
     @GetMapping

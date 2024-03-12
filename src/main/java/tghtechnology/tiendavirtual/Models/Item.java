@@ -16,10 +16,9 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
-import tghtechnology.tiendavirtual.Enums.TipoPlato;
 
 @Entity
-@Table(name = "tbl_plato")
+@Table(name = "item")
 @Getter
 @Setter
 public class Item {
@@ -59,12 +58,6 @@ public class Item {
     @OneToMany(mappedBy = "item")
     private Set<DetallePedido> detalle_pedido = new HashSet<>();
 
-    public static String transform_id(String nombre_item) {
-		return nombre_item.strip()				// sin espacios al inicio o final
-				.replace(' ', '_')			// espacios y guiones por _
-				.replace('-', '_')
-				.replaceAll("(\\+|,|')+","")// simbolos por vacio
-				.toLowerCase();				// minusculas
-	}
+
 
 }

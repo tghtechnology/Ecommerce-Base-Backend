@@ -1,6 +1,5 @@
 package tghtechnology.tiendavirtual.Models;
 
-import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,7 +17,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "tbl_pedido" )
+@Table(name = "pedido")
 @Getter
 @Setter
 public class Pedido {
@@ -26,9 +25,6 @@ public class Pedido {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id_pedido;
-
-    @Column(nullable = false)
-    private BigDecimal precio_total;
     
     @Column(nullable = false)
     private boolean completado;
@@ -45,7 +41,9 @@ public class Pedido {
 	private Cliente cliente;
   	
   	@OneToOne(mappedBy = "pedido")
-  	@Column(nullable = true)
- 	private Pedido pedido;
+ 	private Venta venta;
+  	
+  	@OneToOne(mappedBy = "carrito")
+ 	private Cliente clienteCarrito;
   	
 }

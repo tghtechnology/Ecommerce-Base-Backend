@@ -1,6 +1,5 @@
 package tghtechnology.tiendavirtual.Services;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,44 +20,58 @@ public class CategoriaService {
 	@Autowired
     private CategoriaRepository catRepository;
 
-    /*Listar categoria*/
+    /**
+     * Lista todas las categorías no eliminadas
+     * @return Una lista de las categorías en formato ForList
+     */
     public List<CategoriaDTOForList> listarCategoria (){
         List<CategoriaDTOForList> categoriaList = new ArrayList<>();
         List<Categoria> cats = (List<Categoria>) catRepository.listarCategoria();
         
         cats.forEach( x -> {
-            categoriaList.add(new CategoriaDTOForList(x));
+            categoriaList.add(new CategoriaDTOForList().from(x));
         });
         return categoriaList;
     }
     
-    /*Obtener una categoría especifica*/
-    public CategoriaDTOForList listarUno( Integer id){
-        Categoria categoria = buscarPorId(id);
-        return new CategoriaDTOForList(categoria);
+    /**
+     * Obtiene una categoría en específico según su ID
+     * @param id la ID de la categoría
+     * @return la categoría encontrada en formato ForList o null si no existe
+     */
+    public CategoriaDTOForList listarUno(Integer id){
+        Categoria categoria = catRepository.listarUno(id).orElse(null);
+        return categoria == null ? null : new CategoriaDTOForList().from(categoria);
     }
     
-    /**Registrar nueva categoría*/
+    /**
+     * Registra una nueva categoría
+     * @param Categoría en formato ForInsert
+     * @return la categoría creada en formato ForList
+     */
     public CategoriaDTOForList crearCategoria(CategoriaDTOForInsert iCat){
-        Categoria cat = new Categoria();
-        cat.setDescripcion(iCat.getDescripcion());
-        cat.setText_id(iCat.getDescripcion().strip().replace(' ', '_'));
-        cat.setFecha_creacion(LocalDateTime.now());
-        cat.setEstado(true);
-
+        Categoria cat = iCat.toModel();
         catRepository.save(cat);
-        return new CategoriaDTOForList(cat);
+        return new CategoriaDTOForList().from(cat);
     }
     
-    /*Actualizar categoría */
-    public void actualizarCategoria(Integer id, CategoriaDTOForInsert body){
+    /**
+     * Modifica una categoría
+     * @param id ID de la categoría a modificar
+     * @param mCat Datos de la categoría en formato ForInsert
+     * @throws IdNotFoundException Si la ID proporcionada no corresponde a ninguna categoría
+     */
+    public void actualizarCategoria(Integer id, CategoriaDTOForInsert mCat){
         Categoria categoria = buscarPorId(id);
-        categoria.setDescripcion(body.getDescripcion());
-        categoria.setFecha_creacion(LocalDateTime.now());
+        categoria = mCat.updateModel(categoria);
         catRepository.save(categoria);
     }
     
-    /**Eliminar categoría */
+    /**
+     * Realiza un eliminado lógico de una categoría
+     * @param id ID de la categoría a eliminar
+     * @throws IdNotFoundException Si la ID proporcionada no corresponde a ninguna categoría
+     */
     public void eliminarCategoria(Integer id){
         Categoria cat = buscarPorId(id);
         cat.setEstado(false);
@@ -67,7 +80,7 @@ public class CategoriaService {
     }
     
     
-    private Categoria buscarPorId(Integer id) {
+    private Categoria buscarPorId(Integer id) throws IdNotFoundException{
 		return catRepository.listarUno(id).orElseThrow( () -> new IdNotFoundException("categoria"));
 	}
 }

@@ -4,20 +4,20 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tghtechnology.tiendavirtual.Models.Categoria;
+import tghtechnology.tiendavirtual.Utils.DTOInterfaces.DTOForList;
 
 @Getter
 @Setter
 @NoArgsConstructor
-public class CategoriaDTOForList {
+public class CategoriaDTOForList implements DTOForList<Categoria>{
 
 	private Integer id_categoria;
     private String descripcion;
-    //private LocalDateTime fecha_creacion;
-    
-    /*Reestructuración para listar cargo*/ 
-    public CategoriaDTOForList(Categoria categoria){
-        this.setId_categoria(categoria.getId_categoria());
-        this.setDescripcion(categoria.getDescripcion());
-        //this.setFecha_creacion(categoria.getFecha_creacion());
-    }
+
+	@Override
+	public CategoriaDTOForList from(Categoria model) {
+		this.id_categoria = model.getId_categoria();
+		this.descripcion = model.getDescripcion();
+		return this;
+	}
 }

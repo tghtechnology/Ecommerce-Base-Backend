@@ -20,7 +20,7 @@ import tghtechnology.tiendavirtual.Models.Item;
 import tghtechnology.tiendavirtual.Repository.ClienteRepository;
 import tghtechnology.tiendavirtual.Repository.DetallePedidoRepository;
 import tghtechnology.tiendavirtual.Repository.PedidoRepository;
-import tghtechnology.tiendavirtual.Repository.PlatoRepository;
+import tghtechnology.tiendavirtual.Repository.ItemRepository;
 import tghtechnology.tiendavirtual.Utils.DeliveryCalculator;
 import tghtechnology.tiendavirtual.Utils.Propiedades;
 import tghtechnology.tiendavirtual.Utils.ApisPeru.Exceptions.ApisPeruResponseException;
@@ -30,7 +30,7 @@ import tghtechnology.tiendavirtual.Utils.ApisPeru.Objects.Boleta;
 import tghtechnology.tiendavirtual.Utils.ApisPeru.Objects.Response.ApisPeruResponse;
 import tghtechnology.tiendavirtual.Utils.Emails.EmailService;
 import tghtechnology.tiendavirtual.Utils.Emails.Formatos.ClienteEmail;
-import tghtechnology.tiendavirtual.Utils.Emails.Formatos.GerenteEmail;
+import tghtechnology.tiendavirtual.Utils.Emails.Formatos.ExampleEmail;
 import tghtechnology.tiendavirtual.Utils.Exceptions.DataMismatchException;
 import tghtechnology.tiendavirtual.Utils.Exceptions.IdNotFoundException;
 import tghtechnology.tiendavirtual.Utils.Exceptions.PriceInconsistencyException;
@@ -47,7 +47,7 @@ public class PedidoService {
     private PedidoRepository pedRepository;
 	private ClienteRepository cliRepository;
 	private DetallePedidoRepository detRepository;
-	private PlatoRepository plaRepository;
+	private ItemRepository plaRepository;
 	private NotificacionService notiService;
 	private EmailService emailService;
 	private ApisPeruService apService;
@@ -112,7 +112,7 @@ public class PedidoService {
         
         notiService.registrarNotificacion(ped);
         emailService.enviarEmail(new ClienteEmail(iPed.getCliente().getEmail(), ped, boletaPDF));
-        emailService.enviarEmail(new GerenteEmail(propiedades.getEmailGerente(), ped, boletaPDF));
+        emailService.enviarEmail(new ExampleEmail(propiedades.getEmailGerente(), ped, boletaPDF));
         
 		return boletaPDF;
     }
@@ -164,7 +164,7 @@ public class PedidoService {
     	
     	validarPedido(iPed);
     	
-    	Pedido ped = new Pedido();
+    	Pedido ped = iPed.toModel();
     	ped.setTipo_comprobante(iPed.getTipo_comprobante());
         ped.setFecha_pedido(LocalDateTime.now());
         ped.setEstado_pedido(EstadoPedido.PENDIENTE);

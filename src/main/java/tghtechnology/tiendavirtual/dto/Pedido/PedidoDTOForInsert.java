@@ -1,42 +1,42 @@
 package tghtechnology.tiendavirtual.dto.Pedido;
 
-import java.math.BigDecimal;
-import java.util.List;
 import java.util.Set;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import tghtechnology.tiendavirtual.Enums.TipoDelivery;
-import tghtechnology.tiendavirtual.Utils.ApisPeru.Enums.TipoDocumento;
+import tghtechnology.tiendavirtual.Models.Pedido;
+import tghtechnology.tiendavirtual.Utils.DTOInterfaces.DTOForInsert;
 import tghtechnology.tiendavirtual.dto.Cliente.ClienteDTOForInsert;
 import tghtechnology.tiendavirtual.dto.Pedido.DetallePedido.DetallePedidoDTOForInsert;
 
 @Getter
 @Setter
 @NoArgsConstructor
-public class PedidoDTOForInsert {
-
-	@NotNull(message = "El campo no puede estar vacío")
-	private TipoDocumento tipo_comprobante;
+public class PedidoDTOForInsert implements DTOForInsert<Pedido>{
 	
-	@DecimalMin(value = "0.0", inclusive = false)
-	private BigDecimal precio_total;
+	private Integer id_cliente;
 	
 	@Valid
-	@NotNull(message = "No puede ser nulo")
     private ClienteDTOForInsert cliente;
     
 	@Valid
 	@NotNull(message = "No puede ser nulo")
     private Set<DetallePedidoDTOForInsert> detalles;
-    
-	@NotNull(message = "El campo no puede estar vacío")
-	private TipoDelivery tipo_delivery;
+
+	@Override
+	public Pedido toModel() {
+		Pedido ped = new Pedido();
+		ped.setCompletado(false);
+		ped.setEstado(true);
+	}
 	
-	private List<Integer> promociones;
+	@Override
+	public Pedido updateModel(Pedido modelToUpdate) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

@@ -16,19 +16,19 @@ import tghtechnology.tiendavirtual.Enums.TipoPlato;
 import tghtechnology.tiendavirtual.Models.Categoria;
 import tghtechnology.tiendavirtual.Models.Item;
 import tghtechnology.tiendavirtual.Repository.CategoriaRepository;
-import tghtechnology.tiendavirtual.Repository.PlatoRepository;
+import tghtechnology.tiendavirtual.Repository.ItemRepository;
 import tghtechnology.tiendavirtual.Utils.Cloudinary.Img;
 import tghtechnology.tiendavirtual.Utils.Cloudinary.MediaManager;
 import tghtechnology.tiendavirtual.Utils.Exceptions.IdNotFoundException;
-import tghtechnology.tiendavirtual.dto.Plato.PlatoDTOForInsert;
-import tghtechnology.tiendavirtual.dto.Plato.PlatoDTOForList;
+import tghtechnology.tiendavirtual.dto.Item.PlatoDTOForInsert;
+import tghtechnology.tiendavirtual.dto.Item.PlatoDTOForList;
 
 @Service
 @AllArgsConstructor
 public class PlatoService {
 
 	@Autowired
-    private PlatoRepository plaRepository;
+    private ItemRepository plaRepository;
 	private CategoriaRepository catRepo;
 	private MediaManager mediaManager;
 

@@ -15,7 +15,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "tbl_descuento")
+@Table(name = "descuento")
 @Getter
 @Setter
 public class Descuento {
@@ -25,7 +25,7 @@ public class Descuento {
     private Integer id_descuento;
 
     @Column(nullable = false)
-    private Integer cantidad_descuento;
+    private Integer nuevo_precio;
     @Column(nullable = true)
     private BigDecimal porcentaje;
     @Column(nullable = true)

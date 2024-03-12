@@ -13,21 +13,21 @@ import tghtechnology.tiendavirtual.Enums.TipoImagen;
 @Getter
 @Setter
 @Entity
-@Table(name = "Imagen")
+@Table(name = "imagen")
 public class Imagen {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 	
-	@Column(nullable = false, unique = true, length = 250)
+	@Column(nullable = false, unique = true, length = 400)
 	private String Imagen;
-	@Column(nullable = true, length = 250)
+	@Column(nullable = true, length = 400)
 	private String public_id_Imagen;
 	
-	@Column(nullable = true, length = 250)
+	@Column(nullable = true, length = 400)
 	private String Miniatura;
-	@Column(nullable = true, length = 250)
+	@Column(nullable = true, length = 400)
 	private String public_id_Miniatura;
 	
 	// Objeto al que pertenece

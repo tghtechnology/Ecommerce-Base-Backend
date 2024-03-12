@@ -8,7 +8,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,7 +20,7 @@ import tghtechnology.tiendavirtual.Utils.ApisPeru.Enums.TipoDocIdentidad;
 @Getter
 @Setter
 @Entity
-@Table(name = "tbl_cliente")
+@Table(name = "cliente")
 public class Cliente {
 
 	@Id
@@ -40,7 +42,13 @@ public class Cliente {
 	@Column(nullable = false, length = 80)
 	private String correo;
 	
-	@Column(nullable = false, length = 20)
+	@Column(nullable = false, length = 30)
+	private String region;
+	
+	@Column(nullable = false, length = 30)
+	private String provincia;
+	
+	@Column(nullable = false, length = 30)
 	private String distrito;
 	
 	@Column(nullable = false, length = 150)
@@ -49,13 +57,27 @@ public class Cliente {
 	@Column(nullable = true, length = 150)
 	private String referencia;
 	
+	@Column(nullable = true)
+	private Double latitud;
+	
+	@Column(nullable = true)
+	private Double longitud;
+	
 	@Column(nullable = false)
 	private boolean estado;
 	
-	
+	// Pedidos realizados
 	@OneToMany(mappedBy = "cliente")
 	private Set<Pedido> pedidos = new HashSet<>();
+	
+	@OneToOne
+	@JoinColumn(name = "id_pedido", nullable = true)
+	private Pedido carrito;
 	 
+	// Usuario
+	@OneToOne
+	@JoinColumn(name = "id_usuario", nullable = true)
+	private Usuario usuario;
 	
 	
 }

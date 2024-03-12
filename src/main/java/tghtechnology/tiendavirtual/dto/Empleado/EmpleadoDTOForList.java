@@ -6,12 +6,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tghtechnology.tiendavirtual.Models.Empleado;
+import tghtechnology.tiendavirtual.Utils.DTOInterfaces.DTOForList;
 import tghtechnology.tiendavirtual.dto.Usuario.UsuarioDTOForList;
 
 @Getter
 @Setter
 @NoArgsConstructor
-public class EmpleadoDTOForList {
+public class EmpleadoDTOForList implements DTOForList<Empleado>{
     private Integer id_empleado;
     private String nombres;
     private String apellidos;
@@ -20,13 +21,15 @@ public class EmpleadoDTOForList {
     private LocalDateTime fecha_creacion;
     private UsuarioDTOForList user;
 
-    public EmpleadoDTOForList ( Empleado emp){
-        this.id_empleado = emp.getId_empleado();
+	@Override
+	public EmpleadoDTOForList from(Empleado emp) {
+		this.id_empleado = emp.getId_empleado();
         this.nombres = emp.getNombres();
         this.apellidos = emp.getApellidos();
-        this.correo = emp.getCorreo();
+        this.correo = emp.getCorreo_personal();
         this.telefono = emp.getTelefono();
         this.fecha_creacion = emp.getFecha_creacion();
         this.user = new UsuarioDTOForList(emp.getUsuario());
-    }
+        return this;
+	}
 }

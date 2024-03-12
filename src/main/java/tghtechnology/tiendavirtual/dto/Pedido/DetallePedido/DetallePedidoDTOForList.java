@@ -6,12 +6,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tghtechnology.tiendavirtual.Models.DetallePedido;
-import tghtechnology.tiendavirtual.dto.Plato.PlatoDTOMinimal;
+import tghtechnology.tiendavirtual.Utils.DTOInterfaces.DTOForList;
+import tghtechnology.tiendavirtual.dto.Item.PlatoDTOMinimal;
 
 @Getter
 @Setter
 @NoArgsConstructor
-public class DetallePedidoDTOForList {
+public class DetallePedidoDTOForList implements DTOForList<DetallePedido>{
 
     private PlatoDTOMinimal plato;
 	
@@ -23,5 +24,12 @@ public class DetallePedidoDTOForList {
     	this.subtotal = dp.getSub_total();
     	this.plato = new PlatoDTOMinimal(dp.getPlato());
     }
+
+	@Override
+	public DetallePedidoDTOForList from(DetallePedido dp) {
+		this.cantidad = dp.getCantidad();
+		this.subtotal = dp.getSub_total();
+		
+	}
     
 }

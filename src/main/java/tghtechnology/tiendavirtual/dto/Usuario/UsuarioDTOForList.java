@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import tghtechnology.tiendavirtual.Enums.TipoCargo;
+import tghtechnology.tiendavirtual.Enums.TipoUsuario;
 import tghtechnology.tiendavirtual.Models.Usuario;
 
 @Getter
@@ -15,7 +15,7 @@ public class UsuarioDTOForList {
 
     private Integer id_usuario;
     private String username;
-    private TipoCargo cargo;
+    private TipoUsuario cargo;
     
 	private LocalDateTime fecha_creacion;
 

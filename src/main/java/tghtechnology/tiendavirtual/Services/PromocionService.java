@@ -13,7 +13,7 @@ import lombok.AllArgsConstructor;
 import tghtechnology.tiendavirtual.Models.Item;
 import tghtechnology.tiendavirtual.Models.Promocion;
 import tghtechnology.tiendavirtual.Models.Composite.PromocionPlato;
-import tghtechnology.tiendavirtual.Repository.PlatoRepository;
+import tghtechnology.tiendavirtual.Repository.ItemRepository;
 import tghtechnology.tiendavirtual.Repository.PromocionPlatoRepository;
 import tghtechnology.tiendavirtual.Repository.PromocionRepository;
 import tghtechnology.tiendavirtual.Utils.Exceptions.IdNotFoundException;
@@ -28,7 +28,7 @@ public class PromocionService {
 	@Autowired
 	private PromocionPlatoRepository prplRepository;
     private PromocionRepository promRepository;
-	private PlatoRepository plaRepository;
+	private ItemRepository plaRepository;
 
     /**
      * Listar todas las promociones activas
