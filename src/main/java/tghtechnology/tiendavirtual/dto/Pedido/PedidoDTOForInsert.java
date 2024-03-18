@@ -31,12 +31,12 @@ public class PedidoDTOForInsert implements DTOForInsert<Pedido>{
 		Pedido ped = new Pedido();
 		ped.setCompletado(false);
 		ped.setEstado(true);
+		return ped;
 	}
 	
 	@Override
-	public Pedido updateModel(Pedido modelToUpdate) {
-		// TODO Auto-generated method stub
-		return null;
+	public Pedido updateModel(Pedido ped) {
+		return ped;
 	}
 	
 }

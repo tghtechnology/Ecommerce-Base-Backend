@@ -50,7 +50,7 @@ public class Item {
 
     @Column(nullable = false)
     private Boolean estado;
-
+    
     @ManyToOne
     @JoinColumn(name = "id_categoria", nullable = false)
     private Categoria categoria;
@@ -58,6 +58,6 @@ public class Item {
     @OneToMany(mappedBy = "item")
     private Set<DetallePedido> detalle_pedido = new HashSet<>();
 
-
+    
 
 }

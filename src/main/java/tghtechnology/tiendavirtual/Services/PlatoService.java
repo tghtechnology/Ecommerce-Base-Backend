@@ -21,7 +21,7 @@ import tghtechnology.tiendavirtual.Utils.Cloudinary.Img;
 import tghtechnology.tiendavirtual.Utils.Cloudinary.MediaManager;
 import tghtechnology.tiendavirtual.Utils.Exceptions.IdNotFoundException;
 import tghtechnology.tiendavirtual.dto.Item.PlatoDTOForInsert;
-import tghtechnology.tiendavirtual.dto.Item.PlatoDTOForList;
+import tghtechnology.tiendavirtual.dto.Item.ItemDTOForList;
 
 @Service
 @AllArgsConstructor
@@ -33,36 +33,36 @@ public class PlatoService {
 	private MediaManager mediaManager;
 
     /*Listar plato*/
-    public List<PlatoDTOForList> listarPlato (String query,
+    public List<ItemDTOForList> listarPlato (String query,
     										  BigDecimal min,
     										  BigDecimal max,
     										  String categoria,
     										  TipoPlato tipoPlato
     		){
-        List<PlatoDTOForList> platoList = new ArrayList<>();
+        List<ItemDTOForList> platoList = new ArrayList<>();
         List<Item> plas = (List<Item>) plaRepository.listar(query, min, max, categoria, tipoPlato);
         
         plas.forEach( x -> {
-            platoList.add(new PlatoDTOForList(x));
+            platoList.add(new ItemDTOForList(x));
         });
         return platoList;
     }
     
     /*Obtener un plato especifico*/
-    public PlatoDTOForList listarUno( Integer id){
+    public ItemDTOForList listarUno( Integer id){
     	Item plato = buscarPorId(id);
-        return new PlatoDTOForList(plato);
+        return new ItemDTOForList(plato);
     }
     
     /*Obtener un plato especifico*/
-    public PlatoDTOForList listarUno(String text_id){
+    public ItemDTOForList listarUno(String text_id){
     	Item plato = buscarPorId(text_id);
-        return new PlatoDTOForList(plato);
+        return new ItemDTOForList(plato);
     }
     
     /**Registrar nuevo plato
      * @throws IOException */
-    public PlatoDTOForList crearPlato(PlatoDTOForInsert iPla, MultipartFile imagen) throws IOException{
+    public ItemDTOForList crearPlato(PlatoDTOForInsert iPla, MultipartFile imagen) throws IOException{
  
     	//Obtener tipo de plato
     	String text_id = Item.transform_id(iPla.getNombre_plato());
@@ -91,7 +91,7 @@ public class PlatoService {
 	        pla.setImagen_secundaria(img.getImg_secundaria());
 	        
 	        plaRepository.save(pla);
-	        return new PlatoDTOForList(pla);
+	        return new ItemDTOForList(pla);
     	} else {
     		throw new DataIntegrityViolationException("El nombre (" + text_id + ") ya existe para producto.");
     	}

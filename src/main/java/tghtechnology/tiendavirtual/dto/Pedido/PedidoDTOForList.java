@@ -27,16 +27,14 @@ public class PedidoDTOForList implements DTOForList<Pedido>{
 	public DTOForList<Pedido> from(Pedido pedido) {
 		this.setId_pedido(pedido.getId_pedido());
         this.cliente = new ClienteDTOForList().from(pedido.getCliente());
-        //this.setPrecio_total(pedido.getPrecio_total());
         BigDecimal precio_total = new BigDecimal(0);
         
         this.detalles = new ArrayList<>();
         for( DetallePedido dp : pedido.getDetallePedido()) {
-        	detalles.add(new DetallePedidoDTOForList(dp));
+        	detalles.add(new DetallePedidoDTOForList().from(dp));
         	precio_total = precio_total.add(dp.getSub_total());
         }
         
-        pedido.getDetallePedido().forEach(dp -> detalles.add(new DetallePedidoDTOForList(dp)));
         return this;
 	}
 }

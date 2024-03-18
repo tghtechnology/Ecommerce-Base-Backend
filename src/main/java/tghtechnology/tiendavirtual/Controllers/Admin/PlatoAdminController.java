@@ -26,7 +26,7 @@ import tghtechnology.tiendavirtual.Utils.CustomBeanValidator;
 import tghtechnology.tiendavirtual.Utils.Exceptions.CustomValidationFailedException;
 import tghtechnology.tiendavirtual.Utils.Security.Interfaces.Empleado;
 import tghtechnology.tiendavirtual.dto.Item.PlatoDTOForInsert;
-import tghtechnology.tiendavirtual.dto.Item.PlatoDTOForList;
+import tghtechnology.tiendavirtual.dto.Item.ItemDTOForList;
 
 @RequestMapping("/admin/plato")
 @RestController
@@ -39,40 +39,40 @@ public class PlatoAdminController {
 	
 	@Empleado
 	@GetMapping
-    public ResponseEntity<List<PlatoDTOForList>> listarPlato(
+    public ResponseEntity<List<ItemDTOForList>> listarPlato(
 		    		@RequestParam(defaultValue = "", name = "query") String query,
 					@RequestParam(defaultValue = "1.00", name = "min") BigDecimal minimo,
 					@RequestParam(defaultValue = "99999.99", name = "max") BigDecimal maximo,
 					@RequestParam(defaultValue = "", name = "categoria") String categoria,
 					@RequestParam(defaultValue = "NINGUNO", name = "tipo") TipoPlato tipoPlato){
 		
-        List<PlatoDTOForList> plas = plaService.listarPlato( query, minimo, maximo, categoria, tipoPlato);
+        List<ItemDTOForList> plas = plaService.listarPlato( query, minimo, maximo, categoria, tipoPlato);
         return ResponseEntity.status(HttpStatus.OK).body(plas);
     }
 	
 	@Empleado
 	@GetMapping("/id/{id}")
-	public ResponseEntity<PlatoDTOForList> ListarUno(@PathVariable Integer id) {
-	        PlatoDTOForList pla = plaService.listarUno(id); 
+	public ResponseEntity<ItemDTOForList> ListarUno(@PathVariable Integer id) {
+	        ItemDTOForList pla = plaService.listarUno(id); 
             return ResponseEntity.status(HttpStatus.OK).body(pla);
 	}
 	
 	@Empleado
 	@GetMapping("/{id}")
-	public ResponseEntity<PlatoDTOForList> ListarPorTextId(@PathVariable String text_id) {
-	        PlatoDTOForList pla = plaService.listarUno(text_id); 
+	public ResponseEntity<ItemDTOForList> ListarPorTextId(@PathVariable String text_id) {
+	        ItemDTOForList pla = plaService.listarUno(text_id); 
             return ResponseEntity.status(HttpStatus.OK).body(pla);
 	}
 	
 	@Empleado
 	@PostMapping    
-    public ResponseEntity<PlatoDTOForList> crearPlato(@Valid @RequestParam(value = "plato") String plato,
+    public ResponseEntity<ItemDTOForList> crearPlato(@Valid @RequestParam(value = "plato") String plato,
 													  @RequestParam(value = "imagen", required = true) MultipartFile imagen) throws IOException, CustomValidationFailedException{
 		
 		PlatoDTOForInsert iPla =  new ObjectMapper().readValue(plato, PlatoDTOForInsert.class);
 		validator.validar(iPla);
 		
-        PlatoDTOForList newPlato = plaService.crearPlato(iPla, imagen);
+        ItemDTOForList newPlato = plaService.crearPlato(iPla, imagen);
         return ResponseEntity.status(HttpStatus.CREATED).body(newPlato);
     }
 	

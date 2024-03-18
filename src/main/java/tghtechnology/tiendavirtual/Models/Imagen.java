@@ -30,6 +30,9 @@ public class Imagen {
 	@Column(nullable = true, length = 400)
 	private String public_id_Miniatura;
 	
+	@Column(nullable = false)
+	private Integer index = 1;
+	
 	// Objeto al que pertenece
 	@Column(nullable = false)
 	private TipoImagen tipo;
