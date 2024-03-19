@@ -25,7 +25,6 @@ public enum TipoUsuario implements GrantedAuthority{
 	public static boolean checkRole(Collection<? extends GrantedAuthority> authorities, TipoUsuario permisoMinimo) {
 		
 		TipoUsuario rol = fromAuthority(authorities.stream().toList().get(0).toString());
-		System.out.println(rol);
 		return rol.ordinal() <= permisoMinimo.ordinal();
 	}
 

@@ -56,11 +56,10 @@ public class UsuarioService {
     
     public UsuarioDTOForList listarUsuario(Integer id, Authentication auth) {
     	
-    	
     	Optional<Usuario> oUser = userRepository.listarUno(id);
     	if(oUser.isPresent()) {
     		Usuario user = oUser.get();
-    		if(auth.getName().equals(user.getUsername()) || TipoUsuario.checkRole((Collection<TipoUsuario>)auth.getAuthorities(), TipoUsuario.EMPLEADO))
+    		if(auth.getName().equals(user.getUsername()) || TipoUsuario.checkRole(auth.getAuthorities(), TipoUsuario.CLIENTE))
     			return new UsuarioDTOForList().from(user);
     		else
     			throw new AccessDeniedException(null);
