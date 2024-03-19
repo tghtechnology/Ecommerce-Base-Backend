@@ -1,16 +1,21 @@
 package tghtechnology.tiendavirtual.Services;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
 import tghtechnology.tiendavirtual.Models.Cliente;
+import tghtechnology.tiendavirtual.Models.Persona;
 import tghtechnology.tiendavirtual.Repository.ClienteRepository;
+import tghtechnology.tiendavirtual.Repository.PersonaRepository;
 import tghtechnology.tiendavirtual.Utils.Exceptions.IdNotFoundException;
 import tghtechnology.tiendavirtual.dto.Cliente.ClienteDTOForInsert;
+import tghtechnology.tiendavirtual.dto.Cliente.ClienteDTOForInsertNew;
 import tghtechnology.tiendavirtual.dto.Cliente.ClienteDTOForList;
 
 @Service
@@ -19,6 +24,7 @@ public class ClienteService {
 
 	@Autowired
     private ClienteRepository cliRepository;
+	private PersonaRepository perRepository;
 
     /**
      * Lista todos los clientes no eliminados
@@ -45,12 +51,36 @@ public class ClienteService {
     }
     
     /**
-     * Registra un nuevo cliente
+     * Registra un nuevo cliente para una venta sin cuenta
      * @param iCli Cliente en formato ForInsert
      * @return El cliente creado en formato ForList
      */
-    public ClienteDTOForList crearCliente(ClienteDTOForInsert iCli){
+    public ClienteDTOForList crearCliente(ClienteDTOForInsertNew iCli, Principal principal){
+
+    	Persona per = perRepository.save(iCli.getPersona().toModel());
+    	
         Cliente cli = iCli.toModel();
+        cli.setPersona(per);
+        cliRepository.save(cli);
+        return new ClienteDTOForList().from(cli);
+    }
+    
+    /**
+     * Registra un nuevo cliente en una cuenta ya existente
+     * @param iCli Cliente en formato ForInsert
+     * @return El cliente creado en formato ForList
+     */
+    public ClienteDTOForList crearCliente(ClienteDTOForInsert iCli, Principal principal){
+    	
+    	Persona per = perRepository.obtenerUno(iCli.getId_persona()).orElseThrow(() -> new IdNotFoundException("persona"));
+    		
+		// Crear a partir de cuenta existente, solo aplicable si ya existe una cuenta
+		if(per.getUsuario() == null || !per.getUsuario().getUsername().equals(principal.getName()))
+			throw new AccessDeniedException("Intentando crear cliente a partir de un usuario que no corresponde");
+
+    	
+        Cliente cli = iCli.toModel();
+        cli.setPersona(per);
         cliRepository.save(cli);
         return new ClienteDTOForList().from(cli);
     }
@@ -61,7 +91,7 @@ public class ClienteService {
      * @param mCli Datos del cliente en formato ForInsert
      * @throws IdNotFoundException Si la ID proporcionada no corresponde a ningun cliente
      */
-    public void actualizarCategoria(Integer id, ClienteDTOForInsert mCli){
+    public void actualizarCliente(Integer id, ClienteDTOForInsert mCli){
         Cliente cli= buscarPorId(id);
         cli = mCli.updateModel(cli);
         cliRepository.save(cli);

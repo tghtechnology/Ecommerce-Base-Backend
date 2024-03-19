@@ -4,20 +4,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tghtechnology.tiendavirtual.Models.Cliente;
-import tghtechnology.tiendavirtual.Utils.ApisPeru.Enums.TipoDocIdentidad;
 import tghtechnology.tiendavirtual.Utils.DTOInterfaces.DTOForList;
+import tghtechnology.tiendavirtual.dto.Persona.PersonaDTOForList;
 
 @Getter
 @Setter
 @NoArgsConstructor
 public class ClienteDTOForList implements DTOForList<Cliente>{
 
-	private Integer id;
-	private String nombre;
-	private TipoDocIdentidad tipo_documento;
-	private String numero_documento;
-	private String telefono;
-	private String correo;
+	private PersonaDTOForList persona;
 	
 	private String region;
 	private String provincia;
@@ -27,12 +22,7 @@ public class ClienteDTOForList implements DTOForList<Cliente>{
 
 	@Override
 	public ClienteDTOForList from(Cliente cliente) {
-		this.id = cliente.getId();
-		this.nombre = cliente.getNombre();
-		this.tipo_documento = cliente.getTipo_documento();
-		this.numero_documento = cliente.getNumero_documento();
-		this.telefono = cliente.getTelefono();
-		this.correo = cliente.getCorreo();
+		this.persona = new PersonaDTOForList().from(cliente.getPersona());
 		this.region = cliente.getRegion();
 		this.provincia = cliente.getProvincia();
 		this.distrito = cliente.getDistrito();

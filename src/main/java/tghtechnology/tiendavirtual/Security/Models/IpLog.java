@@ -1,4 +1,4 @@
-package tghtechnology.tiendavirtual.Utils.Security.Models;
+package tghtechnology.tiendavirtual.Security.Models;
 
 import java.time.LocalDateTime;
 

@@ -20,18 +20,18 @@ public class Imagen {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 	
-	@Column(nullable = false, unique = true, length = 400)
+	@Column(nullable = false, unique = true, length = 200)
 	private String Imagen;
-	@Column(nullable = true, length = 400)
+	@Column(nullable = true, length = 200)
 	private String public_id_Imagen;
 	
-	@Column(nullable = true, length = 400)
+	@Column(nullable = true, length = 200)
 	private String Miniatura;
-	@Column(nullable = true, length = 400)
+	@Column(nullable = true, length = 200)
 	private String public_id_Miniatura;
 	
 	@Column(nullable = false)
-	private Integer index = 1;
+	private Integer _index = 1;
 	
 	// Objeto al que pertenece
 	@Column(nullable = false)

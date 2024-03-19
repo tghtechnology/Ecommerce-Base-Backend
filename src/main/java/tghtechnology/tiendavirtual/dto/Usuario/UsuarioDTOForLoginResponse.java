@@ -19,8 +19,8 @@ public class UsuarioDTOForLoginResponse implements DTOForList<Usuario>{
     
 	@Override
 	public UsuarioDTOForLoginResponse from(Usuario user) {
-		this.id = user.getId_usuario();
-		this.email = user.getEmail();
+		this.id = user.getPersona().getId_persona();
+		this.email = user.getUsername();
 		this.cargo = user.getCargo();
 		return this;
 	}

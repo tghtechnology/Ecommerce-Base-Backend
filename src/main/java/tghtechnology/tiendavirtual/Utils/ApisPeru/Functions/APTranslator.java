@@ -22,7 +22,7 @@ import tghtechnology.tiendavirtual.Utils.ApisPeru.Objects.SaleDetail;
 import tghtechnology.tiendavirtual.dto.Cliente.ClienteDTOForInsert;
 
 public class APTranslator {
-
+/*
 	public static Boleta pedidoToApiBoleta(Pedido ped, ClienteDTOForInsert cli, LocalDateTime fechaEmision, BigDecimal igv, Boolean antesDeIGV) {
 		
 		final Client client = clienteDTOtoApiClient(cli);
@@ -85,7 +85,7 @@ public class APTranslator {
 		/*if(sp.getOferta() != null) {
 			descuentos.add(ofertaToApiCharge(sp.getOferta(),
 			sp.getProducto().getPrecio_soles().multiply(new BigDecimal(sp.getCantidad()))));
-		}*/
+		}*
 		BigDecimal unitario = sp.getPlato().getPrecio();
 		
 		if(!antesDeIGV) unitario = unitario.divide(BigDecimal.ONE.setScale(2).add(igv), 2, RoundingMode.UP);

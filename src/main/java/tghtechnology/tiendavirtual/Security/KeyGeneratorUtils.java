@@ -1,4 +1,4 @@
-package tghtechnology.tiendavirtual.Utils.Security;
+package tghtechnology.tiendavirtual.Security;
 
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;

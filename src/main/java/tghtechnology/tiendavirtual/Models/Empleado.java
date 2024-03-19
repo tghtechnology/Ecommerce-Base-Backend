@@ -1,18 +1,17 @@
 package tghtechnology.tiendavirtual.Models;
 
 import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
-import tghtechnology.tiendavirtual.Utils.ApisPeru.Enums.TipoDocIdentidad;
-
+import tghtechnology.tiendavirtual.Enums.DisponibilidadEmpleado;
 
 @Getter
 @Setter
@@ -21,29 +20,20 @@ import tghtechnology.tiendavirtual.Utils.ApisPeru.Enums.TipoDocIdentidad;
 public class Empleado {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer id_empleado;
+	private Integer id_persona;
+	
+	@OneToOne
+	@PrimaryKeyJoinColumn
+	private Persona persona;
 	
 	@Column(nullable = false)
-	private TipoDocIdentidad tipo_documento;
-	
-	@Column(nullable = false, length = 15)
-	private String numero_documento;
-	
-	@Column(nullable = false, length = 50)
-	private String nombres;
-	
-	@Column(nullable = false, length = 50)
-	private String apellidos;
-
-	@Column(nullable = false, length = 15)
-	private String telefono;
-	
-	@Column(nullable = false, length = 80)
-	private String correo_personal;
+	private DisponibilidadEmpleado disponibilidad;
 	
 	@Column(nullable = false)
 	private LocalDateTime fecha_creacion;
+	
+	@Column(nullable = false)
+	private LocalDateTime fecha_modificacion;
 	
 	@Column(nullable = false)
 	private boolean estado;

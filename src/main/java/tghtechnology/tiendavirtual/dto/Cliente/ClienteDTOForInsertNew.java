@@ -9,15 +9,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tghtechnology.tiendavirtual.Models.Cliente;
 import tghtechnology.tiendavirtual.Utils.DTOInterfaces.DTOForInsert;
+import tghtechnology.tiendavirtual.dto.Persona.PersonaDTOForInsert;
 
 @Getter
 @Setter
 @NoArgsConstructor
-public class ClienteDTOForInsert implements DTOForInsert<Cliente>{
+public class ClienteDTOForInsertNew implements DTOForInsert<Cliente>{
 	
 	@Valid
 	@NotNull(message = "El campo no puede ser nulo")
-	private Integer id_persona;
+	private PersonaDTOForInsert persona;
 	
 	@NotEmpty(message = "El campo no puede estar vacío")
     @Size(min = 3, max = 30, message = "la región debe tener entre 3 y 30 caracteres")
@@ -60,6 +61,8 @@ public class ClienteDTOForInsert implements DTOForInsert<Cliente>{
 
 	@Override
 	public Cliente updateModel(Cliente cli) {
+		
+		cli.setPersona(persona.updateModel(cli.getPersona()));
 		
 		cli.setRegion(region);
 		cli.setProvincia(provincia);

@@ -16,6 +16,6 @@ public interface EmpleadoRepository  extends CrudRepository<Empleado, Integer>{
     @Query("SELECT e FROM Empleado e WHERE e.estado = true")
     List<Empleado> listarEmpleados();
 
-    @Query("SELECT e FROM Empleado e WHERE e.estado = true AND e.id_empleado = :id_emp")
+    @Query("SELECT e FROM Empleado e WHERE e.estado = true AND e.id_persona = :id_emp")
     Optional<Empleado> obtenerUno(@Param("id_emp") Integer idEmpleado);
 }

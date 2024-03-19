@@ -15,7 +15,7 @@ public interface UsuarioRepository extends CrudRepository<Usuario, Integer>{
     @Query("SELECT u FROM Usuario u WHERE u.estado = true")
     List<Usuario> listUser();
 
-    @Query("SELECT u FROM Usuario u WHERE u.estado = true AND u.id_usuario = :id_user")
+    @Query("SELECT u FROM Usuario u WHERE u.estado = true AND u.id_persona = :id_user")
     Optional<Usuario> listarUno(@Param("id_user") Integer idUser);
 
  // Obtener un usuario por su nombre de usuario

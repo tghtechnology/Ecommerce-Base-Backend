@@ -49,7 +49,7 @@ public class ItemDTOFull implements DTOForList<Item>{
 		from(item);
 		
 		imgs.forEach(img -> {
-			imagenes.put(img.getIndex(), img.getImagen()); 
+			imagenes.put(img.get_index(), img.getImagen()); 
 		});
 		
 		return this;

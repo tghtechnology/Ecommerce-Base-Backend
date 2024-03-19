@@ -10,10 +10,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,17 +27,26 @@ public class Usuario implements UserDetails {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer id_usuario;
+	private Integer id_persona;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	@PrimaryKeyJoinColumn(name = "id_persona")
+	private Persona persona;
 	
 	@Column(unique = true, nullable = false)
-	private String email;
+	private String username;
 	
 	@Column(nullable = false, length = 70)
-	private String password; 
+	private String hashed_pass; 
 	
 	@Column(nullable = false)
-	private LocalDateTime fechaCreacion; 
+	private boolean autenticado;
+	
+	@Column(nullable = false)
+	private LocalDateTime fecha_creacion;
+	
+	@Column(nullable = false)
+	private LocalDateTime fecha_modificacion;
 	
 	@Column(nullable = false)
 	TipoUsuario cargo;
@@ -53,12 +61,12 @@ public class Usuario implements UserDetails {
 
 	@Override
 	public String getPassword() {
-		return password;
+		return hashed_pass;
 	}
 
 	@Override
 	public String getUsername() {
-		return email;
+		return username;
 	}
 
 	@Override
@@ -80,10 +88,5 @@ public class Usuario implements UserDetails {
 	public boolean isEnabled() {
 		return estado;
 	}
-
-
-	// Relación con tabla empleado 1,1
-	@OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
-	private Empleado empleado;
 	
 }

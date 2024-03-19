@@ -13,7 +13,7 @@ import tghtechnology.tiendavirtual.Models.Item;
 public interface ItemRepository extends CrudRepository<Item, Integer>{
 
 	@Query("SELECT i FROM Item i WHERE i.estado = true")
-    List<Item> listarPlato();
+    List<Item> listarItem();
 
 	/**
 	 * Función para buscar platos siguiendo distintos filtros
@@ -28,7 +28,7 @@ public interface ItemRepository extends CrudRepository<Item, Integer>{
     @Query("SELECT i FROM Item i "
     		+ "LEFT JOIN i.categoria AS c "
     		+ "WHERE "
-    		+ "(i.nombre_plato LIKE %:query% "
+    		+ "(i.nombre LIKE %:query% "
     		+ "OR i.descripcion LIKE %:query%) "
     		+ "AND i.precio > :min "
     		+ "AND i.precio < :max "
@@ -40,7 +40,7 @@ public interface ItemRepository extends CrudRepository<Item, Integer>{
     					  @Param("catId") String catId);
 	
 	
-    @Query("SELECT i FROM Item i WHERE i.estado = true AND i.id_plato = :id_item")
+    @Query("SELECT i FROM Item i WHERE i.estado = true AND i.id_item = :id_item")
     Optional<Item> listarUno(@Param("id_item") Integer idItem);
     
     @Query("SELECT i FROM Item i WHERE i.estado = true AND i.text_id = :text_id")

@@ -1,4 +1,4 @@
-package tghtechnology.tiendavirtual.Utils.Security;
+package tghtechnology.tiendavirtual.Security;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

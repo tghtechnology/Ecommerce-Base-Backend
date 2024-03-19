@@ -1,7 +1,6 @@
 package tghtechnology.tiendavirtual.dto.Item;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import lombok.Getter;
@@ -41,7 +40,7 @@ public class ItemDTOForList implements DTOForList<Item>{
 		from(item);
 		
 		imagenes.forEach(img -> {
-			if(img.getIndex() == 1) {
+			if(img.get_index() == 1) {
 				this.thumbnail = img.getPublic_id_Miniatura();
 			}
 		});

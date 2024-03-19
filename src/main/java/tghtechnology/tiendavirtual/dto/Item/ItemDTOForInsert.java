@@ -41,7 +41,7 @@ public class ItemDTOForInsert implements DTOForInsert<Item>{
 		
 		Item item = new Item();
 		item.setNombre(nombre);
-		item.setText_id(transform_id(nombre));
+		item.setText_id(transform_id());
 		item.setDescripcion(descripcion);
 		item.setPrecio(precio);
 		item.setDisponibilidad(disponibilidad);
@@ -52,13 +52,18 @@ public class ItemDTOForInsert implements DTOForInsert<Item>{
 	}
 
 	@Override
-	public Item updateModel(Item modelToUpdate) {
-		// TODO Auto-generated method stub
-		return null;
+	public Item updateModel(Item item) {
+		item.setNombre(nombre);
+		item.setText_id(transform_id());
+		item.setDescripcion(descripcion);
+		item.setPrecio(precio);
+		item.setDisponibilidad(disponibilidad);
+		item.setFecha_modificacion(LocalDateTime.now());
+		return item;
 	}
 	
-    private String transform_id(String nombre_item) {
-		return nombre_item.strip()				// sin espacios al inicio o final
+    public String transform_id() {
+		return nombre.strip()				// sin espacios al inicio o final
 				.replace(' ', '_')			// espacios y guiones por _
 				.replace('-', '_')
 				.replaceAll("(\\+|,|')+","")// simbolos por vacio

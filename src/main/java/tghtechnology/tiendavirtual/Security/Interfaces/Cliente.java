@@ -1,4 +1,4 @@
-package tghtechnology.tiendavirtual.Utils.Security.Interfaces;
+package tghtechnology.tiendavirtual.Security.Interfaces;
 
 import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
@@ -7,12 +7,14 @@ import java.lang.annotation.RetentionPolicy;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 /**
- * Indica que el método posee la autilización de tipo TipoCargo.EMPLEADO. <br>
+ * Indica que el método posee la autilización de tipo TipoCargo.CLIENTE. <br>
  * Puede ser utilizado por: <br>
+ * - CLIENTE <br>
  * - EMPLEADO <br>
- * - GERENTE
+ * - GERENTE <br>
+ * - ADMIN
  */
-@PreAuthorize("hasAnyRole('GERENTE','EMPLEADO')")
+@PreAuthorize("hasAnyRole('ADMIN','GERENTE','EMPLEADO','CLIENTE')")
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
-public @interface Empleado {}
+public @interface Cliente {}

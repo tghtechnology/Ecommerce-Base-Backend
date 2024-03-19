@@ -5,16 +5,14 @@ import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
-import tghtechnology.tiendavirtual.Utils.ApisPeru.Enums.TipoDocIdentidad;
 
 
 @Getter
@@ -24,23 +22,26 @@ import tghtechnology.tiendavirtual.Utils.ApisPeru.Enums.TipoDocIdentidad;
 public class Cliente {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer id;
+	private Integer id_persona;
 	
-	@Column(nullable = false)
-	private TipoDocIdentidad tipo_documento;
+	@OneToOne
+	@PrimaryKeyJoinColumn
+	private Persona persona;
 	
-	@Column(nullable = false, length = 15)
-	private String numero_documento;
-	
-	@Column(nullable = false, length = 80)
-	private String nombre;
-
-	@Column(nullable = false, length = 15)
-	private String telefono;
-	
-	@Column(nullable = false, length = 80)
-	private String correo;
+//	@Column(nullable = false)
+//	private TipoDocIdentidad tipo_documento;
+//	
+//	@Column(nullable = false, length = 15)
+//	private String numero_documento;
+//	
+//	@Column(nullable = false, length = 80)
+//	private String nombre;
+//
+//	@Column(nullable = false, length = 15)
+//	private String telefono;
+//	
+//	@Column(nullable = false, length = 80)
+//	private String correo;
 	
 	@Column(nullable = false, length = 30)
 	private String region;
@@ -74,10 +75,12 @@ public class Cliente {
 	@JoinColumn(name = "id_pedido", nullable = true)
 	private Pedido carrito;
 	 
-	// Usuario
-	@OneToOne
-	@JoinColumn(name = "id_usuario", nullable = true)
-	private Usuario usuario;
+	
+	
+//	// Usuario
+//	@OneToOne
+//	@JoinColumn(name = "id_usuario", nullable = true)
+//	private Usuario usuario;
 	
 	
 }

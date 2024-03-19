@@ -24,7 +24,7 @@ public class PedidoDTOForList implements DTOForList<Pedido>{
     private List<DetallePedidoDTOForList> detalles;
 
 	@Override
-	public DTOForList<Pedido> from(Pedido pedido) {
+	public PedidoDTOForList from(Pedido pedido) {
 		this.setId_pedido(pedido.getId_pedido());
         this.cliente = new ClienteDTOForList().from(pedido.getCliente());
         BigDecimal precio_total = new BigDecimal(0);

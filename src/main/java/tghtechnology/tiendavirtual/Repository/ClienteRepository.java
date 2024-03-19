@@ -16,7 +16,7 @@ public interface ClienteRepository  extends CrudRepository<Cliente, Integer>{
 	@Query("SELECT c FROM Cliente c WHERE c.estado = true")
     List<Cliente> listarClientes();
 	
-	@Query("SELECT c FROM Cliente c WHERE c.estado = true AND c.id = :cli_id")
+	@Query("SELECT c FROM Cliente c WHERE c.estado = true AND c.id_persona = :cli_id")
     Optional<Cliente> listarUno(@Param("cli_id") Integer cli_id);
 	
 }

@@ -18,11 +18,11 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Service;
 
-import tghtechnology.tiendavirtual.Utils.Security.SecurityConfig;
-import tghtechnology.tiendavirtual.Utils.Security.Models.IpLog;
-import tghtechnology.tiendavirtual.Utils.Security.Models.UserLog;
-import tghtechnology.tiendavirtual.Utils.Security.Repository.IpLogRepository;
-import tghtechnology.tiendavirtual.Utils.Security.Repository.UserLogRepository;
+import tghtechnology.tiendavirtual.Security.SecurityConfig;
+import tghtechnology.tiendavirtual.Security.Models.IpLog;
+import tghtechnology.tiendavirtual.Security.Models.UserLog;
+import tghtechnology.tiendavirtual.Security.Repository.IpLogRepository;
+import tghtechnology.tiendavirtual.Security.Repository.UserLogRepository;
 import tghtechnology.tiendavirtual.dto.UserLogin;
 
 @Service
