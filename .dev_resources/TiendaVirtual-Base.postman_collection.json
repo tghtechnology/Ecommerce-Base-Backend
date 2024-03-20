@@ -1,0 +1,633 @@
+{
+	"info": {
+		"_postman_id": "2776c66c-6f21-4d4d-b281-5af68f800a2f",
+		"name": "TiendaVirtual-Base",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31763898",
+		"_collection_link": "https://winter-equinox-881682.postman.co/workspace/Base~1dd33edd-a5f1-48e2-8384-d7cb95fa3661/collection/31763898-2776c66c-6f21-4d4d-b281-5af68f800a2f?action=share&source=collection_link&creator=31763898"
+	},
+	"item": [
+		{
+			"name": "Usuario",
+			"item": [
+				{
+					"name": "Crear usuario",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"persona\":{\r\n        \"tipo_documento\": \"DNI\",\r\n        \"numero_documento\": \"98765432\",\r\n        \"nombres\": \"Juanito\",\r\n        \"apellidos\": \"Perez\",\r\n        \"telefono\": \"999888777\",\r\n        \"correo_personal\": \"cliente@testers.com\"\r\n    },\r\n    \"email\": \"cliente@testers.com\",\r\n    \"password\":{\r\n        \"password\":\"test123\",\r\n        \"password2\": \"test123\"\r\n    },\r\n    \"cargo\":\"CLIENTE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API}}/api/usuario",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"usuario"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear Admin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"admin@test.com\",\r\n    \"password\":{\r\n        \"password\":\"test123\",\r\n        \"password2\": \"test123\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API}}/api/admin",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"admin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Leer Uno",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-forwarded-for",
+								"value": "123.123.123.123",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API}}/api/usuario/3",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"usuario",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-forwarded-for",
+								"value": "123.123.123.123",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"gerente@test.com\",\r\n    \"password\":\"test123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API}}/admin/token",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"admin",
+								"token"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Empleado",
+			"item": [
+				{
+					"name": "Editar",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"persona\":{\r\n        \"tipo_documento\": \"DNI\",\r\n        \"numero_documento\": \"98765432\",\r\n        \"nombres\": \"Juanito\",\r\n        \"apellidos\": \"Perez\",\r\n        \"telefono\": \"999888777\",\r\n        \"correo_personal\": \"empleado@testers.com\"\r\n    },\r\n    \"usuario\":{\r\n        \"email\": \"empleado@testers.com\",\r\n        \"password\":{\r\n            \"password\":\"test123\",\r\n            \"password2\": \"test123\"\r\n        },\r\n        \"cargo\":\"ADMIN\"\r\n    }\r\n    \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API}}/api/empleado/3",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"empleado",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"persona\":{\r\n        \"tipo_documento\": \"DNI\",\r\n        \"numero_documento\": \"98765432\",\r\n        \"nombres\": \"Juanito\",\r\n        \"apellidos\": \"Perez\",\r\n        \"telefono\": \"999888777\",\r\n        \"correo_personal\": \"admin2@test.com\"\r\n    },\r\n    \"usuario\":{\r\n        \"email\": \"admin2@test.com\",\r\n        \"password\":{\r\n            \"password\":\"test123\",\r\n            \"password2\": \"test123\"\r\n        },\r\n        \"cargo\":\"ADMIN\"\r\n    }\r\n    \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API}}/api/empleado",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"empleado"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Categoria",
+			"item": [
+				{
+					"name": "Leer",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API}}/api/categoria",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"categoria"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Leer Uno",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API}}/api/categoria/1",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"categoria",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"descripcion\": \"Tablets\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API}}/api/categoria",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"categoria"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Editar",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"descripcion\": \"Tablets\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API}}/api/categoria/3",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"categoria",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{API}}/api/categoria/3",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"categoria",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Item",
+			"item": [
+				{
+					"name": "Leer",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API}}/api/item",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"item"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Leer Uno",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API}}/api/item/1",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"item",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"Celular nuevo\",\r\n    \"descripcion\": \"Un celular muy nuevo\",\r\n    \"precio\": 950.90,\r\n    \"disponibilidad\": \"DISPONIBLE\",\r\n    \"stock\": 100,\r\n    \"id_categoria\": 1,\r\n    \"id_marca\": 52\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API}}/api/item",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"item"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Editar",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"Celular no tan nuevo\",\r\n    \"descripcion\": \"Un celular ya no tan nuevo\",\r\n    \"precio\": 900.90,\r\n    \"disponibilidad\": \"DISPONIBLE\",\r\n    \"stock\": 100,\r\n    \"id_categoria\": 1,\r\n    \"id_marca\": 52\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API}}/api/item/1",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"item",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"Celular no tan nuevo\",\r\n    \"descripcion\": \"Un celular ya no tan nuevo\",\r\n    \"precio\": 900.90,\r\n    \"disponibilidad\": \"DISPONIBLE\",\r\n    \"stock\": 100,\r\n    \"id_categoria\": 1,\r\n    \"id_marca\": 52\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API}}/api/item/1",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"item",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Marca",
+			"item": [
+				{
+					"name": "Leer",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API}}/api/marca",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"marca"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Leer Uno",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API}}/api/marca/1",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"marca",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "marca",
+									"value": "{\n    \"nombre\": \"Xiaomi\",\n    \"descripcion\": \"Marca de móviles\"\n}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{API}}/api/marca",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"marca"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Editar",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "marca",
+									"value": "{\n    \"nombre\": \"Xiaomi 2\",\n    \"descripcion\": \"Marca de móviles mejorada\"\n}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{API}}/api/marca/2",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"marca",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{API}}/api/marca/2",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"marca",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
