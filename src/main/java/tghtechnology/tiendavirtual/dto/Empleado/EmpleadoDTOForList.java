@@ -9,6 +9,7 @@ import tghtechnology.tiendavirtual.Enums.DisponibilidadEmpleado;
 import tghtechnology.tiendavirtual.Models.Empleado;
 import tghtechnology.tiendavirtual.Utils.DTOInterfaces.DTOForList;
 import tghtechnology.tiendavirtual.dto.Persona.PersonaDTOForList;
+import tghtechnology.tiendavirtual.dto.Usuario.UsuarioDTOForListMinimal;
 
 @Getter
 @Setter
@@ -19,6 +20,8 @@ public class EmpleadoDTOForList implements DTOForList<Empleado>{
 	
 	private DisponibilidadEmpleado disponibilidad;
 	
+	private UsuarioDTOForListMinimal usuario;
+	
     private LocalDateTime fecha_creacion;
     private LocalDateTime fecha_modificacion;
 
@@ -28,6 +31,7 @@ public class EmpleadoDTOForList implements DTOForList<Empleado>{
 		this.disponibilidad = emp.getDisponibilidad();
         this.fecha_creacion = emp.getFecha_creacion();
         this.fecha_modificacion = emp.getFecha_modificacion();
+        this.usuario = new UsuarioDTOForListMinimal().from(emp.getUsuario());
         return this;
 	}
 }

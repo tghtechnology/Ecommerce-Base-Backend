@@ -44,6 +44,7 @@ public class EmpleadoDTOForInsert implements DTOForInsert<Empleado>{
 	@Override
 	public Empleado updateModel(Empleado emp) {
 		emp.setPersona(persona.updateModel(emp.getPersona()));
+		emp.setUsuario(usuario.updateModel(emp.getUsuario()));
 		if(disponibilidad != null) emp.setDisponibilidad(disponibilidad);
 		
 		LocalDateTime now = LocalDateTime.now();

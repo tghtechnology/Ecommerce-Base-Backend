@@ -71,10 +71,7 @@ public class SecurityConfiguration {
 			.cors(Customizer.withDefaults())
             .csrf(AbstractHttpConfigurer::disable)
 			.authorizeHttpRequests((auth) -> auth
-				.requestMatchers("/api/**").permitAll()
-				.requestMatchers("/admin/token").permitAll()
-				.anyRequest().authenticated()
-				//.anyRequest().permitAll()
+				.anyRequest().permitAll()
 			)
 			
 			.sessionManagement(session -> session
@@ -128,9 +125,8 @@ public class SecurityConfiguration {
         @Override
         public Collection<GrantedAuthority> convert(Jwt jwt) {
 
-        	Object obj = jwt.getClaim("Roles");
-        	List<String> str = (obj instanceof List) ? jwt.getClaim("Roles") : new ArrayList<>(); 
-        	
+        	Object obj = jwt.getClaim("rol");
+        	List<String> str = (obj instanceof List) ? jwt.getClaim("rol") : new ArrayList<>();         	
             return str.stream()
                     .map(role -> new SimpleGrantedAuthority(role))
                     .collect(Collectors.toList());

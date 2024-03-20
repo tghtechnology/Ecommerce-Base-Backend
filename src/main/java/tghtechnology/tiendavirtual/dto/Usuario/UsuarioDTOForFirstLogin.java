@@ -11,7 +11,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tghtechnology.tiendavirtual.Enums.TipoUsuario;
 import tghtechnology.tiendavirtual.Models.Usuario;
+import tghtechnology.tiendavirtual.Utils.ApisPeru.Enums.TipoDocIdentidad;
 import tghtechnology.tiendavirtual.Utils.DTOInterfaces.DTOForInsert;
+import tghtechnology.tiendavirtual.dto.Persona.PersonaDTOForInsert;
 
 @Getter
 @Setter
@@ -39,6 +41,17 @@ public class UsuarioDTOForFirstLogin implements DTOForInsert<Usuario>{
 		
 		user.setFecha_creacion(now);
 		user.setFecha_modificacion(now);
+		user.setEstado(true);
+		
+		PersonaDTOForInsert persona = new PersonaDTOForInsert();
+		persona.setNombres("Admin");
+		persona.setApellidos("Admin");
+		persona.setCorreo_personal(email);
+		persona.setNumero_documento("00000000");
+		persona.setTelefono("999999999");
+		persona.setTipo_documento(TipoDocIdentidad.DNI);
+		
+		user.setPersona(persona.toModel());
 		
 		return user;
 	}

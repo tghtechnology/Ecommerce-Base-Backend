@@ -6,6 +6,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Img{
-	private String img_primaria;
-	private String img_secundaria;
+	private String imagen;
+	private String miniatura;
+	
+	private String id_imagen;
+	private String id_miniataura;
+	
 }

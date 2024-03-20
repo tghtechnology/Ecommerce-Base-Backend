@@ -59,7 +59,7 @@ public class AuthService {
 				.issuedAt(now)
 				.expiresAt(now.plus(config.getTokenDuration(), ChronoUnit.HOURS))
 				.subject(authentication.getName())
-				.claim("Roles", scope)
+				.claim("rol", scope)
 				.build();
 		return this.encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
 		

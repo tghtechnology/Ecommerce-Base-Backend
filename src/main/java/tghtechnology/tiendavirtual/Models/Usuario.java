@@ -7,12 +7,13 @@ import java.util.List;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
-import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,11 +28,8 @@ public class Usuario implements UserDetails {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	private Integer id_persona;
-	
-	@OneToOne(cascade = CascadeType.ALL)
-	@PrimaryKeyJoinColumn(name = "id_persona")
-	private Persona persona;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Integer id_usuario;
 	
 	@Column(unique = true, nullable = false)
 	private String username;
@@ -48,11 +46,18 @@ public class Usuario implements UserDetails {
 	@Column(nullable = false)
 	private LocalDateTime fecha_modificacion;
 	
+	@Column(nullable = true)
+	private LocalDateTime ultimo_login;
+	
 	@Column(nullable = false)
 	TipoUsuario cargo;
 	
 	@Column(nullable = false)
 	private boolean estado;
+	
+	@OneToOne
+	@JoinColumn(name = "id_persona")
+	private Persona persona;
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

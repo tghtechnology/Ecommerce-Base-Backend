@@ -2,6 +2,7 @@ package tghtechnology.tiendavirtual.Models;
 
 import java.time.LocalDateTime;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -22,7 +23,7 @@ public class Empleado {
 	@Id
 	private Integer id_persona;
 	
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	@PrimaryKeyJoinColumn
 	private Persona persona;
 	

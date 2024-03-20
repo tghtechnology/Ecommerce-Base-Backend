@@ -6,10 +6,12 @@ import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import tghtechnology.tiendavirtual.Enums.DisponibilidadItem;
 import tghtechnology.tiendavirtual.Models.Imagen;
 import tghtechnology.tiendavirtual.Models.Item;
 import tghtechnology.tiendavirtual.Utils.DTOInterfaces.DTOForList;
 import tghtechnology.tiendavirtual.dto.Categoria.CategoriaDTOForList;
+import tghtechnology.tiendavirtual.dto.Marca.MarcaDTOForListMinimal;
 
 @Getter
 @Setter
@@ -20,10 +22,12 @@ public class ItemDTOForList implements DTOForList<Item>{
 	private String url;
 	private String nombre;
     private BigDecimal precio;
-    private String disponibilidad;
+    private DisponibilidadItem disponibilidad;
+    private Integer stock;
     
     private String thumbnail;
     private CategoriaDTOForList categoria;
+    private MarcaDTOForListMinimal marca;
     
 	@Override
 	public ItemDTOForList from(Item item) {
@@ -32,7 +36,9 @@ public class ItemDTOForList implements DTOForList<Item>{
 		this.nombre = item.getNombre();
 		this.precio = item.getPrecio();
 		this.disponibilidad = item.getDisponibilidad();
+		this.stock = item.getStock();
 		this.categoria = new CategoriaDTOForList().from(item.getCategoria());
+		this.marca = new MarcaDTOForListMinimal().from(item.getMarca());
 		return this;
 	}
 	

@@ -20,7 +20,7 @@ public class UserLog {
     private String username;
     
     @Column(nullable = false)
-    private Short failedAttempts;
+    private Short failedAttempts = 0;
     
     @Column(nullable = false)
     private LocalDateTime lastAttempt;

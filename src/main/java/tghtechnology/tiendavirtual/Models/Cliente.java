@@ -3,6 +3,7 @@ package tghtechnology.tiendavirtual.Models;
 import java.util.HashSet;
 import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -24,24 +25,9 @@ public class Cliente {
 	@Id
 	private Integer id_persona;
 	
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	@PrimaryKeyJoinColumn
 	private Persona persona;
-	
-//	@Column(nullable = false)
-//	private TipoDocIdentidad tipo_documento;
-//	
-//	@Column(nullable = false, length = 15)
-//	private String numero_documento;
-//	
-//	@Column(nullable = false, length = 80)
-//	private String nombre;
-//
-//	@Column(nullable = false, length = 15)
-//	private String telefono;
-//	
-//	@Column(nullable = false, length = 80)
-//	private String correo;
 	
 	@Column(nullable = false, length = 30)
 	private String region;

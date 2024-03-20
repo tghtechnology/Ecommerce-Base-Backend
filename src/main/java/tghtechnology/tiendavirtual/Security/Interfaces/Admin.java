@@ -7,12 +7,11 @@ import java.lang.annotation.RetentionPolicy;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 /**
- * Indica que el método posee la autilización de tipo TipoCargo.GERENTE. <br>
+ * Indica que el método posee la autilización de tipo TipoCargo.ADMIN. <br>
  * Puede ser utilizado por: <br>
- * - GERENTE <br>
  * - ADMIN
  */
-@PreAuthorize("isAuthenticated() && hasAnyRole('ADMIN','GERENTE')")
+@PreAuthorize("isAuthenticated() && hasRole('ADMIN')")
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
-public @interface Gerente {}
+public @interface Admin {}

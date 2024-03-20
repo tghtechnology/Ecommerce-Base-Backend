@@ -1,16 +1,16 @@
 package tghtechnology.tiendavirtual.Services;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -68,6 +68,7 @@ public class UsuarioService {
     }
 
     /*Crear usuario */
+    @Transactional(rollbackFor = DataIntegrityViolationException.class)
     public Usuario crearUsuario(UsuarioDTOForInsert user){
     	
     	if(user.getPersona() == null)
@@ -75,28 +76,25 @@ public class UsuarioService {
     	
     	Persona per = perRepository.save(user.getPersona().toModel());
     	
-    	System.out.println(per.getId_persona());
-    	
-        Usuario usuario = user.toModel();
-        usuario.setPersona(per);
-        usuario.setId_persona(per.getId_persona());
-        
-        //encriptar pass
-        validarPass(user.getPassword());
-		usuario.setHashed_pass(passwordEncoder.encode(user.getPassword().getPassword()));
-		
-        usuario = userRepository.save(usuario);
-        return usuario;
+    	return crearUsuarioPorInstancia(user, per);
     }
     
     /*Crear usuario por id (solo interno) */
+    @Transactional(rollbackFor = {DataIntegrityViolationException.class, AccessDeniedException.class})
     public Usuario crearUsuarioPorID(UsuarioDTOForInsert user){
     	
-    	if(user.getId_persona() == null && user.getPersona() == null)
+    	if(user.getId_persona() == null)
     		throw new DataMismatchException("persona", "No se ha proporcionado una persona");
     	
     	Persona per = perRepository.obtenerUno(user.getId_persona())
-    					.orElseGet(() -> perRepository.save(user.getPersona().toModel()));
+    					.orElseThrow(() -> new IdNotFoundException("persona"));
+    	
+        return crearUsuarioPorInstancia(user, per);
+    }
+    
+    /*Crear usuario por instancia (solo interno) */
+    @Transactional(rollbackFor = {DataIntegrityViolationException.class, AccessDeniedException.class})
+    public Usuario crearUsuarioPorInstancia(UsuarioDTOForInsert user, Persona per){
     	
         Usuario usuario = user.toModel();
         usuario.setPersona(per);
@@ -111,11 +109,13 @@ public class UsuarioService {
     }
     
     //Crear por defecto
+    @Transactional(rollbackFor = DataIntegrityViolationException.class)
   	public UsuarioDTOForList crearAdminDefault(String StringUs) throws JsonMappingException, JsonProcessingException, CustomValidationFailedException {
   		
   		if(!userRepository.listUser().isEmpty()) {
   			throw new BadCredentialsException(null);
   		}
+  		
   		
   		UsuarioDTOForFirstLogin iUs = new ObjectMapper().readValue(StringUs, UsuarioDTOForFirstLogin.class);
 		validator.validar(iUs);
@@ -126,16 +126,19 @@ public class UsuarioService {
   		validarPass(iUs.getPassword());
   		us.setHashed_pass(passwordEncoder.encode(iUs.getPassword().getPassword()));
   		
+  		Persona per = perRepository.save(us.getPersona());
+  		us.setPersona(per);
+  		
   		us = userRepository.save(us);
   		
   		return new UsuarioDTOForList().from(us);
   	}
 
     /*Actualizar usuario*/
-    public void actualizarUsuario(Integer id, UsuarioDTOForInsert body, UserDetails userDetails){
+    public void actualizarUsuario(Integer id, UsuarioDTOForInsert body, Authentication auth){
         Usuario usuario = buscarPorId(id);
 
-        if(!userDetails.getUsername().equals(body.getEmail()))
+        if(!auth.getName().equals(body.getEmail()))
         	throw new AccessDeniedException("Usuario no corresponde");
         
         usuario = body.updateModel(usuario);

@@ -13,7 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
  * - GERENTE <br>
  * - ADMIN
  */
-@PreAuthorize("hasAnyRole('ADMIN','GERENTE','EMPLEADO')")
+@PreAuthorize("isAuthenticated() && hasAnyRole('ADMIN','GERENTE','EMPLEADO')")
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 public @interface Empleado {}

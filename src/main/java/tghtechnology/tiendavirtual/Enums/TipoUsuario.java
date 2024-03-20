@@ -22,10 +22,15 @@ public enum TipoUsuario implements GrantedAuthority{
 		return valueOf(authority.replaceAll("ROLE_", ""));
 	}
 	
-	public static boolean checkRole(Collection<? extends GrantedAuthority> authorities, TipoUsuario permisoMinimo) {
-		
+	/**
+	 * Compara Si un rol proporcionado es superior o igual a otro
+	 * @param authorities Roles de un usuario como se obtiene de un Authentication
+	 * @param rolMinimo Nivel mínimo de rol que permite
+	 * @return <strong>True</strong> si el rol obtenido es superior al rol mínimo, <strong>False</strong> en el caso opuesto.
+	 */
+	public static boolean checkRole(Collection<? extends GrantedAuthority> authorities, TipoUsuario rolMinimo) {
 		TipoUsuario rol = fromAuthority(authorities.stream().toList().get(0).toString());
-		return rol.ordinal() <= permisoMinimo.ordinal();
+		return rol.ordinal() <= rolMinimo.ordinal();
 	}
 
 }

@@ -16,6 +16,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
+import tghtechnology.tiendavirtual.Enums.DisponibilidadItem;
 
 @Entity
 @Table(name = "item")
@@ -40,7 +41,10 @@ public class Item {
     private BigDecimal precio;
 
     @Column(nullable = false)
-    private String disponibilidad;
+    private DisponibilidadItem disponibilidad;
+    
+    @Column(nullable = false)
+    private Integer stock;
 
     @Column(nullable = false)
     private LocalDateTime fecha_creacion;
@@ -54,10 +58,20 @@ public class Item {
     @ManyToOne
     @JoinColumn(name = "id_categoria", nullable = false)
     private Categoria categoria;
+    
+    @ManyToOne
+    @JoinColumn(name = "id_marca", nullable = false)
+    private Marca marca;
 
     @OneToMany(mappedBy = "item")
     private Set<DetallePedido> detalle_pedido = new HashSet<>();
 
-    
+    public static String transform_id(String nombre) {
+		return nombre.strip()				// sin espacios al inicio o final
+				.replace(' ', '_')			// espacios y guiones por _
+				.replace('-', '_')
+				.replaceAll("(\\+|,|')+","")// simbolos por vacio
+				.toLowerCase();				// minusculas
+	}
 
 }

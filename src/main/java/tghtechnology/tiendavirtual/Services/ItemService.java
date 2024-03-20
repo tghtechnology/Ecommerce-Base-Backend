@@ -6,15 +6,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
 import tghtechnology.tiendavirtual.Models.Categoria;
 import tghtechnology.tiendavirtual.Models.Item;
+import tghtechnology.tiendavirtual.Models.Marca;
 import tghtechnology.tiendavirtual.Repository.CategoriaRepository;
 import tghtechnology.tiendavirtual.Repository.ItemRepository;
+import tghtechnology.tiendavirtual.Repository.MarcaRepository;
 import tghtechnology.tiendavirtual.Utils.Exceptions.DataMismatchException;
 import tghtechnology.tiendavirtual.Utils.Exceptions.IdNotFoundException;
 import tghtechnology.tiendavirtual.dto.Item.ItemDTOForInsert;
@@ -24,9 +25,9 @@ import tghtechnology.tiendavirtual.dto.Item.ItemDTOForList;
 @AllArgsConstructor
 public class ItemService {
 
-	@Autowired
     private ItemRepository itemRepository;
 	private CategoriaRepository catRepo;
+	private MarcaRepository marRepo;
 
     /*Listar plato*/
     public List<ItemDTOForList> listar (String query,
@@ -45,8 +46,8 @@ public class ItemService {
     
     /*Obtener un plato especifico*/
     public ItemDTOForList listarUno(Integer id){
-    	Item plato = buscarPorId(id);
-        return new ItemDTOForList().from(plato);
+    	Item item = itemRepository.listarUno(id).orElse(null);
+        return item == null ? null : new ItemDTOForList().from(item);
     }
     
     /*Obtener un plato especifico*/
@@ -67,25 +68,38 @@ public class ItemService {
     	Categoria cat = obtenerCategoria(iItem.getId_categoria());
     	item.setCategoria(cat);
     	
+    	Marca mar = obtenerMarca(iItem.getId_marca());
+    	item.setMarca(mar);
+    	
     	item = itemRepository.save(item);
     	
     	return new ItemDTOForList().from(item);
     }
     
     /*Actualizar plato */
-    public void actualizarItem(Integer id, ItemDTOForInsert body){
+    public void actualizarItem(Integer id, ItemDTOForInsert mItem){
     	
     	Item item = buscarPorId(id);
     	
-    	Optional<Item> tmp = itemRepository.listarUno(body.transform_id());
+    	Optional<Item> tmp = itemRepository.listarUno(Item.transform_id(mItem.getNombre()));
     	
     	if(tmp.isEmpty() || tmp.get().getId_item().equals(item.getId_item())) {
     		
-    		item = body.updateModel(item);
+    		item = mItem.updateModel(item);
+    		
+    		if(item.getCategoria().getId_categoria() != mItem.getId_categoria()) {
+    			Categoria cat = obtenerCategoria(mItem.getId_categoria());
+        		item.setCategoria(cat);
+    		}
+    		if(item.getMarca().getId_marca() != mItem.getId_marca()) {
+    			Marca mar = obtenerMarca(mItem.getId_marca());
+        		item.setMarca(mar);
+    		}
+    		
     		itemRepository.save(item);
     		
     	} else {
-    		throw new DataMismatchException("nombre", "Ya existe un item con ese nombre");
+    		throw new DataIntegrityViolationException("El nombre (" + tmp.get().getText_id() + ") ya existe para producto.");
     	}
     }
     
@@ -106,6 +120,10 @@ public class ItemService {
     
 	private Categoria obtenerCategoria(int id) {
 		return catRepo.listarUno(id).orElseThrow(() -> new IdNotFoundException("categoria"));
+	}
+	
+	private Marca obtenerMarca(int id) {
+		return marRepo.listarUno(id).orElseThrow(() -> new IdNotFoundException("marca"));
 	}
 
 }

@@ -14,7 +14,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
  * - GERENTE <br>
  * - ADMIN
  */
-@PreAuthorize("hasAnyRole('ADMIN','GERENTE','EMPLEADO','CLIENTE')")
+@PreAuthorize("isAuthenticated() && hasAnyRole('ADMIN','GERENTE','EMPLEADO','CLIENTE')")
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 public @interface Cliente {}

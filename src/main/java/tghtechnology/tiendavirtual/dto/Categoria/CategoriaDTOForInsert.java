@@ -23,7 +23,7 @@ public class CategoriaDTOForInsert implements DTOForInsert<Categoria> {
 	public Categoria toModel() {
 		Categoria cat = new Categoria();
 		cat.setDescripcion(this.descripcion);
-        cat.setText_id(this.descripcion.strip().replace(' ', '_'));
+        cat.setText_id(Categoria.transform_id(descripcion));
         cat.setFecha_creacion(LocalDateTime.now());
         cat.setEstado(true);
 		return cat;
@@ -32,7 +32,7 @@ public class CategoriaDTOForInsert implements DTOForInsert<Categoria> {
 	@Override
 	public Categoria updateModel(Categoria cat) {
 		cat.setDescripcion(descripcion);
-		cat.setText_id(this.descripcion.strip().replace(' ', '_'));
+		cat.setText_id(Categoria.transform_id(descripcion));
 		return cat;
 	}
 }

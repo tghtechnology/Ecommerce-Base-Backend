@@ -15,7 +15,7 @@ public class BadCredentialsHandler extends ResponseEntityExceptionHandler{
 	@ExceptionHandler(BadCredentialsException.class)
 	protected ResponseEntity<String> handleUnknownException(BadCredentialsException ex) {
 		
-		final String mensaje = ex.getMessage().equalsIgnoreCase("Bad Credentials") ? "Usuario o contraseña incorrectos" : ex.getMessage();
+		final String mensaje = (ex.getMessage() != null && ex.getMessage().equalsIgnoreCase("Bad Credentials")) ? "Usuario o contraseña incorrectos" : ex.getMessage();
 		
 		ResponseEntity<String> res = new ResponseEntity<String>(mensaje, HttpStatus.UNAUTHORIZED);
 		HttpHeaders.writableHttpHeaders(res.getHeaders()).add("WWW-Authenticate", "Bearer");
