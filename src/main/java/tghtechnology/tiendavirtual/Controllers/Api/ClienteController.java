@@ -21,6 +21,7 @@ import tghtechnology.tiendavirtual.Security.Interfaces.Gerente;
 import tghtechnology.tiendavirtual.Services.ClienteService;
 import tghtechnology.tiendavirtual.dto.Cliente.ClienteDTOForInsert;
 import tghtechnology.tiendavirtual.dto.Cliente.ClienteDTOForList;
+import tghtechnology.tiendavirtual.dto.Cliente.ClienteDTOForModify;
 
 @RequestMapping("/api/cliente")
 @RestController
@@ -46,22 +47,22 @@ public class ClienteController {
 	
 	@PostMapping
 	public ResponseEntity<ClienteDTOForList> crear(@RequestBody @Valid ClienteDTOForInsert iCli){
-		ClienteDTOForList cli = cliService.crearEmpleado(iCli);
+		ClienteDTOForList cli = cliService.crearCliente(iCli);
         return ResponseEntity.status(HttpStatus.CREATED).body(cli);
 	}
 	
 	@Cliente
 	@PutMapping("/{id}")
 	public ResponseEntity<Void> actualizar(@PathVariable Integer id,
-													@RequestBody @Valid ClienteDTOForInsert iCli,
+													@RequestBody @Valid ClienteDTOForModify mCli,
 													Authentication auth){
-		cliService.actualizarCliente(id, iCli, auth);
+		cliService.actualizarCliente(id, mCli, auth);
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 	
-	@Gerente
+	@Cliente
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> eliminarEmpleado(@PathVariable Integer id,
+	public ResponseEntity<Void> eliminar(@PathVariable Integer id,
 													Authentication auth){
 		cliService.eliminarCliente(id, auth);
 		return ResponseEntity.status(HttpStatus.OK).build();

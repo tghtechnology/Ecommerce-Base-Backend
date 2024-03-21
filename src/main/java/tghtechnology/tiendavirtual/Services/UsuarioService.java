@@ -30,6 +30,7 @@ import tghtechnology.tiendavirtual.dto.Usuario.UsuarioDTOForFirstLogin;
 import tghtechnology.tiendavirtual.dto.Usuario.UsuarioDTOForInsert;
 import tghtechnology.tiendavirtual.dto.Usuario.UsuarioDTOForList;
 import tghtechnology.tiendavirtual.dto.Usuario.UsuarioDTOForLoginResponse;
+import tghtechnology.tiendavirtual.dto.Usuario.UsuarioDTOForModify;
 
 @Service
 @AllArgsConstructor
@@ -130,7 +131,22 @@ public class UsuarioService {
   	}
 
     /*Actualizar usuario*/
-    public void actualizarUsuario(Integer id, UsuarioDTOForInsert body, Authentication auth){
+    public void actualizarUsuarioCliente(Usuario usuario, UsuarioDTOForModify body, Authentication auth){
+        
+        //Comparar que la pass sea correcta
+        if(passwordEncoder.matches(body.getOld_password(), usuario.getHashed_pass())) {
+        	usuario = body.updateModel(usuario);
+        	if(body.getNew_password() != null) {
+          		usuario.setHashed_pass(passwordEncoder.encode(body.getNew_password()));
+            }
+        	userRepository.save(usuario);
+        } else {
+        	throw new DataMismatchException("password", "La contraseña no es correcta");
+        }
+    }
+    
+    /*Actualizar usuario*/
+    public void actualizarUsuarioAdmin(Integer id, UsuarioDTOForInsert body, Authentication auth){
         Usuario usuario = buscarPorId(id);
 
         if(!auth.getName().equals(body.getEmail()))
@@ -148,6 +164,7 @@ public class UsuarioService {
     /*Eliminar usuario */
     public void eliminarUsuario(Integer id){
         Usuario user = buscarPorId(id);
+        user.setUsername("DELETED#" + user.getId_usuario());
         user.setEstado(false);
         userRepository.save(user);
     }

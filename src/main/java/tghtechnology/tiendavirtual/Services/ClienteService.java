@@ -16,11 +16,11 @@ import tghtechnology.tiendavirtual.Models.Persona;
 import tghtechnology.tiendavirtual.Models.Usuario;
 import tghtechnology.tiendavirtual.Repository.ClienteRepository;
 import tghtechnology.tiendavirtual.Repository.PersonaRepository;
-import tghtechnology.tiendavirtual.Repository.UsuarioRepository;
 import tghtechnology.tiendavirtual.Utils.Exceptions.DataMismatchException;
 import tghtechnology.tiendavirtual.Utils.Exceptions.IdNotFoundException;
 import tghtechnology.tiendavirtual.dto.Cliente.ClienteDTOForInsert;
 import tghtechnology.tiendavirtual.dto.Cliente.ClienteDTOForList;
+import tghtechnology.tiendavirtual.dto.Cliente.ClienteDTOForModify;
 
 @Service
 @AllArgsConstructor
@@ -28,7 +28,7 @@ public class ClienteService {
 
     private ClienteRepository cliRepository;
 	private PersonaRepository perRepository;
-	private UsuarioRepository userRepository;
+	//private UsuarioRepository userRepository;
 	
 	private UsuarioService userService;
 
@@ -54,9 +54,9 @@ public class ClienteService {
     public ClienteDTOForList listarUno(Integer id, Authentication auth){
         Cliente cli= cliRepository.listarUno(id).orElse(null);
         
-     // No permite modificar un cliente si no es el mismo quien lo hace
+        // No permite modificar un cliente si no es el mismo quien lo hace
         // o si tiene permisos suficientes
-        if(!checkPermitted(cli, auth))
+        if(cli == null || !checkPermitted(cli, auth))
     		throw new AccessDeniedException("");
         
         return cli == null ? null : new ClienteDTOForList().from(cli);
@@ -69,7 +69,7 @@ public class ClienteService {
      * @throws DataMismatchException Si ambos campos de identificación de persona son nulos.
      */
     @Transactional(rollbackFor = {DataIntegrityViolationException.class, AccessDeniedException.class})
-    public ClienteDTOForList crearEmpleado(ClienteDTOForInsert iCli){
+    public ClienteDTOForList crearCliente(ClienteDTOForInsert iCli){
     	
     	Persona per = perRepository.save(iCli.getPersona().toModel());
         
@@ -88,7 +88,8 @@ public class ClienteService {
     } 
     
     /**
-     * Actualiza un cliente.
+     * Actualiza los datos de un cliente.<br>
+     * Se pueden actualizar también sus credenciales si el cliente tiene el campo credenciales.
      * @param id ID del cliente a actualizar.
      * @param mCli Datos del cliente en formato DTOForInsert.
      * @param auth La instancia de autenticación del cliente/empleado que realiza la operación
@@ -96,18 +97,22 @@ public class ClienteService {
      * @throws IdNotFoundException Si la ID no se corresponde con ningun empleado.
      */
     @Transactional(rollbackFor = {DataIntegrityViolationException.class, AccessDeniedException.class})
-    public void actualizarCliente(Integer id, ClienteDTOForInsert mCli, Authentication auth){
+    public void actualizarCliente(Integer id, ClienteDTOForModify mCli, Authentication auth){
         Cliente cliente = buscarPorId(id);        
         
         // No permite modificar un cliente si no es el mismo quien lo hace
         // o si tiene permisos suficientes
-        if(!checkPermitted(cliente, auth))
+        if(cliente == null || !checkPermitted(cliente, auth))
     		throw new AccessDeniedException("");
         
         cliente = mCli.updateModel(cliente);
         
         perRepository.save(cliente.getPersona());
-        userRepository.save(cliente.getUsuario());
+        
+        if(mCli.getCredenciales() != null) {
+        	userService.actualizarUsuarioCliente(cliente.getUsuario(), mCli.getCredenciales(), auth);
+        }
+        
         cliRepository.save(cliente);
     }
     
@@ -121,7 +126,7 @@ public class ClienteService {
         Cliente cliente = buscarPorId(id);
         
         // No permite eliminar un usuario con rol superior
-        if(!checkPermitted(cliente, auth))
+        if(cliente == null || !checkPermitted(cliente, auth))
     		throw new AccessDeniedException("");
         
         cliente.setRecibe_correos(false);

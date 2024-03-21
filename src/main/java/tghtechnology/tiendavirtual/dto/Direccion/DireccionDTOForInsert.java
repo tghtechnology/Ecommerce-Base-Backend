@@ -17,7 +17,7 @@ public class DireccionDTOForInsert implements DTOForInsert<Direccion>{
 	
 	@Valid
 	@NotNull(message = "El campo no puede ser nulo")
-	private Integer id_persona;
+	private Integer id_cliente;
 	
 	@NotEmpty(message = "El campo no puede estar vacío")
     @Size(min = 3, max = 30, message = "la región debe tener entre 3 y 30 caracteres")
