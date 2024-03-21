@@ -1,10 +1,9 @@
 {
 	"info": {
-		"_postman_id": "2776c66c-6f21-4d4d-b281-5af68f800a2f",
+		"_postman_id": "e086dd59-983f-4219-b4f8-69c242d6717f",
 		"name": "TiendaVirtual-Base",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "31763898",
-		"_collection_link": "https://winter-equinox-881682.postman.co/workspace/Base~1dd33edd-a5f1-48e2-8384-d7cb95fa3661/collection/31763898-2776c66c-6f21-4d4d-b281-5af68f800a2f?action=share&source=collection_link&creator=31763898"
+		"_exporter_id": "29571097"
 	},
 	"item": [
 		{
@@ -44,7 +43,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"admin@test.com\",\r\n    \"password\":{\r\n        \"password\":\"test123\",\r\n        \"password2\": \"test123\"\r\n    }\r\n}",
+							"raw": "{\r\n    \"email\": \"admin@test.com\",\r\n    \"password\":\"Te$t1234\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -120,7 +119,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\":\"gerente@test.com\",\r\n    \"password\":\"test123\"\r\n}",
+							"raw": "{\r\n    \"username\":\"cliente3@test.com\",\r\n    \"password\":\"Te$t1234\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -622,6 +621,268 @@
 								"api",
 								"marca",
 								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cliente",
+			"item": [
+				{
+					"name": "Crear",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"persona\":{\r\n        \"tipo_documento\": \"DNI\",\r\n        \"numero_documento\": \"98765432\",\r\n        \"nombres\": \"Juanito\",\r\n        \"apellidos\": \"Perez\",\r\n        \"telefono\": \"999888777\",\r\n        \"correo_personal\": \"cliente3@test.com\"\r\n    },\r\n    \"usuario\":{\r\n        \"email\": \"cliente3@test.com\",\r\n        \"password\":\"Te$t1234\",\r\n        \"cargo\":\"ADMIN\"\r\n    },\r\n    \"recibe_correos\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API}}/api/cliente",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"cliente"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modificar",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"persona\":{\r\n        \"tipo_documento\": \"DNI\",\r\n        \"numero_documento\": \"98765432\",\r\n        \"nombres\": \"Juanito 2\",\r\n        \"apellidos\": \"Perez\",\r\n        \"telefono\": \"999888776\",\r\n        \"correo_personal\": \"cliente@test.com\"\r\n    },\r\n    \"usuario\":{\r\n        \"email\": \"cliente@test.com\",\r\n        \"password\":\"Te$t1234\",\r\n        \"cargo\":\"CLIENTE\"\r\n    },\r\n    \"recibe_correos\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API}}/api/cliente/52",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"cliente",
+								"52"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Leer",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{API}}/api/cliente",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"cliente"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Leer Uno",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{API}}/api/cliente/52",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"cliente",
+								"52"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{API}}/api/cliente/52",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"cliente",
+								"52"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Direccion",
+			"item": [
+				{
+					"name": "Crear",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API}}/api/direccion",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"direccion"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modificar Copy",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"persona\":{\r\n        \"tipo_documento\": \"DNI\",\r\n        \"numero_documento\": \"98765432\",\r\n        \"nombres\": \"Juanito 2\",\r\n        \"apellidos\": \"Perez\",\r\n        \"telefono\": \"999888776\",\r\n        \"correo_personal\": \"cliente@test.com\"\r\n    },\r\n    \"usuario\":{\r\n        \"email\": \"cliente@test.com\",\r\n        \"password\":\"Te$t1234\",\r\n        \"cargo\":\"CLIENTE\"\r\n    },\r\n    \"recibe_correos\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API}}/api/cliente/52",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"cliente",
+								"52"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Leer Copy",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{API}}/api/cliente",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"cliente"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Leer Uno Copy",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{API}}/api/cliente/52",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"cliente",
+								"52"
 							]
 						}
 					},
