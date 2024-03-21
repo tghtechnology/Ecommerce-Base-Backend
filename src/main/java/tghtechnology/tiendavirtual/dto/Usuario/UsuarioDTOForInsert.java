@@ -2,6 +2,8 @@ package tghtechnology.tiendavirtual.dto.Usuario;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.validator.constraints.Length;
+
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -26,14 +28,17 @@ public class UsuarioDTOForInsert implements DTOForInsert<Usuario>{
     @Size(min = 10, max = 80, message = "El correo debe tener entre 10 y 80 caracteres")
     private String email;
 
-    @NotNull(message = "El campo no debe estar vacío")
-    private PasswordDTO password;
+    @NotNull(message = "El usuario no debe estar vacío")
+    @NotBlank(message = "El campo no debe estar vacío")
+    @Length(min = 8, max = 24, message = "La contraseña debe tener entre 8 y 24 caracteres")
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[#$@!%&*?])[A-Za-z\\d#$@!%&*?]{8,24}$", message = "Contraseña invalida")
+	private String password;
 
     @NotNull(message = "El campo no debe estar vacío")
     private TipoUsuario cargo;
     
     @Valid
-    private PersonaDTOForInsert persona;
+    private PersonaDTOForInsert persona; //TODO quitar
     private Integer id_persona;
 
 	@Override

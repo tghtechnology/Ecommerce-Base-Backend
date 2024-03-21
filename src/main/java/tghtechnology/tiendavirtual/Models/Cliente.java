@@ -1,5 +1,6 @@
 package tghtechnology.tiendavirtual.Models;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -29,29 +30,18 @@ public class Cliente {
 	@PrimaryKeyJoinColumn
 	private Persona persona;
 	
-	@Column(nullable = false, length = 30)
-	private String region;
-	
-	@Column(nullable = false, length = 30)
-	private String provincia;
-	
-	@Column(nullable = false, length = 30)
-	private String distrito;
-	
-	@Column(nullable = false, length = 150)
-	private String direccion;
-	
-	@Column(nullable = true, length = 150)
-	private String referencia;
-	
 	@Column(nullable = true)
-	private Double latitud;
+	private LocalDateTime ultima_compra;
 	
-	@Column(nullable = true)
-	private Double longitud;
+	@Column(nullable = false)
+	private boolean recibe_correos;
 	
 	@Column(nullable = false)
 	private boolean estado;
+	
+	// Pedidos realizados
+	@OneToMany(mappedBy = "cliente")
+	private Set<Direccion> direcciones = new HashSet<>();
 	
 	// Pedidos realizados
 	@OneToMany(mappedBy = "cliente")
@@ -61,12 +51,9 @@ public class Cliente {
 	@JoinColumn(name = "id_pedido", nullable = true)
 	private Pedido carrito;
 	 
-	
-	
-//	// Usuario
-//	@OneToOne
-//	@JoinColumn(name = "id_usuario", nullable = true)
-//	private Usuario usuario;
+	@OneToOne
+	@JoinColumn(name = "id_usuario", nullable = false)
+	private Usuario usuario;
 	
 	
 }

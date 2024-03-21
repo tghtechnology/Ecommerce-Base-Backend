@@ -26,7 +26,6 @@ import tghtechnology.tiendavirtual.Utils.CustomBeanValidator;
 import tghtechnology.tiendavirtual.Utils.Exceptions.CustomValidationFailedException;
 import tghtechnology.tiendavirtual.Utils.Exceptions.DataMismatchException;
 import tghtechnology.tiendavirtual.Utils.Exceptions.IdNotFoundException;
-import tghtechnology.tiendavirtual.dto.Usuario.PasswordDTO;
 import tghtechnology.tiendavirtual.dto.Usuario.UsuarioDTOForFirstLogin;
 import tghtechnology.tiendavirtual.dto.Usuario.UsuarioDTOForInsert;
 import tghtechnology.tiendavirtual.dto.Usuario.UsuarioDTOForList;
@@ -59,7 +58,7 @@ public class UsuarioService {
     	Optional<Usuario> oUser = userRepository.listarUno(id);
     	if(oUser.isPresent()) {
     		Usuario user = oUser.get();
-    		if(auth.getName().equals(user.getUsername()) || TipoUsuario.checkRole(auth.getAuthorities(), TipoUsuario.CLIENTE))
+    		if(auth.getName().equals(user.getUsername()) || TipoUsuario.checkRole(auth.getAuthorities(), TipoUsuario.GERENTE))
     			return new UsuarioDTOForList().from(user);
     		else
     			throw new AccessDeniedException(null);
@@ -99,10 +98,7 @@ public class UsuarioService {
         Usuario usuario = user.toModel();
         usuario.setPersona(per);
         
-        //encriptar pass
-        validarPass(user.getPassword());
-        
-		usuario.setHashed_pass(passwordEncoder.encode(user.getPassword().getPassword()));
+		usuario.setHashed_pass(passwordEncoder.encode(user.getPassword()));
         
         usuario = userRepository.save(usuario);
         return usuario;
@@ -123,8 +119,7 @@ public class UsuarioService {
   		Usuario us = iUs.toModel();
   		
   		//encriptar pass
-  		validarPass(iUs.getPassword());
-  		us.setHashed_pass(passwordEncoder.encode(iUs.getPassword().getPassword()));
+  		us.setHashed_pass(passwordEncoder.encode(iUs.getPassword()));
   		
   		Persona per = perRepository.save(us.getPersona());
   		us.setPersona(per);
@@ -144,8 +139,7 @@ public class UsuarioService {
         usuario = body.updateModel(usuario);
         
         if(body.getPassword() != null) {
-        	validarPass(body.getPassword());
-      		usuario.setHashed_pass(passwordEncoder.encode(body.getPassword().getPassword()));
+      		usuario.setHashed_pass(passwordEncoder.encode(body.getPassword()));
         }
         
         userRepository.save(usuario);
@@ -169,12 +163,5 @@ public class UsuarioService {
     private Usuario buscarPorId(Integer id) {
 		return userRepository.listarUno(id).orElseThrow( () -> new IdNotFoundException("usuario"));
 	}
-    
-    private void validarPass(PasswordDTO pass) {
-  		if(pass.getPassword() == null
-	  		   || pass.getPassword2() == null
-	  		   || !pass.getPassword().equals(pass.getPassword2())) {
-  			throw new DataMismatchException("password", "Las contraseñas no concuerdan");
-  		}
-    }
+
 }

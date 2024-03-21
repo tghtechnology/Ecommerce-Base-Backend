@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
-import tghtechnology.tiendavirtual.Security.Interfaces.Empleado;
-import tghtechnology.tiendavirtual.Security.Interfaces.Gerente;
 import tghtechnology.tiendavirtual.Services.ItemService;
 import tghtechnology.tiendavirtual.dto.Item.ItemDTOForInsert;
 import tghtechnology.tiendavirtual.dto.Item.ItemDTOForList;
@@ -56,7 +54,7 @@ public class ItemController {
 	
 	//@Empleado
 	@PutMapping("/{id}")
-	public ResponseEntity<Void> modificar(@PathVariable Integer id,
+	public ResponseEntity<Void> actualizar(@PathVariable Integer id,
 											@RequestBody @Valid ItemDTOForInsert mItem){
 		itemService.actualizarItem(id, mItem);
 		return ResponseEntity.status(HttpStatus.OK).build();

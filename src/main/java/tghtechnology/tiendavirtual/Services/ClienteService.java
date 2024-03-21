@@ -1,30 +1,36 @@
 package tghtechnology.tiendavirtual.Services;
 
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.AllArgsConstructor;
+import tghtechnology.tiendavirtual.Enums.TipoUsuario;
 import tghtechnology.tiendavirtual.Models.Cliente;
 import tghtechnology.tiendavirtual.Models.Persona;
+import tghtechnology.tiendavirtual.Models.Usuario;
 import tghtechnology.tiendavirtual.Repository.ClienteRepository;
 import tghtechnology.tiendavirtual.Repository.PersonaRepository;
+import tghtechnology.tiendavirtual.Repository.UsuarioRepository;
+import tghtechnology.tiendavirtual.Utils.Exceptions.DataMismatchException;
 import tghtechnology.tiendavirtual.Utils.Exceptions.IdNotFoundException;
 import tghtechnology.tiendavirtual.dto.Cliente.ClienteDTOForInsert;
-import tghtechnology.tiendavirtual.dto.Cliente.ClienteDTOForInsertNew;
 import tghtechnology.tiendavirtual.dto.Cliente.ClienteDTOForList;
 
 @Service
 @AllArgsConstructor
 public class ClienteService {
 
-	@Autowired
     private ClienteRepository cliRepository;
 	private PersonaRepository perRepository;
+	private UsuarioRepository userRepository;
+	
+	private UsuarioService userService;
 
     /**
      * Lista todos los clientes no eliminados
@@ -45,71 +51,94 @@ public class ClienteService {
      * @param id la ID del cliente
      * @return el cliente encontrado en formato ForList o null si no existe
      */
-    public ClienteDTOForList listarUno(Integer id){
+    public ClienteDTOForList listarUno(Integer id, Authentication auth){
         Cliente cli= cliRepository.listarUno(id).orElse(null);
+        
+     // No permite modificar un cliente si no es el mismo quien lo hace
+        // o si tiene permisos suficientes
+        if(!checkPermitted(cli, auth))
+    		throw new AccessDeniedException("");
+        
         return cli == null ? null : new ClienteDTOForList().from(cli);
     }
-    
-    /**
-     * Registra un nuevo cliente para una venta sin cuenta
-     * @param iCli Cliente en formato ForInsert
-     * @return El cliente creado en formato ForList
-     */
-    public ClienteDTOForList crearCliente(ClienteDTOForInsertNew iCli, Principal principal){
 
+    /**
+     * Registra un nuevo cliente.
+     * @param iCli El cliente a registrar en formato DTOForInsert.
+     * @return El empleado creado en formato DTOForList.
+     * @throws DataMismatchException Si ambos campos de identificación de persona son nulos.
+     */
+    @Transactional(rollbackFor = {DataIntegrityViolationException.class, AccessDeniedException.class})
+    public ClienteDTOForList crearEmpleado(ClienteDTOForInsert iCli){
+    	
     	Persona per = perRepository.save(iCli.getPersona().toModel());
+        
+    	Cliente cli = iCli.toModel();
+    	cli.setPersona(per);
+    	cli.setId_persona(per.getId_persona());
     	
-        Cliente cli = iCli.toModel();
-        cli.setPersona(per);
-        cliRepository.save(cli);
-        return new ClienteDTOForList().from(cli);
-    }
-    
-    /**
-     * Registra un nuevo cliente en una cuenta ya existente
-     * @param iCli Cliente en formato ForInsert
-     * @return El cliente creado en formato ForList
-     */
-    public ClienteDTOForList crearCliente(ClienteDTOForInsert iCli, Principal principal){
+    	iCli.getUsuario().setId_persona(per.getId_persona());
+    	iCli.getUsuario().setCargo(TipoUsuario.CLIENTE);
+    	Usuario user = userService.crearUsuarioPorInstancia(iCli.getUsuario(), per);
     	
-    	Persona per = perRepository.obtenerUno(iCli.getId_persona()).orElseThrow(() -> new IdNotFoundException("persona"));
-    		
-		// Crear a partir de cuenta existente, solo aplicable si ya existe una cuenta
-		if(per.getUsuario() == null || !per.getUsuario().getUsername().equals(principal.getName()))
-			throw new AccessDeniedException("Intentando crear cliente a partir de un usuario que no corresponde");
+        cli.setUsuario(user);
+        cli = cliRepository.save(cli);
 
-    	
-        Cliente cli = iCli.toModel();
-        cli.setPersona(per);
-        cliRepository.save(cli);
         return new ClienteDTOForList().from(cli);
+    } 
+    
+    /**
+     * Actualiza un cliente.
+     * @param id ID del cliente a actualizar.
+     * @param mCli Datos del cliente en formato DTOForInsert.
+     * @param auth La instancia de autenticación del cliente/empleado que realiza la operación
+     * @throws DataMismatchException Si el campo persona es nulo.
+     * @throws IdNotFoundException Si la ID no se corresponde con ningun empleado.
+     */
+    @Transactional(rollbackFor = {DataIntegrityViolationException.class, AccessDeniedException.class})
+    public void actualizarCliente(Integer id, ClienteDTOForInsert mCli, Authentication auth){
+        Cliente cliente = buscarPorId(id);        
+        
+        // No permite modificar un cliente si no es el mismo quien lo hace
+        // o si tiene permisos suficientes
+        if(!checkPermitted(cliente, auth))
+    		throw new AccessDeniedException("");
+        
+        cliente = mCli.updateModel(cliente);
+        
+        perRepository.save(cliente.getPersona());
+        userRepository.save(cliente.getUsuario());
+        cliRepository.save(cliente);
     }
     
     /**
-     * Modifica un cliente
-     * @param id ID del cliente a modificar
-     * @param mCli Datos del cliente en formato ForInsert
-     * @throws IdNotFoundException Si la ID proporcionada no corresponde a ningun cliente
+     * Elimina un cliente.
+     * @param id La ID del cliente a eliminar.
+     * @param auth La instancia de autenticación del cliente/empleado que realiza la operación
+     * @throws IdNotFoundException Si la ID no se corresponde con ningun empleado.
      */
-    public void actualizarCliente(Integer id, ClienteDTOForInsert mCli){
-        Cliente cli= buscarPorId(id);
-        cli = mCli.updateModel(cli);
-        cliRepository.save(cli);
+    public void eliminarCliente(Integer id, Authentication auth){
+        Cliente cliente = buscarPorId(id);
+        
+        // No permite eliminar un usuario con rol superior
+        if(!checkPermitted(cliente, auth))
+    		throw new AccessDeniedException("");
+        
+        cliente.setRecibe_correos(false);
+        cliente.setEstado(false);
+        cliente = cliRepository.save(cliente);
+        
+        userService.eliminarUsuario(cliente.getUsuario().getId_usuario());
+        
     }
     
-    /**
-     * Realiza un eliminado lógico de una categoría
-     * @param id ID de la categoría a eliminar
-     * @throws IdNotFoundException Si la ID proporcionada no corresponde a ninguna categoría
-     */
-    public void eliminarCliente(Integer id){
-        Cliente cli = buscarPorId(id);
-        cli.setEstado(false);
-        cliRepository.save(cli);
+    private boolean checkPermitted(Cliente cli, Authentication auth) {
+    	return auth.getName().equals(cli.getUsuario().getUsername()) ||
+    		   TipoUsuario.checkRole(auth.getAuthorities(), TipoUsuario.GERENTE);
     }
     
-    
-    private Cliente buscarPorId(Integer id) throws IdNotFoundException{
+    private Cliente buscarPorId(Integer id) {
 		return cliRepository.listarUno(id).orElseThrow( () -> new IdNotFoundException("cliente"));
 	}
+    
 }

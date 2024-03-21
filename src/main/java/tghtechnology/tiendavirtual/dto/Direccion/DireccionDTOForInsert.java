@@ -1,4 +1,4 @@
-package tghtechnology.tiendavirtual.dto.Cliente;
+package tghtechnology.tiendavirtual.dto.Direccion;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
@@ -7,18 +7,17 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import tghtechnology.tiendavirtual.Models.Cliente;
+import tghtechnology.tiendavirtual.Models.Direccion;
 import tghtechnology.tiendavirtual.Utils.DTOInterfaces.DTOForInsert;
-import tghtechnology.tiendavirtual.dto.Persona.PersonaDTOForInsert;
 
 @Getter
 @Setter
 @NoArgsConstructor
-public class ClienteDTOForInsertNew implements DTOForInsert<Cliente>{
+public class DireccionDTOForInsert implements DTOForInsert<Direccion>{
 	
 	@Valid
 	@NotNull(message = "El campo no puede ser nulo")
-	private PersonaDTOForInsert persona;
+	private Integer id_persona;
 	
 	@NotEmpty(message = "El campo no puede estar vacío")
     @Size(min = 3, max = 30, message = "la región debe tener entre 3 y 30 caracteres")
@@ -44,35 +43,33 @@ public class ClienteDTOForInsertNew implements DTOForInsert<Cliente>{
     private Double longitud;
 
 	@Override
-	public Cliente toModel() {
-		Cliente cli = new Cliente();
+	public Direccion toModel() {
+		Direccion dir = new Direccion();
 		
-		cli.setRegion(region);
-		cli.setProvincia(provincia);
-		cli.setDistrito(distrito);
-		cli.setDireccion(direccion);
-		cli.setReferencia(referencia);
-		cli.setLatitud(latitud);
-		cli.setLongitud(longitud);
-		cli.setEstado(true);
+		dir.setRegion(region);
+		dir.setProvincia(provincia);
+		dir.setDistrito(distrito);
+		dir.setDireccion(direccion);
+		dir.setReferencia(referencia);
+		dir.setLatitud(latitud);
+		dir.setLongitud(longitud);
+		dir.setEstado(true);
 		
-		return cli;
+		return dir;
 	}
 
 	@Override
-	public Cliente updateModel(Cliente cli) {
+	public Direccion updateModel(Direccion dir) {
 		
-		cli.setPersona(persona.updateModel(cli.getPersona()));
+		dir.setRegion(region);
+		dir.setProvincia(provincia);
+		dir.setDistrito(distrito);
+		dir.setDireccion(direccion);
+		dir.setReferencia(referencia);
+		dir.setLatitud(latitud);
+		dir.setLongitud(longitud);
 		
-		cli.setRegion(region);
-		cli.setProvincia(provincia);
-		cli.setDistrito(distrito);
-		cli.setDireccion(direccion);
-		cli.setReferencia(referencia);
-		cli.setLatitud(latitud);
-		cli.setLongitud(longitud);
-		
-		return cli;
+		return dir;
 	}
     
 	

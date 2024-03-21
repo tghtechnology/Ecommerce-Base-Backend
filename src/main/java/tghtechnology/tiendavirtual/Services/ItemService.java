@@ -16,7 +16,6 @@ import tghtechnology.tiendavirtual.Models.Marca;
 import tghtechnology.tiendavirtual.Repository.CategoriaRepository;
 import tghtechnology.tiendavirtual.Repository.ItemRepository;
 import tghtechnology.tiendavirtual.Repository.MarcaRepository;
-import tghtechnology.tiendavirtual.Utils.Exceptions.DataMismatchException;
 import tghtechnology.tiendavirtual.Utils.Exceptions.IdNotFoundException;
 import tghtechnology.tiendavirtual.dto.Item.ItemDTOForInsert;
 import tghtechnology.tiendavirtual.dto.Item.ItemDTOForList;

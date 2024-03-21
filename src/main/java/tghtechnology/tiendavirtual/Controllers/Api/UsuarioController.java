@@ -29,7 +29,7 @@ public class UsuarioController {
 	// Leer datos de usuario (solo propios)
 	@Cliente
 	@GetMapping("/{id}")
-	public ResponseEntity<UsuarioDTOForList> obtenerUsuario(@PathVariable Integer id,
+	public ResponseEntity<UsuarioDTOForList> listarUno(@PathVariable Integer id,
 															Authentication auth){
 		UsuarioDTOForList u = usService.listarUsuario(id,auth);
 		return ResponseEntity.status(HttpStatus.OK).body(u);
@@ -37,13 +37,13 @@ public class UsuarioController {
 	
 	// Registrar usuario básico
 	@PostMapping
-	public ResponseEntity<UsuarioDTOForList> crearusuario(@RequestBody UsuarioDTOForInsert usuario) throws Exception {
+	public ResponseEntity<UsuarioDTOForList> crear(@RequestBody UsuarioDTOForInsert usuario) throws Exception {
 		UsuarioDTOForList u = new UsuarioDTOForList().from(usService.crearUsuario(usuario));
 		return ResponseEntity.status(HttpStatus.CREATED).body(u);
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Void> actualizarUsuario(@PathVariable Integer id,
+	public ResponseEntity<Void> actualizar(@PathVariable Integer id,
 													@RequestBody UsuarioDTOForInsert usuario,
 													Authentication auth){
 		

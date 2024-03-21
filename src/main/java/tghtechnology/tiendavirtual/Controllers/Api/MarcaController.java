@@ -68,7 +68,7 @@ public class MarcaController {
 	
 	@Empleado
 	@PutMapping("/{id}")
-	public ResponseEntity<Void> modificar(@PathVariable Integer id,
+	public ResponseEntity<Void> actualizar(@PathVariable Integer id,
 										  @RequestParam String marca,
 										  @RequestParam(value = "imagen", required = false) MultipartFile imagen)
 										  throws IOException, CustomValidationFailedException {
