@@ -1,41 +1,15 @@
 {
 	"info": {
-		"_postman_id": "e086dd59-983f-4219-b4f8-69c242d6717f",
+		"_postman_id": "b8ed0990-e5e6-4bd6-878f-eea5292d8fad",
 		"name": "TiendaVirtual-Base",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "29571097"
+		"_exporter_id": "31763898",
+		"_collection_link": "https://winter-equinox-881682.postman.co/workspace/Base~1dd33edd-a5f1-48e2-8384-d7cb95fa3661/collection/31763898-b8ed0990-e5e6-4bd6-878f-eea5292d8fad?action=share&source=collection_link&creator=31763898"
 	},
 	"item": [
 		{
 			"name": "Usuario",
 			"item": [
-				{
-					"name": "Crear usuario",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"persona\":{\r\n        \"tipo_documento\": \"DNI\",\r\n        \"numero_documento\": \"98765432\",\r\n        \"nombres\": \"Juanito\",\r\n        \"apellidos\": \"Perez\",\r\n        \"telefono\": \"999888777\",\r\n        \"correo_personal\": \"cliente@testers.com\"\r\n    },\r\n    \"email\": \"cliente@testers.com\",\r\n    \"password\":{\r\n        \"password\":\"test123\",\r\n        \"password2\": \"test123\"\r\n    },\r\n    \"cargo\":\"CLIENTE\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{API}}/api/usuario",
-							"host": [
-								"{{API}}"
-							],
-							"path": [
-								"api",
-								"usuario"
-							]
-						}
-					},
-					"response": []
-				},
 				{
 					"name": "Crear Admin",
 					"request": {
@@ -119,7 +93,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\":\"cliente3@test.com\",\r\n    \"password\":\"Te$t1234\"\r\n}",
+							"raw": "{\r\n    \"username\":\"admin@test.com\",\r\n    \"password\":\"Te$t1234\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -400,7 +374,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nombre\": \"Celular nuevo\",\r\n    \"descripcion\": \"Un celular muy nuevo\",\r\n    \"precio\": 950.90,\r\n    \"disponibilidad\": \"DISPONIBLE\",\r\n    \"stock\": 100,\r\n    \"id_categoria\": 1,\r\n    \"id_marca\": 52\r\n}",
+							"raw": "{\r\n    \"nombre\": \"Celular nuevo\",\r\n    \"descripcion\": \"Un celular muy nuevo\",\r\n    \"precio\": 950.90,\r\n    \"disponibilidad\": \"DISPONIBLE\",\r\n    \"stock\": 100,\r\n    \"id_categoria\": 1,\r\n    \"id_marca\": 1\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -638,7 +612,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"persona\":{\r\n        \"tipo_documento\": \"DNI\",\r\n        \"numero_documento\": \"98765432\",\r\n        \"nombres\": \"Juanito\",\r\n        \"apellidos\": \"Perez\",\r\n        \"telefono\": \"999888777\",\r\n        \"correo_personal\": \"cliente3@test.com\"\r\n    },\r\n    \"usuario\":{\r\n        \"email\": \"cliente3@test.com\",\r\n        \"password\":\"Te$t1234\",\r\n        \"cargo\":\"ADMIN\"\r\n    },\r\n    \"recibe_correos\": true\r\n}",
+							"raw": "{\r\n    \"persona\":{\r\n        \"tipo_documento\": \"DNI\",\r\n        \"numero_documento\": \"98765432\",\r\n        \"nombres\": \"Juanito\",\r\n        \"apellidos\": \"Perez\",\r\n        \"telefono\": \"999888777\",\r\n        \"correo_personal\": \"cliente@test.com\"\r\n    },\r\n    \"usuario\":{\r\n        \"email\": \"cliente@test.com\",\r\n        \"password\":\"Te$t1234\",\r\n        \"cargo\":\"ADMIN\"\r\n    },\r\n    \"recibe_correos\": true\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -782,10 +756,16 @@
 					"name": "Crear",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \r\n}",
+							"raw": "{\r\n    \"id_cliente\": 2,\r\n    \"region\":\"LIMA\",\r\n    \"provincia\":\"LIMA\",\r\n    \"distrito\":\"LIMA\",\r\n    \"direccion\":\"Calle 123, Departamento 1220\",\r\n    \"referencia\":\"Al lado de la casa del vecino\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -806,7 +786,7 @@
 					"response": []
 				},
 				{
-					"name": "Modificar Copy",
+					"name": "Modificar",
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -818,7 +798,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"persona\":{\r\n        \"tipo_documento\": \"DNI\",\r\n        \"numero_documento\": \"98765432\",\r\n        \"nombres\": \"Juanito 2\",\r\n        \"apellidos\": \"Perez\",\r\n        \"telefono\": \"999888776\",\r\n        \"correo_personal\": \"cliente@test.com\"\r\n    },\r\n    \"usuario\":{\r\n        \"email\": \"cliente@test.com\",\r\n        \"password\":\"Te$t1234\",\r\n        \"cargo\":\"CLIENTE\"\r\n    },\r\n    \"recibe_correos\": true\r\n}",
+							"raw": "{\r\n    \"region\":\"LIMA\",\r\n    \"provincia\":\"LIMA\",\r\n    \"distrito\":\"LIMA\",\r\n    \"direccion\":\"Calle 123, Departamento 1220\",\r\n    \"referencia\":\"Al lado de la casa del vecino\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -826,21 +806,46 @@
 							}
 						},
 						"url": {
-							"raw": "{{API}}/api/cliente/52",
+							"raw": "{{API}}/api/direccion/1",
 							"host": [
 								"{{API}}"
 							],
 							"path": [
 								"api",
-								"cliente",
-								"52"
+								"direccion",
+								"1"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Leer Copy",
+					"name": "Eliminar",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{API}}/api/direccion/1",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"direccion",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Leer por Cliente",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -851,20 +856,26 @@
 							}
 						],
 						"url": {
-							"raw": "{{API}}/api/cliente",
+							"raw": "{{API}}/api/direccion?cliente=2",
 							"host": [
 								"{{API}}"
 							],
 							"path": [
 								"api",
-								"cliente"
+								"direccion"
+							],
+							"query": [
+								{
+									"key": "cliente",
+									"value": "2"
+								}
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Leer Uno Copy",
+					"name": "Leer Uno",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -875,14 +886,186 @@
 							}
 						],
 						"url": {
-							"raw": "{{API}}/api/cliente/52",
+							"raw": "{{API}}/api/direccion/1",
 							"host": [
 								"{{API}}"
 							],
 							"path": [
 								"api",
-								"cliente",
-								"52"
+								"direccion",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Descuento",
+			"item": [
+				{
+					"name": "Leer",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{API}}/api/descuento",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"descuento"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Leer Uno",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{API}}/api/descuento/1",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"descuento",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id_item\": 1,\r\n    \"nuevo_precio\": 130.00\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API}}/api/descuento",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"descuento"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Editar",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id_item\": 1,\r\n    \"nuevo_precio\": 110.00,\r\n    \"activado\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API}}/api/descuento/2",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"descuento",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cambiar activado",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{API}}/api/descuento/53/true",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"descuento",
+								"53",
+								"true"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{API}}/api/descuento/2",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"descuento",
+								"2"
 							]
 						}
 					},
