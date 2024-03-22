@@ -2,7 +2,6 @@ package tghtechnology.tiendavirtual.dto.Direccion;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +15,6 @@ import tghtechnology.tiendavirtual.Utils.DTOInterfaces.DTOForInsert;
 public class DireccionDTOForInsert implements DTOForInsert<Direccion>{
 	
 	@Valid
-	@NotNull(message = "El campo no puede ser nulo")
 	private Integer id_cliente;
 	
 	@NotEmpty(message = "El campo no puede estar vacío")

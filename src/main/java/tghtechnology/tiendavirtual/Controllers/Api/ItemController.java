@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
+import tghtechnology.tiendavirtual.Security.Interfaces.Empleado;
+import tghtechnology.tiendavirtual.Security.Interfaces.Gerente;
 import tghtechnology.tiendavirtual.Services.ItemService;
 import tghtechnology.tiendavirtual.dto.Item.ItemDTOForInsert;
 import tghtechnology.tiendavirtual.dto.Item.ItemDTOForList;
@@ -45,14 +47,14 @@ public class ItemController {
         return ResponseEntity.status(HttpStatus.OK).body(item);
 	}
 	
-	//@Empleado
+	@Empleado
 	@PostMapping
 	public ResponseEntity<ItemDTOForList> crear(@RequestBody @Valid ItemDTOForInsert iItem){
 		ItemDTOForList item = itemService.crearItem(iItem);
 		return ResponseEntity.status(HttpStatus.CREATED).body(item);
 	}
 	
-	//@Empleado
+	@Empleado
 	@PutMapping("/{id}")
 	public ResponseEntity<Void> actualizar(@PathVariable Integer id,
 											@RequestBody @Valid ItemDTOForInsert mItem){
@@ -60,7 +62,7 @@ public class ItemController {
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 	
-	//@Gerente
+	@Gerente
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> eliminar(@PathVariable Integer id){
 		itemService.eliminarItem(id);

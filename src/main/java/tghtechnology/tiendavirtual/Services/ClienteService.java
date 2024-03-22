@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +17,7 @@ import tghtechnology.tiendavirtual.Models.Persona;
 import tghtechnology.tiendavirtual.Models.Usuario;
 import tghtechnology.tiendavirtual.Repository.ClienteRepository;
 import tghtechnology.tiendavirtual.Repository.PersonaRepository;
+import tghtechnology.tiendavirtual.Repository.UsuarioRepository;
 import tghtechnology.tiendavirtual.Utils.Exceptions.DataMismatchException;
 import tghtechnology.tiendavirtual.Utils.Exceptions.IdNotFoundException;
 import tghtechnology.tiendavirtual.dto.Cliente.ClienteDTOForInsert;
@@ -28,7 +30,7 @@ public class ClienteService {
 
     private ClienteRepository cliRepository;
 	private PersonaRepository perRepository;
-	//private UsuarioRepository userRepository;
+	private UsuarioRepository userRepository;
 	
 	private UsuarioService userService;
 
@@ -70,6 +72,10 @@ public class ClienteService {
      */
     @Transactional(rollbackFor = {DataIntegrityViolationException.class, AccessDeniedException.class})
     public ClienteDTOForList crearCliente(ClienteDTOForInsert iCli){
+    	
+    	if(userRepository.listUser().isEmpty()) {
+  			throw new BadCredentialsException(null);
+  		}
     	
     	Persona per = perRepository.save(iCli.getPersona().toModel());
         

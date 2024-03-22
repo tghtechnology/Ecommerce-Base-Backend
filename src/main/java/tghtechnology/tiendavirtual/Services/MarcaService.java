@@ -107,7 +107,7 @@ public class MarcaService {
     }
     
     
-    private Marca buscarPorId(Integer id) throws IdNotFoundException{
+    public Marca buscarPorId(Integer id) throws IdNotFoundException{
 		return marRepository.listarUno(id).orElseThrow( () -> new IdNotFoundException("marca"));
 	}
 }

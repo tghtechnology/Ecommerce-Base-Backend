@@ -1,8 +1,6 @@
 package tghtechnology.tiendavirtual.Models;
 
-import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.math.BigDecimal;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,61 +9,46 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 import tghtechnology.tiendavirtual.Enums.DisponibilidadItem;
+import tghtechnology.tiendavirtual.Enums.TipoVariacion;
 
 @Entity
-@Table(name = "item")
+@Table(name = "variacion")
 @Getter
 @Setter
-public class Item {
+public class VariacionItem {
 
     @Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id_item;
+    private Integer id_variacion;
     
-    @Column(nullable = false, unique = true, length = 100)
-	private String text_id;
-
     @Column(nullable = false)
-    private String nombre;
-
-    @Column(nullable = false, length = 150)
-    private String descripcion;
+    private TipoVariacion tipo_variacion;
+    
+    @Column(nullable = false)
+    private String valor_variacion;
+    
+    @Column(nullable = false)
+    private BigDecimal precio;
 
     @Column(nullable = false)
     private DisponibilidadItem disponibilidad;
-
+    
     @Column(nullable = false)
-    private LocalDateTime fecha_creacion;
-
+    private Integer stock;
+    
     @Column(nullable = false)
-    private LocalDateTime fecha_modificacion;
+    private Boolean aplicarDescuento;
 
     @Column(nullable = false)
     private Boolean estado;
     
     @ManyToOne
-    @JoinColumn(name = "id_categoria", nullable = false)
-    private Categoria categoria;
-    
-    @ManyToOne
-    @JoinColumn(name = "id_marca", nullable = false)
-    private Marca marca;
-    
-    @OneToOne
-    @JoinColumn(name = "id_descuento", nullable = true)
-    private Descuento descuento;
-
-    @OneToMany(mappedBy = "item")
-    private Set<VariacionItem> variaciones = new HashSet<>();
-    
-    @OneToMany(mappedBy = "item")
-    private Set<Descuento> descuentos = new HashSet<>();
+    @JoinColumn(name = "id_item", nullable = false)
+    private Item item;
     
     public static String transform_id(String nombre) {
 		return nombre.strip()				// sin espacios al inicio o final

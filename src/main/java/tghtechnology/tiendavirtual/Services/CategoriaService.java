@@ -46,7 +46,7 @@ public class CategoriaService {
     
     /**
      * Registra una nueva categoría
-     * @param Categoría en formato ForInsert
+     * @param iCat Categoría en formato ForInsert
      * @return la categoría creada en formato ForList
      */
     public CategoriaDTOForList crearCategoria(CategoriaDTOForInsert iCat){
@@ -80,7 +80,7 @@ public class CategoriaService {
     }
     
     
-    private Categoria buscarPorId(Integer id) throws IdNotFoundException{
+    public Categoria buscarPorId(Integer id) throws IdNotFoundException{
 		return catRepository.listarUno(id).orElseThrow( () -> new IdNotFoundException("categoria"));
 	}
 }

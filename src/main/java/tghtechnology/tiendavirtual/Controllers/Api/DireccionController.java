@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import tghtechnology.tiendavirtual.Security.Interfaces.Cliente;
-import tghtechnology.tiendavirtual.Security.Interfaces.Empleado;
-import tghtechnology.tiendavirtual.Security.Interfaces.Gerente;
 import tghtechnology.tiendavirtual.Services.DireccionService;
 import tghtechnology.tiendavirtual.dto.Direccion.DireccionDTOForInsert;
 import tghtechnology.tiendavirtual.dto.Direccion.DireccionDTOForList;
@@ -49,23 +47,26 @@ public class DireccionController {
 	
 	@Cliente
 	@PostMapping
-	public ResponseEntity<DireccionDTOForList> crear(@RequestBody @Valid DireccionDTOForInsert iCat){
-		DireccionDTOForList dir = dirService.crearDireccion(iCat);
+	public ResponseEntity<DireccionDTOForList> crear(@RequestBody @Valid DireccionDTOForInsert iDir,
+														Authentication auth){
+		DireccionDTOForList dir = dirService.crearDireccion(iDir, auth);
 		return ResponseEntity.status(HttpStatus.CREATED).body(dir); 
 	}
 	
-	@Empleado
+	@Cliente
 	@PutMapping("/{id}")
 	public ResponseEntity<Void> modificar(@PathVariable Integer id,
-											@RequestBody @Valid DireccionDTOForInsert mCat){
-		dirService.actualizarDireccion(id, mCat);
+											@RequestBody @Valid DireccionDTOForInsert mDir,
+											Authentication auth){
+		dirService.actualizarDireccion(id, mDir, auth);
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 	
-	@Gerente
+	@Cliente
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> eliminar(@PathVariable Integer id){
-		dirService.eliminarDireccion(id);
+	public ResponseEntity<Void> eliminar(@PathVariable Integer id,
+											Authentication auth){
+		dirService.eliminarDireccion(id, auth);
 		return ResponseEntity.status(HttpStatus.OK).build();
 	} 
 

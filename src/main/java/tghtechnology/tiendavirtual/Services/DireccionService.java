@@ -14,6 +14,7 @@ import tghtechnology.tiendavirtual.Models.Cliente;
 import tghtechnology.tiendavirtual.Models.Direccion;
 import tghtechnology.tiendavirtual.Repository.ClienteRepository;
 import tghtechnology.tiendavirtual.Repository.DireccionRepository;
+import tghtechnology.tiendavirtual.Utils.Exceptions.DataMismatchException;
 import tghtechnology.tiendavirtual.Utils.Exceptions.IdNotFoundException;
 import tghtechnology.tiendavirtual.dto.Direccion.DireccionDTOForInsert;
 import tghtechnology.tiendavirtual.dto.Direccion.DireccionDTOForList;
@@ -78,6 +79,9 @@ public class DireccionService {
      */
     public DireccionDTOForList crearDireccion(DireccionDTOForInsert iDir, Authentication auth){
 
+    	if(iDir.getId_cliente() == null)
+    		throw new DataMismatchException("id_cliente", "El campo no puede ser nulo");
+    	
     	Cliente cli = cliRepository.listarUno(iDir.getId_cliente()).orElse(null);
     	
     	if(cli == null || !checkPermitted(cli, auth))

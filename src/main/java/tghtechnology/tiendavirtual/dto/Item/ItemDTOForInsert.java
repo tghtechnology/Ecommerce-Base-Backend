@@ -12,7 +12,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tghtechnology.tiendavirtual.Enums.DisponibilidadItem;
+import tghtechnology.tiendavirtual.Enums.TipoVariacion;
 import tghtechnology.tiendavirtual.Models.Item;
+import tghtechnology.tiendavirtual.Models.VariacionItem;
 import tghtechnology.tiendavirtual.Utils.DTOInterfaces.DTOForInsert;
 
 @Getter
@@ -28,8 +30,9 @@ public class ItemDTOForInsert implements DTOForInsert<Item>{
     @Size(min = 1, max = 150, message = "La descripción del item debe tener menos de 150 caracteres")
     private String descripcion;
 	
+	@NotNull
 	@DecimalMin(value = "0.0", inclusive = true, message = "El precio debe ser mayor a S/.0.00")
-    private BigDecimal precio;
+	private BigDecimal precio;
 	
 	@NotNull(message = "No puede ser nulo")
     private DisponibilidadItem disponibilidad;
@@ -43,6 +46,8 @@ public class ItemDTOForInsert implements DTOForInsert<Item>{
 	
 	@NotNull(message = "No puede ser nulo")
     private Integer id_marca;
+	
+	private Integer id_descuento;
 
 	@Override
 	public Item toModel() {
@@ -52,13 +57,25 @@ public class ItemDTOForInsert implements DTOForInsert<Item>{
 		item.setNombre(nombre);
 		item.setText_id(Item.transform_id(nombre));
 		item.setDescripcion(descripcion);
-		item.setPrecio(precio);
 		item.setDisponibilidad(disponibilidad);
-		item.setStock(stock);
 		item.setFecha_creacion(now);
 		item.setFecha_modificacion(now);
 		item.setEstado(true);
+		
 		return item;
+	}
+	
+	public VariacionItem toVariacion() {
+		VariacionItem var = new VariacionItem();
+		var.setTipo_variacion(TipoVariacion.COLOR);
+		var.setValor_variacion("000000");
+		var.setPrecio(precio);
+		var.setStock(stock);
+		var.setDisponibilidad(disponibilidad);
+		var.setAplicarDescuento(true);
+		var.setEstado(true);
+		
+		return var;
 	}
 
 	@Override
@@ -66,9 +83,7 @@ public class ItemDTOForInsert implements DTOForInsert<Item>{
 		item.setNombre(nombre);
 		item.setText_id(Item.transform_id(nombre));
 		item.setDescripcion(descripcion);
-		item.setPrecio(precio);
 		item.setDisponibilidad(disponibilidad);
-		item.setStock(stock);
 		item.setFecha_modificacion(LocalDateTime.now());
 		return item;
 	}

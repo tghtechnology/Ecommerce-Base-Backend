@@ -23,18 +23,15 @@ public class Descuento {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id_descuento;
-
     @Column(nullable = false)
-    private Integer nuevo_precio;
-    @Column(nullable = true)
-    private BigDecimal porcentaje;
+    private Integer porcentaje;
     @Column(nullable = true)
 	private LocalDate programacion_inicio;
 	@Column(nullable = true)
 	private LocalDate programacion_final;
     
 	@Column(nullable = false)
-	private Boolean activo;
+	private Boolean activado;
 	@Column(nullable = false)
 	private Boolean estado;
 	
