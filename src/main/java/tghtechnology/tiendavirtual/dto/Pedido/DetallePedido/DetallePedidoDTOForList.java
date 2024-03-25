@@ -23,7 +23,7 @@ public class DetallePedidoDTOForList implements DTOForList<DetallePedido>{
 	public DetallePedidoDTOForList from(DetallePedido dp) {
 		this.cantidad = dp.getCantidad();
 		this.subtotal = dp.getSub_total();
-		this.item = new ItemDTOForList().from(dp.getItem());
+		this.item = new ItemDTOForList().from(dp.getVariacion().getItem());
 
 		return this;
 	}

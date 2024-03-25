@@ -29,8 +29,8 @@ public class DetallePedido {
     private BigDecimal sub_total;
     
     @ManyToOne
-    @JoinColumn(name = "id_item" )
-    private Item item;
+    @JoinColumn(name = "id_variacion" )
+    private Variacion variacion;
 
     @ManyToOne
     @JoinColumn(name = "id_pedido")
