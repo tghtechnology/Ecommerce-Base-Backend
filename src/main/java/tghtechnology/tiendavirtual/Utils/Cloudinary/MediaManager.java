@@ -89,7 +89,7 @@ public class MediaManager {
 	 * @return Los enlaces de la imagen en un objeto Img
 	 * @throws IOException
 	 */
-	public Imagen subirImagenProducto(String name, MultipartFile file) throws IOException {
+	public Imagen subirImagenItem(String name, MultipartFile file) throws IOException {
 		Img img = new Img();
 		Map<?, ?> resource1 = upload(name, "productos/full", file);
 		img.setImagen(resource1.get("url").toString());

@@ -42,7 +42,13 @@ public class ItemDTOForList implements DTOForList<Item>{
 		this.marca = new MarcaDTOForListMinimal().from(item.getMarca());
 		this.descuento = item.getDescuento() == null ? null : new DescuentoDTOForListMinimal().from(item.getDescuento());
 		
-		item.getVariaciones().forEach(var -> variaciones.add(new VariacionDTOForList().from(var)));
+		item.getVariaciones()
+			.stream()
+			.filter(v -> v.getEstado())
+			.sorted()
+			.forEach(var -> {
+				variaciones.add(new VariacionDTOForList().from(var));
+			});
 		
 		return this;
 	}

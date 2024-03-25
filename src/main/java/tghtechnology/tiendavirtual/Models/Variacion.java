@@ -19,7 +19,7 @@ import tghtechnology.tiendavirtual.Enums.TipoVariacion;
 @Table(name = "variacion")
 @Getter
 @Setter
-public class Variacion {
+public class Variacion implements Comparable<Variacion>{
 
     @Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -56,6 +56,11 @@ public class Variacion {
 				.replace('-', '_')
 				.replaceAll("(\\+|,|')+","")// simbolos por vacio
 				.toLowerCase();				// minusculas
+	}
+
+	@Override
+	public int compareTo(Variacion o) {
+		return this.id_variacion.compareTo(o.getId_variacion());
 	}
 
 }

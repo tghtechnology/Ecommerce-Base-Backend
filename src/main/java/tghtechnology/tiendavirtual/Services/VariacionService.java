@@ -2,6 +2,7 @@ package tghtechnology.tiendavirtual.Services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,13 +12,14 @@ import tghtechnology.tiendavirtual.Models.Item;
 import tghtechnology.tiendavirtual.Models.Variacion;
 import tghtechnology.tiendavirtual.Repository.ItemRepository;
 import tghtechnology.tiendavirtual.Repository.VariacionRepository;
+import tghtechnology.tiendavirtual.Utils.Exceptions.DataMismatchException;
 import tghtechnology.tiendavirtual.Utils.Exceptions.IdNotFoundException;
 import tghtechnology.tiendavirtual.dto.VariacionItem.VariacionDTOForInsert;
 import tghtechnology.tiendavirtual.dto.VariacionItem.VariacionDTOForList;
 
 @Service
 @AllArgsConstructor
-public class VariacionItemService {
+public class VariacionService {
 
 	@Autowired
     private VariacionRepository varRepository;
@@ -36,7 +38,7 @@ public class VariacionItemService {
         List<Variacion> vars = (List<Variacion>) varRepository.listarPorItem(item);
         
         vars.forEach( x -> {
-            varList.add(new VariacionDTOForList().from(x));
+        	varList.add(new VariacionDTOForList().from(x));
         });
         return varList;
     }
@@ -85,9 +87,11 @@ public class VariacionItemService {
      * @throws IdNotFoundException Si la ID proporcionada no corresponde a ninguna variación
      */
     public void eliminarVariacionItem(Integer id){
-        Variacion cat = buscarPorId(id);
-        cat.setEstado(false);
-        varRepository.save(cat);
+        Variacion var = buscarPorId(id);
+        if(var.getItem().getVariaciones().stream().filter(v -> v.getEstado()).collect(Collectors.toList()).size() == 1)
+        	throw new DataMismatchException("variacion", "No se puede eliminar la única variación de un item");
+        var.setEstado(false);
+        varRepository.save(var);
     }
     
     public Item item_buscarPorId(Integer id) throws IdNotFoundException{

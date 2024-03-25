@@ -22,7 +22,7 @@ public class VariacionDTOForInsert implements DTOForInsert<Variacion>{
 	private TipoVariacion tipo_variacion;
 	
 	@NotEmpty(message = "El campo no puede estar vacio")
-	@Size(min = 7, max = 8, message = "")
+	@Size(min = 6, max = 8, message = "Formato incorrecto")
 	private String valor_variacion;
 	
 	@NotNull
@@ -37,6 +37,9 @@ public class VariacionDTOForInsert implements DTOForInsert<Variacion>{
 	private Integer stock;
 	
 	@NotNull(message = "No puede ser nulo")
+	private boolean aplicar_descuento;
+	
+	@NotNull(message = "No puede ser nulo")
 	private Integer id_item;
 	
 	@Override
@@ -48,6 +51,8 @@ public class VariacionDTOForInsert implements DTOForInsert<Variacion>{
 		var.setPrecio(precio);
 		var.setDisponibilidad(disponibilidad);
 		var.setStock(stock);
+		var.setAplicarDescuento(aplicar_descuento);
+		var.setEstado(true);
 		
 		return var;
 	}
@@ -58,6 +63,7 @@ public class VariacionDTOForInsert implements DTOForInsert<Variacion>{
 		var.setPrecio(precio);
 		var.setDisponibilidad(disponibilidad);
 		var.setStock(stock);
+		var.setAplicarDescuento(aplicar_descuento);
 		
 		return var;
 	}

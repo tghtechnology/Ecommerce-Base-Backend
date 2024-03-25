@@ -1,5 +1,6 @@
 package tghtechnology.tiendavirtual.Controllers.Api;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -15,6 +16,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.validation.Valid;
 import tghtechnology.tiendavirtual.Security.Interfaces.Empleado;
@@ -41,16 +45,26 @@ public class ItemController {
         return ResponseEntity.status(HttpStatus.OK).body(items);
     }
 	
-	@GetMapping("/{id}")
+	@GetMapping("/id/{id}")
 	public ResponseEntity<ItemDTOForList> listarUno(@PathVariable Integer id) {
 		ItemDTOForList item = itemService.listarUno(id);
         return ResponseEntity.status(HttpStatus.OK).body(item);
 	}
 	
+	@GetMapping("/{text_id}")
+	public ResponseEntity<ItemDTOForList> listarUno(@PathVariable String text_id) {
+		ItemDTOForList item = itemService.listarUno(text_id);
+        return ResponseEntity.status(HttpStatus.OK).body(item);
+	}
+	
 	@Empleado
 	@PostMapping
-	public ResponseEntity<ItemDTOForList> crear(@RequestBody @Valid ItemDTOForInsert iItem){
-		ItemDTOForList item = itemService.crearItem(iItem);
+	public ResponseEntity<ItemDTOForList> crear(@RequestParam String sItem,
+			 									@RequestParam(value = "imagen", required = false) MultipartFile imagen) throws IOException{
+		
+		ItemDTOForInsert iItem = new ObjectMapper().readValue(sItem, ItemDTOForInsert.class);
+		
+		ItemDTOForList item = itemService.crearItem(iItem, imagen);
 		return ResponseEntity.status(HttpStatus.CREATED).body(item);
 	}
 	
@@ -67,6 +81,23 @@ public class ItemController {
 	public ResponseEntity<Void> eliminar(@PathVariable Integer id){
 		itemService.eliminarItem(id);
 		return ResponseEntity.status(HttpStatus.OK).build();
-	} 
+	}
+	
+	@Empleado
+	@PostMapping("/{id}/imagen")
+	public ResponseEntity<Void> addImagen(@PathVariable Integer id,
+										  @RequestParam(value = "imagen", required = true) MultipartFile imagen) throws IOException{
+		
+		itemService.addImagen(id, imagen);
+		return ResponseEntity.status(HttpStatus.CREATED).build();
+	}
+	
+	@Empleado
+	@DeleteMapping("/{id}/imagen/{index}")
+	public ResponseEntity<Void> eliminarImagen(@PathVariable Integer id, @PathVariable Integer index) throws Exception{
+		
+		itemService.eliminarImagen(id, index);
+		return ResponseEntity.status(HttpStatus.OK).build();
+	}
 
 }

@@ -71,14 +71,16 @@ public class MarcaService {
     @Transactional(rollbackFor = {IOException.class, DataIntegrityViolationException.class})
     public MarcaDTOForList crearMarca(MarcaDTOForInsert iMar, MultipartFile imagen) throws IOException{
         Marca mar = iMar.toModel();
+        marRepository.save(mar);
         
         if(imagen != null) {
 	        Imagen img = mediaManager.subirImagenMarca(mar.getText_id(), imagen);
+	        img.setId_owner(mar.getId_marca());
 			img = imaRepository.save(img);
+			
 			mar.setLogo(img);
+			marRepository.save(mar);
         }
-        
-        marRepository.save(mar);
         return new MarcaDTOForList().from(mar);
     }
     

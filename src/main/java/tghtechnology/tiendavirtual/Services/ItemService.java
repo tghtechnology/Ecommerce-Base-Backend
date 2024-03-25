@@ -5,21 +5,27 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import lombok.AllArgsConstructor;
+import tghtechnology.tiendavirtual.Enums.TipoImagen;
 import tghtechnology.tiendavirtual.Models.Categoria;
 import tghtechnology.tiendavirtual.Models.Descuento;
+import tghtechnology.tiendavirtual.Models.Imagen;
 import tghtechnology.tiendavirtual.Models.Item;
 import tghtechnology.tiendavirtual.Models.Marca;
 import tghtechnology.tiendavirtual.Models.Variacion;
 import tghtechnology.tiendavirtual.Repository.CategoriaRepository;
 import tghtechnology.tiendavirtual.Repository.DescuentoRepository;
+import tghtechnology.tiendavirtual.Repository.ImagenRepository;
 import tghtechnology.tiendavirtual.Repository.ItemRepository;
 import tghtechnology.tiendavirtual.Repository.VariacionRepository;
+import tghtechnology.tiendavirtual.Utils.Cloudinary.MediaManager;
 import tghtechnology.tiendavirtual.Utils.Exceptions.IdNotFoundException;
 import tghtechnology.tiendavirtual.dto.Item.ItemDTOForInsert;
 import tghtechnology.tiendavirtual.dto.Item.ItemDTOForList;
@@ -32,40 +38,42 @@ public class ItemService {
 	private DescuentoRepository desRepository;
 	private CategoriaRepository catRepository;
 	private VariacionRepository varRepository;
+	private ImagenRepository imaRepository;
 	
 	private MarcaService marService;
+	private MediaManager mediaManager;
 
-    /*Listar plato*/
+    /*Listar item*/
     public List<ItemDTOForList> listar (String query,
 									    BigDecimal min,
 									    BigDecimal max,
 									    String categoria
     		){
-        List<ItemDTOForList> platoList = new ArrayList<>();
-        List<Item> plas = (List<Item>) itemRepository.listar(query, min, max, categoria);
+        List<ItemDTOForList> itemList = new ArrayList<>();
+        List<Item> items = (List<Item>) itemRepository.listar(query, min, max, categoria);
         
-        plas.forEach( x -> {
-            platoList.add(new ItemDTOForList().from(x));
+        items.forEach( x -> {
+            itemList.add(new ItemDTOForList().from(x));
         });
-        return platoList;
+        return itemList;
     }
     
-    /*Obtener un plato especifico*/
+    /*Obtener un item especifico*/
     public ItemDTOForList listarUno(Integer id){
     	Item item = itemRepository.listarUno(id).orElse(null);
         return item == null ? null : new ItemDTOForList().from(item);
     }
     
-    /*Obtener un plato especifico*/
+    /*Obtener un item especifico*/
     public ItemDTOForList listarUno(String text_id){
-    	Item plato = buscarPorId(text_id);
-        return new ItemDTOForList().from(plato);
+    	Item item = buscarPorId(text_id);
+        return new ItemDTOForList().from(item);
     }
     
-    /**Registrar nuevo plato
+    /**Registrar nuevo item
      * @throws IOException */
-    @Transactional(rollbackFor = {IdNotFoundException.class})
-    public ItemDTOForList crearItem(ItemDTOForInsert iItem){
+    @Transactional(rollbackFor = {IdNotFoundException.class, IOException.class, DataIntegrityViolationException.class})
+    public ItemDTOForList crearItem(ItemDTOForInsert iItem, MultipartFile imagen) throws IOException{
  
     	Item item = iItem.toModel();
     	
@@ -86,10 +94,17 @@ public class ItemService {
     	
     	item.getVariaciones().add(var);
     	
+    	if(imagen != null) {
+	        Imagen img = mediaManager.subirImagenItem(item.getText_id(), imagen);
+	        img.setId_owner(item.getId_item());
+	        img.set_index(1);
+			img = imaRepository.save(img);
+			return new ItemDTOForList().from(item, List.of(img));
+        }
     	return new ItemDTOForList().from(item);
     }
     
-    /*Actualizar plato */
+    /*Actualizar item */
     @Transactional(rollbackFor = {IdNotFoundException.class})
     public void actualizarItem(Integer id, ItemDTOForInsert mItem){
     	
@@ -133,7 +148,7 @@ public class ItemService {
     	}
     }
     
-    /**Eliminar plato */
+    /**Eliminar item */
     public void eliminarItem(Integer id){
     	Item item = buscarPorId(id);
         item.setEstado(false);
@@ -147,6 +162,46 @@ public class ItemService {
         desRepository.saveAll(item.getDescuentos());
         itemRepository.save(item);
     }
+    
+    /**Añadir imagen 
+     * @throws IOException */
+    @Transactional(rollbackFor = {IdNotFoundException.class, IOException.class, DataIntegrityViolationException.class})
+    public void addImagen(Integer id, MultipartFile imagen) throws IOException {
+    	Item item = buscarPorId(id);
+    	
+    	List<Imagen> imagenes = imaRepository.listarPorObjeto(TipoImagen.PRODUCTO, id);
+    	
+    	Imagen img = mediaManager.subirImagenItem(item.getText_id(), imagen);
+        img.setId_owner(item.getId_item());
+        img.set_index(imagenes.size()+1);
+		img = imaRepository.save(img);
+    }
+    
+    /** Elimina una imagen
+     * @throws Exception */
+    public void eliminarImagen(Integer id, Integer index) throws Exception {
+    	Item item = buscarPorId(id);
+    	
+    	List<Imagen> imagenes = imaRepository.listarPorObjeto(TipoImagen.PRODUCTO, item.getId_item());
+    	
+    	Imagen img = imagenes
+						.stream()
+						.filter(i -> i.get_index() == index)
+						.findFirst()
+						.orElseThrow(() -> new IdNotFoundException("imagen"));
+    	
+    	mediaManager.eliminarImagenes(List.of(img.getPublic_id_Imagen(), img.getPublic_id_Miniatura()));
+    	imaRepository.delete(img);
+    	
+    	imagenes = imagenes
+    				.stream()
+    				.filter(i -> i.get_index() > index)
+    				.collect(Collectors.toList());
+    	
+    	imagenes.forEach(i -> i.set_index(i.get_index()-1));
+    	imaRepository.saveAll(imagenes);
+    }
+    
     
     public Item buscarPorId(Integer id) {
 		return itemRepository.listarUno(id).orElseThrow( () -> new IdNotFoundException("item"));
