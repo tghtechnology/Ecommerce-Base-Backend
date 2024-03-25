@@ -1,10 +1,9 @@
 {
 	"info": {
-		"_postman_id": "b8ed0990-e5e6-4bd6-878f-eea5292d8fad",
+		"_postman_id": "b5381e3e-13dd-4c52-8961-70b42f279c3e",
 		"name": "TiendaVirtual-Base",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "31763898",
-		"_collection_link": "https://winter-equinox-881682.postman.co/workspace/Base~1dd33edd-a5f1-48e2-8384-d7cb95fa3661/collection/31763898-b8ed0990-e5e6-4bd6-878f-eea5292d8fad?action=share&source=collection_link&creator=31763898"
+		"_exporter_id": "29571097"
 	},
 	"item": [
 		{
@@ -325,6 +324,194 @@
 			"name": "Item",
 			"item": [
 				{
+					"name": "Variacion",
+					"item": [
+						{
+							"name": "Crear",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{AUTH}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id_item\": 1,\r\n    \"tipo_variacion\": \"COLOR\",\r\n    \"valor_variacion\": \"CDCDCD\",\r\n    \"precio\": 950.90,\r\n    \"disponibilidad\": \"DISPONIBLE\",\r\n    \"stock\": 100\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{API}}/api/variacion",
+									"host": [
+										"{{API}}"
+									],
+									"path": [
+										"api",
+										"variacion"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Editar",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{AUTH}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id_item\": 1,\r\n    \"tipo_variacion\": \"COLOR\",\r\n    \"valor_variacion\": \"CDFFFF\",\r\n    \"precio\": 950.90,\r\n    \"disponibilidad\": \"DISPONIBLE\",\r\n    \"stock\": 100\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{API}}/api/variacion/102",
+									"host": [
+										"{{API}}"
+									],
+									"path": [
+										"api",
+										"variacion",
+										"102"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Eliminar",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{AUTH}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{API}}/api/variacion/1",
+									"host": [
+										"{{API}}"
+									],
+									"path": [
+										"api",
+										"variacion",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Imagen",
+					"item": [
+						{
+							"name": "Añadir",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{AUTH}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "item",
+											"value": "{\n    \"nombre\": \"Celular nuevo3\",\n    \"descripcion\": \"Un celular muy nuevo\",\n    \"precio\": 950.90,\n    \"disponibilidad\": \"DISPONIBLE\",\n    \"stock\": 100,\n    \"id_marca\": 1\n}",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "imagen",
+											"type": "file",
+											"src": "oRseL5MEW/61K1zLmJTLL._AC_UF1000,1000_QL80_.jpg"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{API}}/api/item/52/imagen",
+									"host": [
+										"{{API}}"
+									],
+									"path": [
+										"api",
+										"item",
+										"52",
+										"imagen"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Eliminar",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{AUTH}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "item",
+											"value": "{\n    \"nombre\": \"Celular nuevo3\",\n    \"descripcion\": \"Un celular muy nuevo\",\n    \"precio\": 950.90,\n    \"disponibilidad\": \"DISPONIBLE\",\n    \"stock\": 100,\n    \"id_marca\": 1\n}",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "imagen",
+											"type": "file",
+											"src": "oRseL5MEW/61K1zLmJTLL._AC_UF1000,1000_QL80_.jpg",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "{{API}}/api/item/52/imagen/1",
+									"host": [
+										"{{API}}"
+									],
+									"path": [
+										"api",
+										"item",
+										"52",
+										"imagen",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
 					"name": "Leer",
 					"request": {
 						"method": "GET",
@@ -348,14 +535,34 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{API}}/api/item/1",
+							"raw": "{{API}}/api/item/id/1",
 							"host": [
 								"{{API}}"
 							],
 							"path": [
 								"api",
 								"item",
+								"id",
 								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Leer Uno (text_id)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API}}/api/item/celular_nuevo3",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"item",
+								"celular_nuevo3"
 							]
 						}
 					},
@@ -373,13 +580,19 @@
 							}
 						],
 						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"nombre\": \"Celular nuevo\",\r\n    \"descripcion\": \"Un celular muy nuevo\",\r\n    \"precio\": 950.90,\r\n    \"disponibilidad\": \"DISPONIBLE\",\r\n    \"stock\": 100,\r\n    \"id_categoria\": 1,\r\n    \"id_marca\": 1\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "item",
+									"value": "{\n    \"nombre\": \"Celular nuevo3\",\n    \"descripcion\": \"Un celular muy nuevo\",\n    \"precio\": 950.90,\n    \"disponibilidad\": \"DISPONIBLE\",\n    \"stock\": 100,\n    \"id_marca\": 1\n}",
+									"type": "text"
+								},
+								{
+									"key": "imagen",
+									"type": "file",
+									"src": "7nNi9ZKkJ/CatComputer.jpg"
 								}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{API}}/api/item",
