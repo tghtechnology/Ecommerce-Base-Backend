@@ -37,6 +37,7 @@ public class VariacionDTOForListPedido implements DTOForList<Variacion>{
 		this.tipo_variacion = var.getTipo_variacion();
 		this.valor_variacion = var.getValor_variacion();
 		this.precio = var.getPrecio();
+		this.disponibilidad = var.getDisponibilidad();
 		return this;
 	}
 
