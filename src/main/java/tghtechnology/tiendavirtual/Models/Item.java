@@ -62,7 +62,7 @@ public class Item {
     private Descuento descuento;
 
     @OneToMany(mappedBy = "item")
-    private Set<VariacionItem> variaciones = new HashSet<>();
+    private Set<Variacion> variaciones = new HashSet<>();
     
     @OneToMany(mappedBy = "item")
     private Set<Descuento> descuentos = new HashSet<>();

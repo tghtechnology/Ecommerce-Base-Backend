@@ -15,7 +15,7 @@ import tghtechnology.tiendavirtual.Models.Categoria;
 import tghtechnology.tiendavirtual.Models.Descuento;
 import tghtechnology.tiendavirtual.Models.Item;
 import tghtechnology.tiendavirtual.Models.Marca;
-import tghtechnology.tiendavirtual.Models.VariacionItem;
+import tghtechnology.tiendavirtual.Models.Variacion;
 import tghtechnology.tiendavirtual.Repository.CategoriaRepository;
 import tghtechnology.tiendavirtual.Repository.DescuentoRepository;
 import tghtechnology.tiendavirtual.Repository.ItemRepository;
@@ -80,7 +80,7 @@ public class ItemService {
     	
     	item = itemRepository.save(item);
     	
-    	VariacionItem var = iItem.toVariacion();
+    	Variacion var = iItem.toVariacion();
     	var.setItem(item);
     	var = varRepository.save(var);
     	

@@ -19,7 +19,7 @@ import tghtechnology.tiendavirtual.Enums.TipoVariacion;
 @Table(name = "variacion")
 @Getter
 @Setter
-public class VariacionItem {
+public class Variacion {
 
     @Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

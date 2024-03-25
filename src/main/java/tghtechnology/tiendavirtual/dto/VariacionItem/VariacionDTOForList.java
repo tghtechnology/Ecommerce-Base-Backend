@@ -7,13 +7,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tghtechnology.tiendavirtual.Enums.DisponibilidadItem;
 import tghtechnology.tiendavirtual.Enums.TipoVariacion;
-import tghtechnology.tiendavirtual.Models.VariacionItem;
+import tghtechnology.tiendavirtual.Models.Variacion;
 import tghtechnology.tiendavirtual.Utils.DTOInterfaces.DTOForList;
 
 @Getter
 @Setter
 @NoArgsConstructor
-public class VariacionDTOForList implements DTOForList<VariacionItem>{
+public class VariacionDTOForList implements DTOForList<Variacion>{
 
 	private Integer id_variacion;
 	private TipoVariacion tipo_variacion;
@@ -24,7 +24,7 @@ public class VariacionDTOForList implements DTOForList<VariacionItem>{
 	private Boolean aplicar_descuento;
 	
 	@Override
-	public VariacionDTOForList from(VariacionItem var) {
+	public VariacionDTOForList from(Variacion var) {
 		this.id_variacion = var.getId_variacion();
 		this.tipo_variacion = var.getTipo_variacion();
 		this.valor_variacion = var.getValor_variacion();

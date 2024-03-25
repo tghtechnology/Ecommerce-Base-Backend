@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
 import tghtechnology.tiendavirtual.Models.Item;
-import tghtechnology.tiendavirtual.Models.VariacionItem;
+import tghtechnology.tiendavirtual.Models.Variacion;
 import tghtechnology.tiendavirtual.Repository.ItemRepository;
 import tghtechnology.tiendavirtual.Repository.VariacionRepository;
 import tghtechnology.tiendavirtual.Utils.Exceptions.IdNotFoundException;
@@ -33,7 +33,7 @@ public class VariacionItemService {
     	
     	
         List<VariacionDTOForList> varList = new ArrayList<>();
-        List<VariacionItem> vars = (List<VariacionItem>) varRepository.listarPorItem(item);
+        List<Variacion> vars = (List<Variacion>) varRepository.listarPorItem(item);
         
         vars.forEach( x -> {
             varList.add(new VariacionDTOForList().from(x));
@@ -47,7 +47,7 @@ public class VariacionItemService {
      * @return la variación encontrada en formato ForList o null si no existe
      */
     public VariacionDTOForList listarUno(Integer id){
-        VariacionItem variacion = varRepository.listarUno(id).orElse(null);
+        Variacion variacion = varRepository.listarUno(id).orElse(null);
         return variacion == null ? null : new VariacionDTOForList().from(variacion);
     }
     
@@ -58,7 +58,7 @@ public class VariacionItemService {
      */
     public VariacionDTOForList crearVariacionItem(VariacionDTOForInsert iVar){
     	
-        VariacionItem var = iVar.toModel();
+        Variacion var = iVar.toModel();
         
         Item item = item_buscarPorId(iVar.getId_item());
         var.setItem(item);
@@ -74,7 +74,7 @@ public class VariacionItemService {
      * @throws IdNotFoundException Si la ID proporcionada no corresponde a ninguna variación
      */
     public void actualizarVariacionItem(Integer id, VariacionDTOForInsert mVar){
-        VariacionItem variacion = buscarPorId(id);
+        Variacion variacion = buscarPorId(id);
         variacion = mVar.updateModel(variacion);
         varRepository.save(variacion);
     }
@@ -85,7 +85,7 @@ public class VariacionItemService {
      * @throws IdNotFoundException Si la ID proporcionada no corresponde a ninguna variación
      */
     public void eliminarVariacionItem(Integer id){
-        VariacionItem cat = buscarPorId(id);
+        Variacion cat = buscarPorId(id);
         cat.setEstado(false);
         varRepository.save(cat);
     }
@@ -94,7 +94,7 @@ public class VariacionItemService {
 		return itemRepository.listarUno(id).orElseThrow( () -> new IdNotFoundException("item"));
 	}
     
-    public VariacionItem buscarPorId(Integer id) throws IdNotFoundException{
+    public Variacion buscarPorId(Integer id) throws IdNotFoundException{
 		return varRepository.listarUno(id).orElseThrow( () -> new IdNotFoundException("variacion"));
 	}
 }

@@ -14,7 +14,7 @@ import lombok.Setter;
 import tghtechnology.tiendavirtual.Enums.DisponibilidadItem;
 import tghtechnology.tiendavirtual.Enums.TipoVariacion;
 import tghtechnology.tiendavirtual.Models.Item;
-import tghtechnology.tiendavirtual.Models.VariacionItem;
+import tghtechnology.tiendavirtual.Models.Variacion;
 import tghtechnology.tiendavirtual.Utils.DTOInterfaces.DTOForInsert;
 
 @Getter
@@ -65,8 +65,8 @@ public class ItemDTOForInsert implements DTOForInsert<Item>{
 		return item;
 	}
 	
-	public VariacionItem toVariacion() {
-		VariacionItem var = new VariacionItem();
+	public Variacion toVariacion() {
+		Variacion var = new Variacion();
 		var.setTipo_variacion(TipoVariacion.COLOR);
 		var.setValor_variacion("000000");
 		var.setPrecio(precio);

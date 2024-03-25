@@ -11,12 +11,12 @@ import lombok.Getter;
 import lombok.Setter;
 import tghtechnology.tiendavirtual.Enums.DisponibilidadItem;
 import tghtechnology.tiendavirtual.Enums.TipoVariacion;
-import tghtechnology.tiendavirtual.Models.VariacionItem;
+import tghtechnology.tiendavirtual.Models.Variacion;
 import tghtechnology.tiendavirtual.Utils.DTOInterfaces.DTOForInsert;
 
 @Getter
 @Setter
-public class VariacionDTOForInsert implements DTOForInsert<VariacionItem>{
+public class VariacionDTOForInsert implements DTOForInsert<Variacion>{
 
 	@NotNull(message = "El campo no puede ser nulo")
 	private TipoVariacion tipo_variacion;
@@ -40,8 +40,8 @@ public class VariacionDTOForInsert implements DTOForInsert<VariacionItem>{
 	private Integer id_item;
 	
 	@Override
-	public VariacionItem toModel() {
-		VariacionItem var = new VariacionItem();
+	public Variacion toModel() {
+		Variacion var = new Variacion();
 		
 		var.setTipo_variacion(tipo_variacion);
 		var.setValor_variacion(valor_variacion);
@@ -53,7 +53,7 @@ public class VariacionDTOForInsert implements DTOForInsert<VariacionItem>{
 	}
 
 	@Override
-	public VariacionItem updateModel(VariacionItem var) {
+	public Variacion updateModel(Variacion var) {
 		var.setValor_variacion(valor_variacion);
 		var.setPrecio(precio);
 		var.setDisponibilidad(disponibilidad);
