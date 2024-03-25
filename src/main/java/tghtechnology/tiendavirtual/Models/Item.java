@@ -50,7 +50,7 @@ public class Item {
     private Boolean estado;
     
     @ManyToOne
-    @JoinColumn(name = "id_categoria", nullable = false)
+    @JoinColumn(name = "id_categoria", nullable = true)
     private Categoria categoria;
     
     @ManyToOne

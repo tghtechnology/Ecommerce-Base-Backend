@@ -159,8 +159,8 @@ public class ItemService {
 		return desRepository.listarUno(id).orElseThrow( () -> new IdNotFoundException("descuento"));
 	}
     
-    public Categoria cat_buscarPorId(Integer id) throws IdNotFoundException{
-		return catRepository.listarUno(id).orElseThrow( () -> new IdNotFoundException("categoria"));
+    public Categoria cat_buscarPorId(Integer id){
+		return catRepository.listarUno(id).orElse(null);
 	}
 
 }

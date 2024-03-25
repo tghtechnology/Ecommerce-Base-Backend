@@ -16,6 +16,7 @@ public class CategoriaDTOForList implements DTOForList<Categoria>{
 
 	@Override
 	public CategoriaDTOForList from(Categoria model) {
+		if(model == null) return null;
 		this.id_categoria = model.getId_categoria();
 		this.descripcion = model.getDescripcion();
 		return this;
