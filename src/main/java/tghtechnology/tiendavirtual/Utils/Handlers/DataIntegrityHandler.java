@@ -16,8 +16,10 @@ public class DataIntegrityHandler extends ResponseEntityExceptionHandler{
 		
 		if(ex.getMessage().contains("Duplicate entry")) {
 			return new ResponseEntity<Object>("Ya existe una entrada con ese nombre", HttpStatus.CONFLICT);
-		} else
-			return new ResponseEntity<Object>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		} else if(ex.getMessage().contains("El nombre"))
+			return new ResponseEntity<Object>(ex.getMessage(), HttpStatus.CONFLICT);
+		else
+			return new ResponseEntity<Object>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 }

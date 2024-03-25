@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,18 +20,23 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import tghtechnology.tiendavirtual.Security.Interfaces.Empleado;
 import tghtechnology.tiendavirtual.Security.Interfaces.Gerente;
 import tghtechnology.tiendavirtual.Services.ItemService;
+import tghtechnology.tiendavirtual.Utils.CustomBeanValidator;
+import tghtechnology.tiendavirtual.Utils.Exceptions.CustomValidationFailedException;
 import tghtechnology.tiendavirtual.dto.Item.ItemDTOForInsert;
 import tghtechnology.tiendavirtual.dto.Item.ItemDTOForList;
+import tghtechnology.tiendavirtual.dto.Item.ItemDTOForListFull;
 
 @RequestMapping("/api/item")
 @RestController
+@AllArgsConstructor
 public class ItemController {
 
-	@Autowired
     private ItemService itemService;
+	private CustomBeanValidator validator;
 	
 	@GetMapping
     public ResponseEntity<List<ItemDTOForList>> listar(@RequestParam(defaultValue = "", name = "query") String query,
@@ -46,26 +50,27 @@ public class ItemController {
     }
 	
 	@GetMapping("/id/{id}")
-	public ResponseEntity<ItemDTOForList> listarUno(@PathVariable Integer id) {
-		ItemDTOForList item = itemService.listarUno(id);
+	public ResponseEntity<ItemDTOForListFull> listarUno(@PathVariable Integer id) {
+		ItemDTOForListFull item = itemService.listarUno(id);
         return ResponseEntity.status(HttpStatus.OK).body(item);
 	}
 	
 	@GetMapping("/{text_id}")
-	public ResponseEntity<ItemDTOForList> listarUno(@PathVariable String text_id) {
-		ItemDTOForList item = itemService.listarUno(text_id);
+	public ResponseEntity<ItemDTOForListFull> listarUno(@PathVariable String text_id) {
+		ItemDTOForListFull item = itemService.listarUno(text_id);
         return ResponseEntity.status(HttpStatus.OK).body(item);
 	}
 	
-	@Empleado
+	//@Empleado
 	@PostMapping
-	public ResponseEntity<ItemDTOForList> crear(@RequestParam String sItem,
-			 									@RequestParam(value = "imagen", required = false) MultipartFile imagen) throws IOException{
+	public ResponseEntity<ItemDTOForList> crear(@RequestParam String item,
+			 									@RequestParam(value = "imagen", required = false) MultipartFile imagen) throws IOException, CustomValidationFailedException{
 		
-		ItemDTOForInsert iItem = new ObjectMapper().readValue(sItem, ItemDTOForInsert.class);
-		
-		ItemDTOForList item = itemService.crearItem(iItem, imagen);
-		return ResponseEntity.status(HttpStatus.CREATED).body(item);
+		ItemDTOForInsert iItem = new ObjectMapper().readValue(item, ItemDTOForInsert.class);
+		validator.validar(iItem);
+		System.out.println("a");
+		ItemDTOForList lItem = itemService.crearItem(iItem, imagen);
+		return ResponseEntity.status(HttpStatus.CREATED).body(lItem);
 	}
 	
 	@Empleado
@@ -83,7 +88,7 @@ public class ItemController {
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 	
-	@Empleado
+	//@Empleado
 	@PostMapping("/{id}/imagen")
 	public ResponseEntity<Void> addImagen(@PathVariable Integer id,
 										  @RequestParam(value = "imagen", required = true) MultipartFile imagen) throws IOException{
@@ -92,7 +97,7 @@ public class ItemController {
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 	
-	@Empleado
+	//@Empleado
 	@DeleteMapping("/{id}/imagen/{index}")
 	public ResponseEntity<Void> eliminarImagen(@PathVariable Integer id, @PathVariable Integer index) throws Exception{
 		

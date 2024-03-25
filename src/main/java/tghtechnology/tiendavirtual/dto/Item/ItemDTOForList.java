@@ -58,7 +58,7 @@ public class ItemDTOForList implements DTOForList<Item>{
 		
 		imagenes.forEach(img -> {
 			if(img.get_index() == 1) {
-				this.thumbnail = img.getPublic_id_Miniatura();
+				this.thumbnail = img.getMiniatura();
 			}
 		});
 		

@@ -1,6 +1,8 @@
 package tghtechnology.tiendavirtual.Utils.Cloudinary;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -90,6 +92,11 @@ public class MediaManager {
 	 * @throws IOException
 	 */
 	public Imagen subirImagenItem(String name, MultipartFile file) throws IOException {
+		
+		String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss"));
+		
+		name = name + "-" + now;
+		
 		Img img = new Img();
 		Map<?, ?> resource1 = upload(name, "productos/full", file);
 		img.setImagen(resource1.get("url").toString());

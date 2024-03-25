@@ -29,6 +29,7 @@ import tghtechnology.tiendavirtual.Utils.Cloudinary.MediaManager;
 import tghtechnology.tiendavirtual.Utils.Exceptions.IdNotFoundException;
 import tghtechnology.tiendavirtual.dto.Item.ItemDTOForInsert;
 import tghtechnology.tiendavirtual.dto.Item.ItemDTOForList;
+import tghtechnology.tiendavirtual.dto.Item.ItemDTOForListFull;
 
 @Service
 @AllArgsConstructor
@@ -53,30 +54,29 @@ public class ItemService {
         List<Item> items = (List<Item>) itemRepository.listar(query, min, max, categoria);
         
         items.forEach( x -> {
-            itemList.add(new ItemDTOForList().from(x));
+            itemList.add(new ItemDTOForList().from(x, imaRepository.listarPorObjeto(TipoImagen.PRODUCTO, x.getId_item())));
         });
         return itemList;
     }
     
     /*Obtener un item especifico*/
-    public ItemDTOForList listarUno(Integer id){
+    public ItemDTOForListFull listarUno(Integer id){
     	Item item = itemRepository.listarUno(id).orElse(null);
-        return item == null ? null : new ItemDTOForList().from(item);
+        return item == null ? null : new ItemDTOForListFull().from(item, imaRepository.listarPorObjeto(TipoImagen.PRODUCTO, item.getId_item()));
     }
     
     /*Obtener un item especifico*/
-    public ItemDTOForList listarUno(String text_id){
+    public ItemDTOForListFull listarUno(String text_id){
     	Item item = buscarPorId(text_id);
-        return new ItemDTOForList().from(item);
+        return new ItemDTOForListFull().from(item, imaRepository.listarPorObjeto(TipoImagen.PRODUCTO, item.getId_item()));
     }
     
     /**Registrar nuevo item
      * @throws IOException */
     @Transactional(rollbackFor = {IdNotFoundException.class, IOException.class, DataIntegrityViolationException.class})
-    public ItemDTOForList crearItem(ItemDTOForInsert iItem, MultipartFile imagen) throws IOException{
+    public ItemDTOForList crearItem(ItemDTOForInsert iItem, MultipartFile imagen) throws IOException, DataIntegrityViolationException{
  
     	Item item = iItem.toModel();
-    	
     	if(itemRepository.listarUno(item.getText_id()).isPresent())
     		throw new DataIntegrityViolationException("El nombre (" + item.getText_id() + ") ya existe para producto.");
     	
@@ -87,7 +87,6 @@ public class ItemService {
     	item.setMarca(mar);
     	
     	item = itemRepository.save(item);
-    	
     	Variacion var = iItem.toVariacion();
     	var.setItem(item);
     	var = varRepository.save(var);
@@ -99,8 +98,10 @@ public class ItemService {
 	        img.setId_owner(item.getId_item());
 	        img.set_index(1);
 			img = imaRepository.save(img);
+			
 			return new ItemDTOForList().from(item, List.of(img));
         }
+    	System.out.println(item.getNombre());
     	return new ItemDTOForList().from(item);
     }
     
