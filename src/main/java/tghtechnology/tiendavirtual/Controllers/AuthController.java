@@ -21,7 +21,7 @@ import tghtechnology.tiendavirtual.dto.Usuario.UsuarioDTOForLoginResponse;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/admin")
+@RequestMapping("/auth")
 public class AuthController {
 	
 	@Autowired
@@ -29,7 +29,7 @@ public class AuthController {
 	private final UsuarioService userService;
 	//private final AuthenticationManager authManager;
 	
-	@PostMapping("/token")
+	@PostMapping("/login")
 	public UsuarioDTOForLoginResponse token(@RequestBody UserLogin login,
 											@RequestHeader Map<String, String> headers)
 											throws AuthenticationException {
