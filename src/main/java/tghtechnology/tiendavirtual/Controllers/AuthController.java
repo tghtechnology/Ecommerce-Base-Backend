@@ -21,7 +21,7 @@ import tghtechnology.tiendavirtual.dto.Usuario.UsuarioDTOForLoginResponse;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class AuthController {
 	
 	@Autowired
