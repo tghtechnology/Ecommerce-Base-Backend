@@ -1,7 +1,8 @@
 package tghtechnology.tiendavirtual.Models;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,11 +11,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 import tghtechnology.tiendavirtual.Enums.EstadoPedido;
-import tghtechnology.tiendavirtual.Utils.ApisPeru.Enums.TipoDocumento;
+import tghtechnology.tiendavirtual.Utils.ApisPeru.Enums.TipoComprobante;
 
 @Entity
 @Table(name = "venta" )
@@ -27,34 +29,29 @@ public class Venta {
     private Integer id_venta;
 
     @Column(nullable = false)
-    private TipoDocumento tipo_comprobante;
+    private TipoComprobante tipo_comprobante;
     
     @Column(nullable = true)
     private String num_comprobante;
     
     @Column(nullable = false)
-    private LocalDateTime fecha_pedido;
+    private LocalDateTime fecha_venta;
 
     @Column(nullable = false)
     private EstadoPedido estado_pedido;
     
     @Column(nullable = false)
-    private Boolean antesDeIGV;
-    
-    @Column(nullable = false)
-    private BigDecimal IGV;
-    
-    @Column(nullable = false)
-    private BigDecimal precio_total;
+    private Integer porcentaje_igv;
     
     @Column(nullable = false)
     private boolean estado;
-
-    //TODO Detalle de venta
     
   	//Cliente
   	@ManyToOne
   	@JoinColumn(name = "id_cliente")
 	private Cliente cliente;
+  	
+  	@OneToMany(mappedBy = "venta")
+  	private Set<DetalleVenta> detalles = new HashSet<>();
   	
 }

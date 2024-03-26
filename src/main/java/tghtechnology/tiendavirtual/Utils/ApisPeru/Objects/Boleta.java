@@ -10,7 +10,7 @@ import lombok.Getter;
 import lombok.Setter;
 import tghtechnology.tiendavirtual.Utils.ApisPeru.Enums.Leyenda;
 import tghtechnology.tiendavirtual.Utils.ApisPeru.Enums.Moneda;
-import tghtechnology.tiendavirtual.Utils.ApisPeru.Enums.TipoDocumento;
+import tghtechnology.tiendavirtual.Utils.ApisPeru.Enums.TipoComprobante;
 import tghtechnology.tiendavirtual.Utils.ApisPeru.Enums.TipoOperacion;
 import tghtechnology.tiendavirtual.Utils.ApisPeru.Functions.ApisPeruUtils;
 import tghtechnology.tiendavirtual.Utils.ApisPeru.Functions.DineroALetras;
@@ -58,7 +58,7 @@ public class Boleta {
 	
 	
 	public Boleta(TipoOperacion tipoOperacion,
-					TipoDocumento tipoDoc,
+					TipoComprobante tipoDoc,
 					Integer idBoleta,
 					LocalDateTime fechaEmision,
 					Client client,
@@ -106,7 +106,7 @@ public class Boleta {
 	
 	public Boleta(String ublVersion,
 					TipoOperacion tipoOperacion,
-					TipoDocumento tipoDoc,
+					TipoComprobante tipoDoc,
 					String serie,
 					String correlativo,
 					LocalDateTime fechaEmision,

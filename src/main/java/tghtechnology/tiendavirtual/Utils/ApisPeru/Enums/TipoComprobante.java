@@ -2,7 +2,7 @@ package tghtechnology.tiendavirtual.Utils.ApisPeru.Enums;
 
 import lombok.Getter;
 
-public enum TipoDocumento {
+public enum TipoComprobante {
 
 	FACTURA("01"),
 	BOLETA_DE_VENTA("03"),
@@ -26,7 +26,7 @@ public enum TipoDocumento {
 	@Getter
 	private String label;
 	
-	TipoDocumento(String label) {
+	TipoComprobante(String label) {
 		this.label = label;
 	}
 }

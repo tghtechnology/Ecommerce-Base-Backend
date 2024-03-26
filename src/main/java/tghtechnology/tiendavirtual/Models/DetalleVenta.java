@@ -7,13 +7,15 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 import tghtechnology.tiendavirtual.Enums.TipoVariacion;
 
 @Entity
-@Table(name = "detalle-venta" )
+@Table(name = "detalle_venta" )
 @Getter
 @Setter
 public class DetalleVenta {
@@ -46,7 +48,8 @@ public class DetalleVenta {
 	@Column(nullable = false)
 	private Short cantidad;
 	
-	@Column(nullable = false)
-	private BigDecimal subtotal;
+	@ManyToOne
+	@JoinColumn(name = "id_venta")
+	private Venta venta;
 	
 }

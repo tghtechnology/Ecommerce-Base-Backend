@@ -12,7 +12,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "detalle_pedido")
+@Table(name = "detalle_carrito")
 @Getter
 @Setter
 public class DetalleCarrito implements Comparable<DetalleCarrito>{
