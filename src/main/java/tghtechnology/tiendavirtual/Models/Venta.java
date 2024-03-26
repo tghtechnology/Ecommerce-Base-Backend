@@ -10,12 +10,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 import tghtechnology.tiendavirtual.Enums.EstadoPedido;
-import tghtechnology.tiendavirtual.Enums.TipoDelivery;
 import tghtechnology.tiendavirtual.Utils.ApisPeru.Enums.TipoDocumento;
 
 @Entity
@@ -31,6 +29,9 @@ public class Venta {
     @Column(nullable = false)
     private TipoDocumento tipo_comprobante;
     
+    @Column(nullable = true)
+    private String num_comprobante;
+    
     @Column(nullable = false)
     private LocalDateTime fecha_pedido;
 
@@ -39,15 +40,9 @@ public class Venta {
     
     @Column(nullable = false)
     private Boolean antesDeIGV;
-
-    @Column(nullable = true)
-    private String num_comprobante;
     
     @Column(nullable = false)
-    private TipoDelivery tipo_delivery;
-    
-    @Column(nullable = true)
-    private BigDecimal costo_delivery;
+    private BigDecimal IGV;
     
     @Column(nullable = false)
     private BigDecimal precio_total;
@@ -55,14 +50,11 @@ public class Venta {
     @Column(nullable = false)
     private boolean estado;
 
+    //TODO Detalle de venta
+    
   	//Cliente
   	@ManyToOne
   	@JoinColumn(name = "id_cliente")
 	private Cliente cliente;
-  	
-  	// Pedido que presenta
-  	@OneToOne
-  	@JoinColumn(name = "id_pedido")
- 	private Pedido pedido;
   	
 }

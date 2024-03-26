@@ -146,7 +146,7 @@ public class EmpleadoService {
         emp = empRepository.save(emp);
         
         Usuario user = emp.getUsuario();
-        user.setCargo(TipoUsuario.CLIENTE);
+        user.setEstado(false);
         userRepository.save(user);
         
     }

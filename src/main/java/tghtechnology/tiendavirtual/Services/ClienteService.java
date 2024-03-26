@@ -12,9 +12,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.AllArgsConstructor;
 import tghtechnology.tiendavirtual.Enums.TipoUsuario;
+import tghtechnology.tiendavirtual.Models.Carrito;
 import tghtechnology.tiendavirtual.Models.Cliente;
 import tghtechnology.tiendavirtual.Models.Persona;
 import tghtechnology.tiendavirtual.Models.Usuario;
+import tghtechnology.tiendavirtual.Repository.CarritoRepository;
 import tghtechnology.tiendavirtual.Repository.ClienteRepository;
 import tghtechnology.tiendavirtual.Repository.PersonaRepository;
 import tghtechnology.tiendavirtual.Repository.UsuarioRepository;
@@ -31,6 +33,7 @@ public class ClienteService {
     private ClienteRepository cliRepository;
 	private PersonaRepository perRepository;
 	private UsuarioRepository userRepository;
+	private CarritoRepository carRepository;
 	
 	private UsuarioService userService;
 
@@ -90,6 +93,11 @@ public class ClienteService {
         cli.setUsuario(user);
         cli = cliRepository.save(cli);
 
+        Carrito car = new Carrito();
+        car.setId_usuario(user.getId_usuario());
+        car.setUsuario(user);
+        carRepository.save(car);
+        
         return new ClienteDTOForList().from(cli);
     } 
     

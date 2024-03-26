@@ -33,6 +33,6 @@ public class Notificacion {
 	// Pedido que notifica
 	@OneToOne
 	@JoinColumn(name = "id_pedido")
-	private Pedido pedido;
+	private Carrito pedido;
 	
 }

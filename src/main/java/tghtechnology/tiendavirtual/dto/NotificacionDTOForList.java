@@ -16,7 +16,7 @@ public class NotificacionDTOForList {
 	
 	public NotificacionDTOForList(Notificacion noti) {
 		this.hora = ApisPeruUtils.dateFormat(noti.getHora());
-		this.id_pedido = noti.getPedido().getId_pedido();
+		this.id_pedido = noti.getPedido().getId_usuario();
 	}
 	
 }

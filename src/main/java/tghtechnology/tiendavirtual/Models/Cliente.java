@@ -43,13 +43,9 @@ public class Cliente {
 	@OneToMany(mappedBy = "cliente")
 	private Set<Direccion> direcciones = new HashSet<>();
 	
-	// Pedidos realizados
-	@OneToMany(mappedBy = "cliente")
-	private Set<Pedido> pedidos = new HashSet<>();
-	
 	@OneToOne
 	@JoinColumn(name = "id_pedido", nullable = true)
-	private Pedido carrito;
+	private Carrito carrito;
 	 
 	@OneToOne
 	@JoinColumn(name = "id_usuario", nullable = false)

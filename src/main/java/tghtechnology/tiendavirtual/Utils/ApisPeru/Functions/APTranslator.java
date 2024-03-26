@@ -1,26 +1,5 @@
 package tghtechnology.tiendavirtual.Utils.ApisPeru.Functions;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
-import tghtechnology.tiendavirtual.Enums.TipoDelivery;
-import tghtechnology.tiendavirtual.Models.DetallePedido;
-import tghtechnology.tiendavirtual.Models.Pedido;
-import tghtechnology.tiendavirtual.Utils.ApisPeru.CompanyData;
-import tghtechnology.tiendavirtual.Utils.ApisPeru.Enums.AfectacionIGV;
-import tghtechnology.tiendavirtual.Utils.ApisPeru.Enums.Leyenda;
-import tghtechnology.tiendavirtual.Utils.ApisPeru.Enums.TipoOperacion;
-import tghtechnology.tiendavirtual.Utils.ApisPeru.Enums.UnidadMedida;
-import tghtechnology.tiendavirtual.Utils.ApisPeru.Objects.Address;
-import tghtechnology.tiendavirtual.Utils.ApisPeru.Objects.Boleta;
-import tghtechnology.tiendavirtual.Utils.ApisPeru.Objects.Charge;
-import tghtechnology.tiendavirtual.Utils.ApisPeru.Objects.Client;
-import tghtechnology.tiendavirtual.Utils.ApisPeru.Objects.SaleDetail;
-import tghtechnology.tiendavirtual.dto.Cliente.ClienteDTOForInsert;
-
 public class APTranslator {
 /*
 	public static Boleta pedidoToApiBoleta(Pedido ped, ClienteDTOForInsert cli, LocalDateTime fechaEmision, BigDecimal igv, Boolean antesDeIGV) {

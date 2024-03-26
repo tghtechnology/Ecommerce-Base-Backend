@@ -13,7 +13,7 @@ import tghtechnology.tiendavirtual.Utils.DTOInterfaces.DTOForList;
 @Getter
 @Setter
 @NoArgsConstructor
-public class VariacionDTOForListPedido implements DTOForList<Variacion>{
+public class VariacionDTOForListCarrito implements DTOForList<Variacion>{
 
 	private Integer id_item;
 	private String url;
@@ -25,10 +25,10 @@ public class VariacionDTOForListPedido implements DTOForList<Variacion>{
 	private BigDecimal precio;
 	private DisponibilidadItem disponibilidad;
 	private Integer stock;
-	private Boolean aplicar_descuento;
+	private BigDecimal descuento;
 	
 	@Override
-	public VariacionDTOForListPedido from(Variacion var) {
+	public VariacionDTOForListCarrito from(Variacion var) {
 		this.id_item = var.getItem().getId_item();
 		this.url = var.getItem().getText_id();
 		this.nombre = var.getItem().getNombre();
@@ -38,6 +38,12 @@ public class VariacionDTOForListPedido implements DTOForList<Variacion>{
 		this.valor_variacion = var.getValor_variacion();
 		this.precio = var.getPrecio();
 		this.disponibilidad = var.getDisponibilidad();
+		this.stock = var.getStock();
+		
+		this.descuento = (var.getItem().getDescuento() != null && var.getAplicarDescuento())
+							? precio.multiply(new BigDecimal(var.getItem().getDescuento().getPorcentaje()))
+							: BigDecimal.ZERO;
+		
 		return this;
 	}
 

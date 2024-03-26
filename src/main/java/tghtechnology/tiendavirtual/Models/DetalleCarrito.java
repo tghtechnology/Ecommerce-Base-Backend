@@ -1,7 +1,5 @@
 package tghtechnology.tiendavirtual.Models;
 
-import java.math.BigDecimal;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,22 +15,29 @@ import lombok.Setter;
 @Table(name = "detalle_pedido")
 @Getter
 @Setter
-public class DetallePedido {
+public class DetalleCarrito implements Comparable<DetalleCarrito>{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id_detalle;
+    
+    @Column(nullable = false)
+    private Integer correlativo;
 
     @Column(nullable = false)
     private Integer cantidad;
-    @Column(nullable = false)
-    private BigDecimal sub_total;
     
     @ManyToOne
     @JoinColumn(name = "id_variacion" )
     private Variacion variacion;
 
     @ManyToOne
-    @JoinColumn(name = "id_pedido")
-    private Pedido pedido;
+    @JoinColumn(name = "id_carrito")
+    private Carrito carrito;
+
+	@Override
+	public int compareTo(DetalleCarrito o) {
+		return this.correlativo.compareTo(o.getCorrelativo());
+	}
+    
 }

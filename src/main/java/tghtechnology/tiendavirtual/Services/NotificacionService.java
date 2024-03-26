@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 import tghtechnology.tiendavirtual.Models.Notificacion;
-import tghtechnology.tiendavirtual.Models.Pedido;
+import tghtechnology.tiendavirtual.Models.Carrito;
 import tghtechnology.tiendavirtual.Repository.NotificacionRepository;
 import tghtechnology.tiendavirtual.dto.NotificacionDTOForList;
 
@@ -72,7 +72,7 @@ public class NotificacionService {
 	}
 	
     
-    public void registrarNotificacion(Pedido ped) {
+    public void registrarNotificacion(Carrito ped) {
 		Notificacion noti = new Notificacion();
 		noti.setHora(LocalDateTime.now());
 		noti.setPedido(ped);

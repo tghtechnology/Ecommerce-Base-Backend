@@ -1,0 +1,52 @@
+package tghtechnology.tiendavirtual.Models;
+
+import java.math.BigDecimal;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
+import tghtechnology.tiendavirtual.Enums.TipoVariacion;
+
+@Entity
+@Table(name = "detalle-venta" )
+@Getter
+@Setter
+public class DetalleVenta {
+
+	@Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id_detalle;
+	
+	@Column(nullable = false)
+	private Integer id_item;
+	
+	@Column(nullable = false)
+	private String nombre_item;
+	
+	@Column(nullable = false)
+	private Integer id_variacion;
+	
+	@Column(nullable = false)
+	private TipoVariacion tipo_variacion;
+	
+	@Column(nullable = false, length = 10)
+	private String valor_variacion;
+	
+	@Column(nullable = false)
+	private BigDecimal precio_unitario;
+	
+	@Column(nullable = false)
+	private BigDecimal descuento_unitario;
+	
+	@Column(nullable = false)
+	private Short cantidad;
+	
+	@Column(nullable = false)
+	private BigDecimal subtotal;
+	
+}
