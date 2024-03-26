@@ -1,9 +1,10 @@
 {
 	"info": {
-		"_postman_id": "b5381e3e-13dd-4c52-8961-70b42f279c3e",
+		"_postman_id": "dd2c9e26-db8d-4a67-be76-a0275e9a3183",
 		"name": "TiendaVirtual-Base",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "29571097"
+		"_exporter_id": "31763898",
+		"_collection_link": "https://winter-equinox-881682.postman.co/workspace/Base~1dd33edd-a5f1-48e2-8384-d7cb95fa3661/collection/31763898-dd2c9e26-db8d-4a67-be76-a0275e9a3183?action=share&source=collection_link&creator=31763898"
 	},
 	"item": [
 		{
@@ -92,7 +93,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\":\"admin@test.com\",\r\n    \"password\":\"Te$t1234\"\r\n}",
+							"raw": "{\r\n    \"username\":\"cliente@test.com\",\r\n    \"password\":\"Te$t1234\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -339,7 +340,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"id_item\": 1,\r\n    \"tipo_variacion\": \"COLOR\",\r\n    \"valor_variacion\": \"CDCDCD\",\r\n    \"precio\": 950.90,\r\n    \"disponibilidad\": \"DISPONIBLE\",\r\n    \"stock\": 100\r\n}",
+									"raw": "{\r\n    \"id_item\": 2,\r\n    \"tipo_variacion\": \"COLOR\",\r\n    \"valor_variacion\": \"CDCDCD\",\r\n    \"precio\": 60.00,\r\n    \"disponibilidad\": \"DISPONIBLE\",\r\n    \"stock\": 100\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -584,13 +585,14 @@
 							"formdata": [
 								{
 									"key": "item",
-									"value": "{\n    \"nombre\": \"Celular nuevo3\",\n    \"descripcion\": \"Un celular muy nuevo\",\n    \"precio\": 950.90,\n    \"disponibilidad\": \"DISPONIBLE\",\n    \"stock\": 100,\n    \"id_marca\": 1\n}",
+									"value": "{\n    \"nombre\": \"Celular nuevo4\",\n    \"descripcion\": \"Un celular muy nuevo\",\n    \"precio\": 50.00,\n    \"disponibilidad\": \"DISPONIBLE\",\n    \"stock\": 100,\n    \"id_marca\": 1\n}",
 									"type": "text"
 								},
 								{
 									"key": "imagen",
 									"type": "file",
-									"src": "7nNi9ZKkJ/CatComputer.jpg"
+									"src": [],
+									"disabled": true
 								}
 							]
 						},
@@ -1279,6 +1281,136 @@
 								"api",
 								"descuento",
 								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Carrito",
+			"item": [
+				{
+					"name": "Listar Carrito",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{API}}/api/carrito",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"carrito"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Añadir al carrito",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id_variacion\": 2,\r\n    \"cantidad\": 10\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API}}/api/carrito",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"carrito"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar detalle carrito",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cantidad\": 0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API}}/api/carrito/3",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"carrito",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar detalle carrito",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cantidad\": 0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API}}/api/carrito/1",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"carrito",
+								"1"
 							]
 						}
 					},
