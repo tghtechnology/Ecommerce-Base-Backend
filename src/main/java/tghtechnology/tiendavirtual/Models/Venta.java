@@ -17,17 +17,19 @@ import lombok.Getter;
 import lombok.Setter;
 import tghtechnology.tiendavirtual.Enums.EstadoPedido;
 import tghtechnology.tiendavirtual.Utils.ApisPeru.Enums.TipoComprobante;
+import tghtechnology.tiendavirtual.Utils.ApisPeru.Enums.TipoDocIdentidad;
 
 @Entity
 @Table(name = "venta" )
 @Getter
 @Setter
-public class Venta {
+public class Venta implements Comparable<Venta>{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id_venta;
-
+    
+    // Datos de venta
     @Column(nullable = false)
     private TipoComprobante tipo_comprobante;
     
@@ -43,15 +45,60 @@ public class Venta {
     @Column(nullable = false)
     private Integer porcentaje_igv;
     
+    // Datos del cliente
+    @Column(nullable = false)
+	private TipoDocIdentidad tipo_documento;
+	
+	@Column(nullable = false, length = 15)
+	private String numero_documento;
+	
+	@Column(nullable = false, length = 190)
+	private String razon_social;
+
+	@Column(nullable = false, length = 15)
+	private String telefono;
+	
+	@Column(nullable = false, length = 80)
+	private String correo_personal;
+    
+	// Datos de direccion
+	@Column(nullable = false, length = 30)
+	private String region;
+	
+	@Column(nullable = false, length = 30)
+	private String provincia;
+	
+	@Column(nullable = false, length = 30)
+	private String distrito;
+	
+	@Column(nullable = false, length = 150)
+	private String direccion;
+	
+	@Column(nullable = true, length = 150)
+	private String referencia;
+	
+	@Column(nullable = true)
+	private Double latitud;
+	
+	@Column(nullable = true)
+	private Double longitud;
+	
+	
+    // Datos de entidad
     @Column(nullable = false)
     private boolean estado;
     
   	//Cliente
   	@ManyToOne
-  	@JoinColumn(name = "id_cliente")
+  	@JoinColumn(name = "id_cliente", nullable = true)
 	private Cliente cliente;
   	
   	@OneToMany(mappedBy = "venta")
   	private Set<DetalleVenta> detalles = new HashSet<>();
+
+	@Override
+	public int compareTo(Venta o) {
+		return this.fecha_venta.compareTo(o.getFecha_venta());
+	}
   	
 }

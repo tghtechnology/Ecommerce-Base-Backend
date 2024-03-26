@@ -30,10 +30,10 @@ public class Persona {
 	@Column(nullable = false, length = 15)
 	private String numero_documento;
 	
-	@Column(nullable = false, length = 50)
+	@Column(nullable = false, length = 80)
 	private String nombres;
 	
-	@Column(nullable = false, length = 50)
+	@Column(nullable = false, length = 80)
 	private String apellidos;
 
 	@Column(nullable = false, length = 15)

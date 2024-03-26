@@ -14,7 +14,6 @@ public class SizeTransformation{
 	private Gravity gravity;
 	
 	public SizeTransformation(int width, int height, String crop, Gravity gravity) {
-		super();
 		this.width = width;
 		this.height = height;
 		this.crop = crop;
@@ -22,7 +21,6 @@ public class SizeTransformation{
 	}
 	
 	public SizeTransformation(int width, int height, String crop) {
-		super();
 		this.width = width;
 		this.height = height;
 		this.crop = crop;

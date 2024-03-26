@@ -39,7 +39,7 @@ public class Cliente {
 	@Column(nullable = false)
 	private boolean estado;
 	
-	// Pedidos realizados
+	
 	@OneToMany(mappedBy = "cliente")
 	private Set<Direccion> direcciones = new HashSet<>();
 	
@@ -50,6 +50,9 @@ public class Cliente {
 	@OneToOne
 	@JoinColumn(name = "id_usuario", nullable = false)
 	private Usuario usuario;
+	
+	@OneToMany(mappedBy = "cliente")
+	private Set<Venta> ventas = new HashSet<>();
 	
 	
 }

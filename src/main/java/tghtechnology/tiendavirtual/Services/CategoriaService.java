@@ -3,7 +3,6 @@ package tghtechnology.tiendavirtual.Services;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
@@ -17,11 +16,11 @@ import tghtechnology.tiendavirtual.dto.Categoria.CategoriaDTOForList;
 @AllArgsConstructor
 public class CategoriaService {
 
-	@Autowired
     private CategoriaRepository catRepository;
 
     /**
      * Lista todas las categorías no eliminadas
+     * 
      * @return Una lista de las categorías en formato ForList
      */
     public List<CategoriaDTOForList> listarCategoria (){
@@ -36,6 +35,7 @@ public class CategoriaService {
     
     /**
      * Obtiene una categoría en específico según su ID
+     * 
      * @param id la ID de la categoría
      * @return la categoría encontrada en formato ForList o null si no existe
      */
@@ -46,6 +46,7 @@ public class CategoriaService {
     
     /**
      * Registra una nueva categoría
+     * 
      * @param iCat Categoría en formato ForInsert
      * @return la categoría creada en formato ForList
      */
@@ -57,6 +58,7 @@ public class CategoriaService {
     
     /**
      * Modifica una categoría
+     * 
      * @param id ID de la categoría a modificar
      * @param mCat Datos de la categoría en formato ForInsert
      * @throws IdNotFoundException Si la ID proporcionada no corresponde a ninguna categoría
@@ -69,6 +71,7 @@ public class CategoriaService {
     
     /**
      * Realiza un eliminado lógico de una categoría
+     * 
      * @param id ID de la categoría a eliminar
      * @throws IdNotFoundException Si la ID proporcionada no corresponde a ninguna categoría
      */
