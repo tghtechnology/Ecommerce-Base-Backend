@@ -31,6 +31,10 @@ public class VentaDTOForList implements DTOForList<Venta>{
 	private BigDecimal igv;
 	private BigDecimal precio_total;
 	
+	private String observacion;
+	
+	private ClienteVentaDTOForList cliente;
+	
 	@Override
 	public VentaDTOForList from(Venta ven) {
 		this.id_venta = ven.getId_venta();
@@ -38,6 +42,7 @@ public class VentaDTOForList implements DTOForList<Venta>{
 		this.num_comprobante = ven.getNum_comprobante();
 		this.fecha_realizacion = ven.getFecha_venta();
 		this.estado_pedido = ven.getEstado_pedido();
+		this.observacion = ven.getObservacion();
 		this.porcentaje_igv = ven.getPorcentaje_igv();
 		
 		ven.getDetalles().forEach(dv -> {
@@ -49,6 +54,8 @@ public class VentaDTOForList implements DTOForList<Venta>{
 		this.igv = new BigDecimal(this.porcentaje_igv).multiply(this.antes_de_igv);
 		
 		this.precio_total = this.antes_de_igv.add(this.igv);
+		
+		this.cliente = new ClienteVentaDTOForList().from(ven);
 		
 		return this;
 	}

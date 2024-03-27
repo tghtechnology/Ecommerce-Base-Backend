@@ -59,7 +59,7 @@ public class Venta implements Comparable<Venta>{
 	private String telefono;
 	
 	@Column(nullable = false, length = 80)
-	private String correo_personal;
+	private String correo;
     
 	// Datos de direccion
 	@Column(nullable = false, length = 30)
@@ -82,6 +82,9 @@ public class Venta implements Comparable<Venta>{
 	
 	@Column(nullable = true)
 	private Double longitud;
+	
+	@Column(nullable = true, length = 250)
+	private String observacion;
 	
 	
     // Datos de entidad

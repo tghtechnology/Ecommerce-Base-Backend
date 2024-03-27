@@ -43,7 +43,7 @@ public class DetalleVenta {
 	private BigDecimal precio_unitario;
 	
 	@Column(nullable = false)
-	private BigDecimal descuento_unitario;
+	private Integer porcentaje_descuento;
 	
 	@Column(nullable = false)
 	private Short cantidad;

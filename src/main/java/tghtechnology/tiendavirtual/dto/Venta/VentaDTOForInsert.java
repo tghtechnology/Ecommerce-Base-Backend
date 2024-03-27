@@ -1,5 +1,7 @@
 package tghtechnology.tiendavirtual.dto.Venta;
 
+import java.time.LocalDateTime;
+
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -7,6 +9,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import tghtechnology.tiendavirtual.Enums.EstadoPedido;
 import tghtechnology.tiendavirtual.Models.Venta;
 import tghtechnology.tiendavirtual.Utils.ApisPeru.Enums.TipoComprobante;
 import tghtechnology.tiendavirtual.Utils.ApisPeru.Enums.TipoDocIdentidad;
@@ -67,17 +70,39 @@ public class VentaDTOForInsert implements DTOForInsert<Venta>{
 	private Double latitud;
 	
 	private Double longitud;
+	
+	@Size(max = 250, message = "La observacion debe tener un maximo de 250 caracteres")
+	private String observacion;
 
 	
 	@Override
 	public Venta toModel() {
-		// TODO Auto-generated method stub
-		return null;
+		Venta ven = new Venta();
+		
+		ven.setTipo_comprobante(tipo_comprobante);
+		ven.setFecha_venta(LocalDateTime.now());
+		ven.setEstado_pedido(EstadoPedido.PENDIENTE);
+		ven.setEstado(true);
+		
+		ven.setTipo_documento(tipo_documento);
+		ven.setNumero_documento(numero_documento);
+		ven.setRazon_social(nombres + (apellidos == null || apellidos.isBlank() ? "" : " " + apellidos));
+		ven.setTelefono(telefono);
+		ven.setCorreo(correo);
+		
+		ven.setRegion(region);
+		ven.setProvincia(provincia);
+		ven.setDistrito(distrito);
+		ven.setDireccion(direccion);
+		ven.setReferencia(referencia);
+		ven.setLatitud(latitud);
+		ven.setLongitud(longitud);
+		
+		return ven;
 	}
 
 	@Override
 	public Venta updateModel(Venta modelToUpdate) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException();
 	}
 }

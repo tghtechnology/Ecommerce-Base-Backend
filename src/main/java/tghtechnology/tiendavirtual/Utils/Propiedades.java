@@ -19,6 +19,12 @@ public class Propiedades {
 	@Value("${tgh.facturacion.antes_de_igv}")
 	@Getter private Boolean antesDeIGV;
 	
+	@Value("${tgh.facturacion.serie-boleta}")
+	@Getter private Integer serie_boleta;
+	
+	@Value("${tgh.facturacion.serie-factura}")
+	@Getter private Integer serie_factura;
+	
 	@Value("${tgh.precios.delivery-corto}")
 	@Getter private BigDecimal precioDeliveryCorto;
 	

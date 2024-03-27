@@ -1,11 +1,14 @@
 package tghtechnology.tiendavirtual.Services;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.AllArgsConstructor;
 import tghtechnology.tiendavirtual.Enums.TipoUsuario;
@@ -15,7 +18,13 @@ import tghtechnology.tiendavirtual.Models.Venta;
 import tghtechnology.tiendavirtual.Repository.ClienteRepository;
 import tghtechnology.tiendavirtual.Repository.UsuarioRepository;
 import tghtechnology.tiendavirtual.Repository.VentaRepository;
+import tghtechnology.tiendavirtual.Utils.ApisPeru.Exceptions.ApisPeruResponseException;
+import tghtechnology.tiendavirtual.Utils.ApisPeru.Functions.APTranslatorService;
+import tghtechnology.tiendavirtual.Utils.ApisPeru.Functions.ApisPeruService;
+import tghtechnology.tiendavirtual.Utils.ApisPeru.Objects.Boleta;
+import tghtechnology.tiendavirtual.Utils.ApisPeru.Objects.Response.ApisPeruResponse;
 import tghtechnology.tiendavirtual.Utils.Exceptions.IdNotFoundException;
+import tghtechnology.tiendavirtual.dto.Venta.VentaDTOForInsert;
 import tghtechnology.tiendavirtual.dto.Venta.VentaDTOForList;
 import tghtechnology.tiendavirtual.dto.Venta.VentaDTOForListMinimal;
 
@@ -26,6 +35,9 @@ public class VentaService {
 	VentaRepository venRepository;
 	UsuarioRepository userRepository;
 	ClienteRepository cliRepository;
+	
+	APTranslatorService apTranslator;
+	ApisPeruService apService;
 	
 	
 	/**
@@ -83,15 +95,18 @@ public class VentaService {
 		return new VentaDTOForList().from(ven);
 	}
 	
-	
-	public void realizarVenta(Authentication auth) {
+	@Transactional(rollbackFor = {IOException.class, DataIntegrityViolationException.class})
+	public ApisPeruResponse realizarVentaCliente(VentaDTOForInsert venta, Authentication auth) throws IOException, ApisPeruResponseException {
 		
 		Usuario user = user_buscarPorUsername(auth.getName());
-		
 		Cliente cli  = cli_buscarPorId(user.getPersona().getId_persona());
 		
 		
 		
+		Boleta apBoleta = apTranslator.toBoleta(null);
+		
+		
+		return apService.enviarBoleta(apBoleta);
 	}
 	
 	

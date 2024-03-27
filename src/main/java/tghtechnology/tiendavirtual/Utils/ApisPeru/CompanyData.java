@@ -1,11 +1,13 @@
 package tghtechnology.tiendavirtual.Utils.ApisPeru;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import tghtechnology.tiendavirtual.Utils.ApisPeru.Objects.Address;
 import tghtechnology.tiendavirtual.Utils.ApisPeru.Objects.Company;
 
-public class CompanyData {
+@Component
+public class CompanyData { //TODO Reemplazar por BD
 
 	@Value("${apisperu.company.ruc}")
 	private String ruc;
