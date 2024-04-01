@@ -14,7 +14,7 @@ public class Propiedades {
 	@Getter private String emailGerente;
 	
 	@Value("${tgh.facturacion.igv}")
-	@Getter private BigDecimal igv;
+	@Getter private Integer igv;
 	
 	@Value("${tgh.facturacion.antes_de_igv}")
 	@Getter private Boolean antesDeIGV;

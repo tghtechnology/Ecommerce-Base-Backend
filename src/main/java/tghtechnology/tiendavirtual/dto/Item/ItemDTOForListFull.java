@@ -45,6 +45,7 @@ public class ItemDTOForListFull implements DTOForList<Item>{
 		this.url = item.getText_id();
 		this.nombre = item.getNombre();
 		this.disponibilidad = item.getDisponibilidad();
+		this.descripcion = item.getDescripcion();
 		this.fecha_creacion = item.getFecha_creacion();
 		this.fecha_modificacion = item.getFecha_modificacion();
 		

@@ -36,6 +36,7 @@ public class DetalleVentaDTOForList implements DTOForList<DetalleVenta>{
 		this.nombre_item = dv.getNombre_item();
 		this.id_variacion = dv.getId_variacion();
 		this.tipo_variacion = dv.getTipo_variacion();
+		this.valor_variacion = dv.getValor_variacion();
 		this.precio_unitario = dv.getPrecio_unitario();
 		this.porcentaje_descuento = dv.getPorcentaje_descuento();
 		this.descuento_unitario = porcentaje_descuento == null ? BigDecimal.ZERO : precio_unitario.multiply(new BigDecimal(porcentaje_descuento).divide(new BigDecimal(100)));

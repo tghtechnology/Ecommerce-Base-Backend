@@ -1,6 +1,7 @@
 package tghtechnology.tiendavirtual.Utils.ApisPeru.Functions;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,20 +66,20 @@ public class APTranslatorService {
 		List<Charge> descuentos = new ArrayList<>();
 		List<Charge> cargos = new ArrayList<>();
 		
-		if(det.getPorcentaje_descuento() != null) {
+		if(det.getPorcentaje_descuento() != null && det.getPorcentaje_descuento() != 0) {
 			descuentos.add(toDescuento(det));
 		}
 		
 		return new SaleDetail(
 				UnidadMedida.UNIDAD_BIENES,
 				det.getCantidad(),
-				String.format("PROD-%04d%02d", det.getId_variacion()),
+				String.format("PROD-%04d%02d",det.getId_item(), det.getId_variacion()),
 				det.getNombre_item()
 					.concat(det.getTipo_variacion().getDescripcion())
 					.concat(" ")
 					.concat(det.getValor_variacion()),
 				det.getPrecio_unitario(),
-				propiedades.getIgv(),
+				new BigDecimal(propiedades.getIgv()).divide(new BigDecimal(100), 2, RoundingMode.HALF_UP),
 				AfectacionIGV.GRAVADO_OPERACION_ONEROSA,
 				BigDecimal.ZERO,
 				descuentos,

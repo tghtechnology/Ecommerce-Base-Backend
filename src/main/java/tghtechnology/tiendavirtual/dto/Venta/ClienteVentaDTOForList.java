@@ -32,6 +32,7 @@ public class ClienteVentaDTOForList implements DTOForList<Venta>{
 	@Override
 	public ClienteVentaDTOForList from(Venta ven) {
 		this.tipo_documento = ven.getTipo_documento();
+		this.numero_documento = ven.getNumero_documento();
 		this.razon_social = ven.getRazon_social();
 		this.telefono = ven.getTelefono();
 		this.correo = ven.getCorreo();

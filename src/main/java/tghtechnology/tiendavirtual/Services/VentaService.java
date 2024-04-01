@@ -13,11 +13,17 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.AllArgsConstructor;
 import tghtechnology.tiendavirtual.Enums.TipoUsuario;
 import tghtechnology.tiendavirtual.Models.Cliente;
+import tghtechnology.tiendavirtual.Models.DetalleCarrito;
+import tghtechnology.tiendavirtual.Models.DetalleVenta;
+import tghtechnology.tiendavirtual.Models.Item;
 import tghtechnology.tiendavirtual.Models.Usuario;
+import tghtechnology.tiendavirtual.Models.Variacion;
 import tghtechnology.tiendavirtual.Models.Venta;
 import tghtechnology.tiendavirtual.Repository.ClienteRepository;
+import tghtechnology.tiendavirtual.Repository.DetalleVentaRepository;
 import tghtechnology.tiendavirtual.Repository.UsuarioRepository;
 import tghtechnology.tiendavirtual.Repository.VentaRepository;
+import tghtechnology.tiendavirtual.Utils.Propiedades;
 import tghtechnology.tiendavirtual.Utils.ApisPeru.Exceptions.ApisPeruResponseException;
 import tghtechnology.tiendavirtual.Utils.ApisPeru.Functions.APTranslatorService;
 import tghtechnology.tiendavirtual.Utils.ApisPeru.Functions.ApisPeruService;
@@ -33,11 +39,13 @@ import tghtechnology.tiendavirtual.dto.Venta.VentaDTOForListMinimal;
 public class VentaService {
 
 	VentaRepository venRepository;
+	DetalleVentaRepository dvRepository;
 	UsuarioRepository userRepository;
 	ClienteRepository cliRepository;
 	
 	APTranslatorService apTranslator;
 	ApisPeruService apService;
+	Propiedades propiedades;
 	
 	
 	/**
@@ -100,13 +108,60 @@ public class VentaService {
 		
 		Usuario user = user_buscarPorUsername(auth.getName());
 		Cliente cli  = cli_buscarPorId(user.getPersona().getId_persona());
+		List<DetalleVenta> dets = new ArrayList<>();
 		
+		Venta ven = venta.toModel();
+		ven.setCliente(cli);
+		ven.setPorcentaje_igv(propiedades.getIgv());
 		
+		// Guardando venta para obtener una ID
+		final Venta v = venRepository.save(ven);
 		
-		Boleta apBoleta = apTranslator.toBoleta(null);
+		// Añadiendo items del carrito a la venta
+		user.getCarrito().getDetalles().forEach(det -> {
+			DetalleVenta dv = detalleCarritoAVenta(det);
+			dv.setVenta(v);
+			dv = dvRepository.save(dv);
+			dets.add(dv);
+		});
+		ven = v;
+		ven.getDetalles().addAll(dets);
+		
+		VentaDTOForList toList = new VentaDTOForList().from(ven);
+		
+		Boleta apBoleta = apTranslator.toBoleta(toList);
 		
 		
 		return apService.enviarBoleta(apBoleta);
+	}
+	
+	@Transactional(rollbackFor = {IOException.class, DataIntegrityViolationException.class})
+	public Boleta testVenta(VentaDTOForInsert venta, Authentication auth) throws IOException, ApisPeruResponseException {
+		
+		Usuario user = user_buscarPorUsername(auth.getName());
+		Cliente cli  = cli_buscarPorId(user.getPersona().getId_persona());
+		List<DetalleVenta> dets = new ArrayList<>();
+		
+		Venta ven = venta.toModel();
+		ven.setCliente(cli);
+		ven.setPorcentaje_igv(propiedades.getIgv());
+		
+		// Guardando venta para obtener una ID
+		final Venta v = venRepository.save(ven);
+		
+		// Añadiendo items del carrito a la venta
+		user.getCarrito().getDetalles().forEach(det -> {
+			DetalleVenta dv = detalleCarritoAVenta(det);
+			dv.setVenta(v);
+			dv = dvRepository.save(dv);
+			dets.add(dv);
+		});
+		ven = v;
+		ven.getDetalles().addAll(dets);
+		
+		VentaDTOForList toList = new VentaDTOForList().from(ven);
+		Boleta apBoleta = apTranslator.toBoleta(toList);
+		return apBoleta;
 	}
 	
 	
@@ -125,6 +180,28 @@ public class VentaService {
 	
 	private Cliente cli_buscarPorId(Integer id) {
 		return cliRepository.listarUno(id).orElseThrow( () -> new IdNotFoundException("cliente"));
+	}
+	
+	private DetalleVenta detalleCarritoAVenta(DetalleCarrito dc) {
+		
+		Variacion var = dc.getVariacion();
+		Item itm = var.getItem();
+		
+		DetalleVenta dv = new DetalleVenta();
+		
+		dv.setId_item(itm.getId_item());
+		dv.setNombre_item(itm.getNombre());
+		dv.setId_variacion(var.getId_variacion());
+		dv.setTipo_variacion(var.getTipo_variacion());
+		dv.setValor_variacion(var.getValor_variacion());
+		dv.setPrecio_unitario(var.getPrecio());
+		dv.setCantidad(dc.getCantidad().shortValue());
+		if(itm.getDescuento() != null && var.getAplicarDescuento())
+			dv.setPorcentaje_descuento(itm.getDescuento().getPorcentaje());
+		else
+			dv.setPorcentaje_descuento(0);
+		
+		return dv;
 	}
 	
 }

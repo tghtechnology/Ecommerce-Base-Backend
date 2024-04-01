@@ -28,6 +28,7 @@ public class VentaDTOForInsert implements DTOForInsert<Venta>{
 	@NotNull(message = "El campo no puede estar vacío")
 	private TipoDocIdentidad tipo_documento;
 	
+	@NotEmpty(message = "El campo no puede estar vacío")
 	@Size(min = 8, max = 15, message = "El documento tener entre 8 y 15 caracteres")
 	private String numero_documento;
 	
