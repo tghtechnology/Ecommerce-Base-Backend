@@ -1,10 +1,9 @@
 {
 	"info": {
-		"_postman_id": "dd2c9e26-db8d-4a67-be76-a0275e9a3183",
+		"_postman_id": "aad94f9d-4add-41a2-b418-33316c9fa33b",
 		"name": "TiendaVirtual-Base",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "31763898",
-		"_collection_link": "https://winter-equinox-881682.postman.co/workspace/Base~1dd33edd-a5f1-48e2-8384-d7cb95fa3661/collection/31763898-dd2c9e26-db8d-4a67-be76-a0275e9a3183?action=share&source=collection_link&creator=31763898"
+		"_exporter_id": "29571097"
 	},
 	"item": [
 		{
@@ -101,13 +100,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{API}}/admin/token",
+							"raw": "{{API}}/api/auth/login",
 							"host": [
 								"{{API}}"
 							],
 							"path": [
-								"admin",
-								"token"
+								"api",
+								"auth",
+								"login"
 							]
 						}
 					},
@@ -827,7 +827,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"persona\":{\r\n        \"tipo_documento\": \"DNI\",\r\n        \"numero_documento\": \"98765432\",\r\n        \"nombres\": \"Juanito\",\r\n        \"apellidos\": \"Perez\",\r\n        \"telefono\": \"999888777\",\r\n        \"correo_personal\": \"cliente@test.com\"\r\n    },\r\n    \"usuario\":{\r\n        \"email\": \"cliente@test.com\",\r\n        \"password\":\"Te$t1234\",\r\n        \"cargo\":\"ADMIN\"\r\n    },\r\n    \"recibe_correos\": true\r\n}",
+							"raw": "{\r\n    \"persona\":{\r\n        \"tipo_documento\": \"DNI\",\r\n        \"numero_documento\": \"98765432\",\r\n        \"nombres\": \"Juanito\",\r\n        \"apellidos\": \"Perez\",\r\n        \"telefono\": \"999888777\",\r\n        \"correo_personal\": \"cliente@test.com\"\r\n    },\r\n    \"usuario\":{\r\n        \"email\": \"cliente@test.com\",\r\n        \"password\":\"Te$t1234\",\r\n        \"cargo\": \"CLIENTE\"\r\n    },\r\n    \"recibe_correos\": true\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1328,7 +1328,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id_variacion\": 2,\r\n    \"cantidad\": 10\r\n}",
+							"raw": "{\r\n    \"id_variacion\": 1,\r\n    \"cantidad\": 10\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1411,6 +1411,45 @@
 								"api",
 								"carrito",
 								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Venta",
+			"item": [
+				{
+					"name": "Venta cliente",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"tipo_comprobante\": \"BOLETA_DE_VENTA\",\r\n    \"tipo_documento\": \"DNI\",\r\n    \"numero_documento\": \"12345678\",\r\n    \"nombres\": \"Juanito\",\r\n    \"apellidos\": \"Perez\",\r\n    \"telefono\": \"+51987654321\",\r\n    \"correo\": \"cliente@test.com\",\r\n    \"region\": \"LIMA\",\r\n    \"provincia\": \"LIMA\",\r\n    \"distrito\": \"LIMA\",\r\n    \"direccion\": \"Al lado de la casa del vecino\",\r\n    \"referencia\": \"Al lado de mi otro vecino\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API}}/api/venta/cliente",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"venta",
+								"cliente"
 							]
 						}
 					},
