@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -17,6 +18,10 @@ import lombok.extern.slf4j.Slf4j;
 import tghtechnology.tiendavirtual.Enums.SettingType;
 import tghtechnology.tiendavirtual.Models.Setting;
 import tghtechnology.tiendavirtual.Repository.SettingsRepository;
+import tghtechnology.tiendavirtual.Utils.Exceptions.DataMismatchException;
+import tghtechnology.tiendavirtual.Utils.Exceptions.IdNotFoundException;
+import tghtechnology.tiendavirtual.dto.Setting.SettingDTOForInsert;
+import tghtechnology.tiendavirtual.dto.Setting.SettingDTOForList;
 
 /**
  * Servicio base para obtener las configuraciones básicas de la página.
@@ -26,7 +31,7 @@ import tghtechnology.tiendavirtual.Repository.SettingsRepository;
  * <p>
  * Al iniciarse por primera vez, tanto la base de datos como el mapa local se poblan 
  * con datos por defecto. Para cambiar estos datos luego de ser asignados se utiliza 
- * {@link}
+ * {@link #alterSetting(String, Object, SettingType) alterSetting}
  */
 @Slf4j
 @Service
@@ -44,8 +49,8 @@ public class SettingsService implements ApplicationListener<ApplicationReadyEven
 		addSetting("facturacion.serie_boleta"	, "1"			, SettingType.INT, false);
 		addSetting("facturacion.serie_factura"	, "1"			, SettingType.INT, false);
 		
-		addSetting("notificaciones.intervalo"	, "3"			, SettingType.INT);
-		addSetting("notificaciones.email"		, ""			, SettingType.STRING);
+		addSetting("notificaciones.intervalo"	, "3"				, SettingType.INT);
+		addSetting("notificaciones.email"		, "exm@admin.com"	, SettingType.STRING);
 		
 		addSetting("seguridad.lockout_user"		, "30"			, SettingType.INT);
 		addSetting("seguridad.attempts_user"	, "5"			, SettingType.INT);
@@ -74,6 +79,49 @@ public class SettingsService implements ApplicationListener<ApplicationReadyEven
 	}
 	
 	/**
+	 * Lista todos los settings de la página
+	 * @return Una lista de todos los settings en formato DTOForList
+	 */
+	public List<SettingDTOForList> listarSettings() {
+		return settings.values()
+				.stream()
+				.map(ss -> new SettingDTOForList().from(ss))
+				.collect(Collectors.toList());
+	}
+	
+	/**
+	 * Modifica un setting según su identificador
+	 * @param mSet El setting a modificar en formato ForInsert
+	 */
+	public void modificarSetting(SettingDTOForInsert mSet) {
+		Setting set = settings.get(mSet.getIdentificador());
+		if(set == null) throw new IdNotFoundException("setting");
+		
+		 if(!validarValor(mSet.getValor(), set.getType()))
+			 throw new DataMismatchException(mSet.getIdentificador(), "Valor no permitido");
+		
+		set.setBaseValue(mSet.getValor());
+		settings.put(set.getId(), set);
+		setRepository.save(set);
+	}
+	
+	/**
+	 * Modifica una lista de settings
+	 * @param mSetsUna lista que contiene todos los settings a modificar en formato DTOForList
+	 */
+	public void modificarSettings(List<SettingDTOForInsert> mSets) {
+		mSets.forEach( mSet -> {
+			modificarSetting(mSet);
+		});
+	}
+	
+	public void restablecerSettings() {
+		settings.entrySet().forEach(entry -> entry.getValue().setValor(entry.getValue().getBaseValue()));
+		setRepository.saveAll(settings.values());
+	}
+	
+	
+	/**
 	 * Obtiene un Setting sin importar su tipo.
 	 * @param key El nombre del setting.
 	 * @return El setting encontrado.
@@ -82,7 +130,7 @@ public class SettingsService implements ApplicationListener<ApplicationReadyEven
 	 */
 	public String get(String key) {
 		Setting set = getSetting(key, SettingType.OTHER);
-		return set.getValue();
+		return set.getBaseValue();
 	}
 	
 	/**
@@ -95,7 +143,7 @@ public class SettingsService implements ApplicationListener<ApplicationReadyEven
 	 */
 	public String getString(String key) {
 		Setting set = getSetting(key, SettingType.STRING);
-		return set.getValue();
+		return set.getBaseValue();
 	}
 	
 	/**
@@ -108,7 +156,7 @@ public class SettingsService implements ApplicationListener<ApplicationReadyEven
 	 */
 	public Boolean getBoolean(String key) {
 		Setting set = getSetting(key, SettingType.BOOL);
-		return Boolean.valueOf(set.getValue());
+		return Boolean.valueOf(set.getBaseValue());
 	}
 	
 	/**
@@ -121,7 +169,7 @@ public class SettingsService implements ApplicationListener<ApplicationReadyEven
 	 */
 	public Integer getInt(String key) {
 		Setting set = getSetting(key, SettingType.INT);
-		return Integer.valueOf(set.getValue());
+		return Integer.valueOf(set.getBaseValue());
 	}
 	
 	/**
@@ -134,12 +182,7 @@ public class SettingsService implements ApplicationListener<ApplicationReadyEven
 	 */
 	public BigDecimal getDecimal(String key) {
 		Setting set = getSetting(key, SettingType.DECIMAL);
-		
-		String[] decimalBuilder = set.getValue().split(",");
-		Long unscaled = Long.valueOf(decimalBuilder[0]);
-		Integer scale = Integer.valueOf(decimalBuilder[1]);
-		
-		return BigDecimal.valueOf(unscaled, scale);
+		return new BigDecimal(set.getValor());
 	}
 	
 	/**
@@ -162,6 +205,45 @@ public class SettingsService implements ApplicationListener<ApplicationReadyEven
 		return set;
 	}
 	
+	/**
+	 * Modifica el valor de un setting y propaga los cambios tanto
+	 * en el mapa interno como en la base de datos.
+	 * @param key El identificador del setting a modificar.
+	 * @param value El valor nuevo para el setting.
+	 * @param type El tipo de setting que es.
+	 * @throws IllegalArgumentException Si el tipo proporcionado no concuerda con el tipo real
+	 * del setting.
+	 */
+	public void alterSetting(String key, Object value, SettingType type) {
+		Setting set = settings.get(key);
+		if(set.getType() != type)
+			throw new IllegalArgumentException("El setting solicitado no es de tipo " + type + ".");
+		
+		String str_val;
+		
+		switch(type) {
+		case BOOL:
+			str_val = ((Boolean)value).toString();
+			break;
+		case DECIMAL:
+			BigDecimal bd = (BigDecimal)value;
+			str_val = String.format("%d,%d", bd.unscaledValue(), bd.scale());
+			break;
+		case INT:
+			str_val = ((Integer)value).toString();
+			break;
+		case STRING:
+			str_val = (String)value;
+			break;
+		default:
+			str_val = value.toString();
+			break;
+		}
+		
+		set.setBaseValue(str_val);
+		settings.put(set.getId(), set);
+		setRepository.save(set);
+	}
 	
 	/**
 	 * Inicializa la base de datos en caso no exista y la llena con los datos por defecto.
@@ -171,15 +253,22 @@ public class SettingsService implements ApplicationListener<ApplicationReadyEven
 	@Override
 	public void onApplicationEvent(ApplicationReadyEvent event) {
 
-		List<Setting> s = StreamSupport.stream(setRepository.findAll().spliterator(), false).collect(Collectors.toList());
+		Map<String, Setting> s = StreamSupport.stream(setRepository.findAll().spliterator(), false).collect(Collectors.toMap(ss -> ss.getId(),Function.identity()));
 
-		if(s.isEmpty()) {
-			// Rellenar base de datos si está vacía
-			
-		}
+		log.info("Comprobando settings...");
+		settings.entrySet().forEach(entry -> {
+			if(!s.containsKey(entry.getKey())) {
+				log.info(String.format("Setting [%s] faltante. Llenando con valor por defecto.", entry.getKey()));
+				s.put(entry.getKey(), entry.getValue());
+			} else {
+				// Llenando mapa con valor de la base de datos
+				Setting ss = s.get(entry.getKey());
+				settings.put(ss.getId(), ss);
+			}
+		});
 		
-		// Rellenar el mapa privado con los settings
-		s.forEach(ss -> settings.put(ss.getKey(), new Setting(ss.getKey(), ss.getValue(), ss.getValue(), ss.getType(), ss.isEditable())));
+		setRepository.saveAll(settings.values());
+		log.info("Finalizada comprobación de settings.");
 	}
 	
 	private void addSetting(String key, String val, SettingType type) {
@@ -190,5 +279,18 @@ public class SettingsService implements ApplicationListener<ApplicationReadyEven
 		settings.put(key, new Setting(key, val, val, type, editable));
 	}
 	
+	private boolean validarValor(String val, SettingType type) {
+		switch(type) {
+		case BOOL:
+			return SettingType.boolValues.contains(val);
+		case DECIMAL:
+			return SettingType.decimalPattern.matcher(val).matches();
+		case INT:
+			return SettingType.intPattern.matcher(val).matches();
+		default:
+			return true;
+		}
+		
+	}
 	
 }

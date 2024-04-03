@@ -6,6 +6,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tghtechnology.tiendavirtual.Enums.SettingType;
 
@@ -13,17 +14,18 @@ import tghtechnology.tiendavirtual.Enums.SettingType;
 @Table(name = "page_settings")
 @Getter
 @Setter
+@NoArgsConstructor
 @AllArgsConstructor
 public class Setting {
 
 	@Id
-	private String key;
+	private String id;
 	
 	@Column(nullable = false)
-	private String value;
+	private String valor;
 	
 	@Column(nullable = false)
-	private String default_value;
+	private String baseValue;
   	
 	@Column(nullable = false)
 	private SettingType type;

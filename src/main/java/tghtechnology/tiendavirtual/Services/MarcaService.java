@@ -34,7 +34,7 @@ public class MarcaService {
      */
     public List<MarcaDTOForList> listarMarcas (){
         List<MarcaDTOForList> marcaList = new ArrayList<>();
-        List<Marca> mars = (List<Marca>) marRepository.listar();
+        List<Marca> mars = marRepository.listar();
         
         mars.forEach( x -> {
         	marcaList.add(new MarcaDTOForList().from(x));

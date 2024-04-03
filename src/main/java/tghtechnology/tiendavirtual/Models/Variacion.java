@@ -31,6 +31,9 @@ public class Variacion implements Comparable<Variacion>{
     @Column(nullable = false)
     private String valor_variacion;
     
+//    @Column(nullable = true)
+//    private BigDecimal costo; //TODO: terminar
+    
     @Column(nullable = false)
     private BigDecimal precio;
 
