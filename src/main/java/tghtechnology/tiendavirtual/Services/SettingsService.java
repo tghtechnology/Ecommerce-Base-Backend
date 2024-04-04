@@ -12,8 +12,10 @@ import java.util.stream.StreamSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import tghtechnology.tiendavirtual.Enums.SettingType;
 import tghtechnology.tiendavirtual.Models.Setting;
@@ -50,7 +52,7 @@ public class SettingsService implements ApplicationListener<ApplicationReadyEven
 		addSetting("facturacion.serie_factura"	, "1"			, SettingType.INT, false);
 		
 		addSetting("notificaciones.intervalo"	, "3"				, SettingType.INT);
-		addSetting("notificaciones.email"		, "exm@admin.com"	, SettingType.STRING);
+		addSetting("notificaciones.email"		, "programer.christopher@gmail.com"	, SettingType.STRING);
 		
 		addSetting("seguridad.lockout_user"		, "30"			, SettingType.INT);
 		addSetting("seguridad.attempts_user"	, "5"			, SettingType.INT);
@@ -71,10 +73,10 @@ public class SettingsService implements ApplicationListener<ApplicationReadyEven
 		addSetting("company.direccion"			, "MI DIRECCION", SettingType.STRING);
 		
 		addSetting("apisperu.url"				, "https://facturacion.apisperu.com/api/v1"	, SettingType.STRING);
-		addSetting("apisperu.token"				, "mi token"								, SettingType.STRING);
+		addSetting("apisperu.token"				, "MI TOKEN" , SettingType.STRING);
 		
-		addSetting("cloudinary.url"				, "cloudinary://"	, SettingType.STRING);
-		addSetting("cloudinary.directory"		, "mi_directorio/"	, SettingType.STRING);
+		addSetting("cloudinary.url"				, "cloudinary://269427965692487:dPIsYT7kWdJoftwRYo_zGH1nYp4@dryp7amgv"	, SettingType.STRING); //TODO remover
+		addSetting("cloudinary.directory"		, "ecomm-base/"	, SettingType.STRING);
 		
 	}
 	
@@ -100,7 +102,7 @@ public class SettingsService implements ApplicationListener<ApplicationReadyEven
 		 if(!validarValor(mSet.getValor(), set.getType()))
 			 throw new DataMismatchException(mSet.getIdentificador(), "Valor no permitido");
 		
-		set.setBaseValue(mSet.getValor());
+		set.setValor(mSet.getValor());
 		settings.put(set.getId(), set);
 		setRepository.save(set);
 	}
@@ -130,7 +132,7 @@ public class SettingsService implements ApplicationListener<ApplicationReadyEven
 	 */
 	public String get(String key) {
 		Setting set = getSetting(key, SettingType.OTHER);
-		return set.getBaseValue();
+		return set.getValor();
 	}
 	
 	/**
@@ -143,7 +145,7 @@ public class SettingsService implements ApplicationListener<ApplicationReadyEven
 	 */
 	public String getString(String key) {
 		Setting set = getSetting(key, SettingType.STRING);
-		return set.getBaseValue();
+		return set.getValor();
 	}
 	
 	/**
@@ -156,7 +158,7 @@ public class SettingsService implements ApplicationListener<ApplicationReadyEven
 	 */
 	public Boolean getBoolean(String key) {
 		Setting set = getSetting(key, SettingType.BOOL);
-		return Boolean.valueOf(set.getBaseValue());
+		return Boolean.valueOf(set.getValor());
 	}
 	
 	/**
@@ -169,7 +171,7 @@ public class SettingsService implements ApplicationListener<ApplicationReadyEven
 	 */
 	public Integer getInt(String key) {
 		Setting set = getSetting(key, SettingType.INT);
-		return Integer.valueOf(set.getBaseValue());
+		return Integer.valueOf(set.getValor());
 	}
 	
 	/**
@@ -240,7 +242,7 @@ public class SettingsService implements ApplicationListener<ApplicationReadyEven
 			break;
 		}
 		
-		set.setBaseValue(str_val);
+		set.setValor(str_val);
 		settings.put(set.getId(), set);
 		setRepository.save(set);
 	}
@@ -250,6 +252,7 @@ public class SettingsService implements ApplicationListener<ApplicationReadyEven
 	 * <p>
 	 * Luego llena el mapa privado acorde con los datos recuperados de la base de datos.
 	 */
+	@Transactional(rollbackOn = {DataIntegrityViolationException.class})
 	@Override
 	public void onApplicationEvent(ApplicationReadyEvent event) {
 
@@ -259,16 +262,19 @@ public class SettingsService implements ApplicationListener<ApplicationReadyEven
 		settings.entrySet().forEach(entry -> {
 			if(!s.containsKey(entry.getKey())) {
 				log.info(String.format("Setting [%s] faltante. Llenando con valor por defecto.", entry.getKey()));
-				s.put(entry.getKey(), entry.getValue());
+				setRepository.save(entry.getValue());
 			} else {
 				// Llenando mapa con valor de la base de datos
 				Setting ss = s.get(entry.getKey());
 				settings.put(ss.getId(), ss);
 			}
 		});
-		
-		setRepository.saveAll(settings.values());
 		log.info("Finalizada comprobación de settings.");
+		
+		alterSetting("apisperu.token",
+				"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJ1c2VybmFtZSI6IkRlc2Fycm9sbG9UR0giLCJpYXQiOjE3MTIyNzE0NjQsImV4cCI6MTcxMjM1Nzg2NH0.AzFr9Q33mp7wtKdVAV4BUKpaIZghLwuTOcQYrnbvfcp5bdCqqF1WMA_XDM_tPtw0o9GQpTSbA2slvieZvPvU1Zc2cRXFhjddUF2lNkxAzTFFNHuMgqY51lGC_BElw6p70e9DESunsjMTipPYvTPrn9cMaEbHRA31F_9I2sVXxyZYbK0ok5Z7Zn-aEw52pK6_FQoi4_WqYRSVhykfDHCYhPTJzjxl8_W4SbWrGX-hWu50XMblcAb0DnIvTG1u6ZqN_UIk694570WlJhDdfTACVwUhglgNspIaG5as94Itiq1XVulGfEBydcXFbNuqhwSsBHk6AGJNoDUixxg3EHQDP9WlCJ8HLK-wjEQgiw0QphPTn4MrIvrCq90Z9xQ-NOzGymKTZbOL074RVxlrM2Vh2hzB_nyFhwrOakOpeGoQyfQ33O2ft7ftlCMMfvZuwydRe7z0XgiyRuC2Kzx6bNut_Dmpeqvx4Kf_aCySpJhMSpoolfkQuwSlCdcxsG4mqCPoxEwFW9ErnOkdpqXCNcw7vYNMEQ0GiafekzOM7qGSrEN1HAf0Jw3IhHH56l9YMPGuIeMugcgYI27l9psNvYsNfZm8qy3aWwK3J3GMnr4UW6a28dZOIvKHaPNMmJb2oTxg4DfCRfDjHXxxwmKSsCIo8kxzcaQO7BeotMe7YaunKiI"
+				, SettingType.STRING);
+		
 	}
 	
 	private void addSetting(String key, String val, SettingType type) {

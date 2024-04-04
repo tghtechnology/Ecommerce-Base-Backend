@@ -1,6 +1,7 @@
 package tghtechnology.tiendavirtual.dto.Venta;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -75,6 +76,8 @@ public class VentaDTOForInsert implements DTOForInsert<Venta>{
 	@Size(max = 250, message = "La observacion debe tener un maximo de 250 caracteres")
 	private String observacion;
 
+	@Size(min = 1, message = "No puede estar vacío")
+	private List<DetalleVentaDTOForInsert> carrito;
 	
 	@Override
 	public Venta toModel() {

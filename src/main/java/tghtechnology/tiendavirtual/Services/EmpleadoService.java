@@ -84,8 +84,6 @@ public class EmpleadoService {
     	Empleado emp = iEmp.toModel();
     	emp.setPersona(per);
     	emp.setId_persona(per.getId_persona());
-        
-    	System.out.println(per.getId_persona());
     	
     	iEmp.getUsuario().setId_persona(per.getId_persona());
     	Usuario user = userService.crearUsuarioPorInstancia(iEmp.getUsuario(), per);

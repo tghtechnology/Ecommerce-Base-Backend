@@ -21,10 +21,10 @@ public class Setting {
 	@Id
 	private String id;
 	
-	@Column(nullable = false)
+	@Column(nullable = false, length = 1000)
 	private String valor;
 	
-	@Column(nullable = false)
+	@Column(nullable = false, length = 100)
 	private String baseValue;
   	
 	@Column(nullable = false)

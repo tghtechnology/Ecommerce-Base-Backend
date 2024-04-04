@@ -30,7 +30,6 @@ public class CarritoDTOForList implements DTOForList<Carrito>{
 		
 		car.getDetalles().stream().sorted().forEach(det -> {
 			DetalleCarritoDTOForList dc = new DetalleCarritoDTOForList().from(det);
-			System.out.println(dc);
 			detalles.add(dc);
 			precio_total = precio_total.add(dc.getSubtotal());
 		});

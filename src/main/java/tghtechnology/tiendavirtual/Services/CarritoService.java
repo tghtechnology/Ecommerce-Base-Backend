@@ -37,8 +37,6 @@ public class CarritoService {
      * @return el carrito encontrado
      */
     public CarritoDTOForList listarUno(Authentication auth){
-        
-    	System.out.println(auth.getName());
     	
     	Usuario user = user_buscarPorId(auth.getName());
     	Carrito car = user.getCarrito();

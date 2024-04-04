@@ -173,10 +173,11 @@ public class DineroALetras {
 		
 		String num = "";
 		
-		if(digito == 0) {
-			if(escala == 0)
-				num += "CERO";
-		} else if(digito == 1) {
+//		if(digito == 0) {
+//			if(escala == 0)
+//				num += "CERO";
+//		} else 
+		if(digito == 1) {
 			if(escala == 0)
 				num += "UNO";
 			else 
@@ -185,6 +186,6 @@ public class DineroALetras {
 		} else
 			num += Digito.ValueOf(digito).toString();
 		
-		return (esDecena ? " Y " : "") + num;
+		return (digito == 0) ? "" : ((esDecena ? " Y " : "") + num);
 	}
 }

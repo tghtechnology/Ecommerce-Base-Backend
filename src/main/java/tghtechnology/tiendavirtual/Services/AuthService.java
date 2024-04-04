@@ -18,7 +18,6 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Service;
 
-import tghtechnology.tiendavirtual.Security.SecurityConfig;
 import tghtechnology.tiendavirtual.Security.Models.IpLog;
 import tghtechnology.tiendavirtual.Security.Models.UserLog;
 import tghtechnology.tiendavirtual.Security.Repository.IpLogRepository;
@@ -32,7 +31,7 @@ public class AuthService {
 	private final AuthenticationManager authManager;
 	private final IpLogRepository ipRepository;
 	private final UserLogRepository ulRepository;
-	private final SecurityConfig config;
+	private final SettingsService settings;
 	
 	private final Map<String, Integer> userAttempts = new HashMap<>();
 
@@ -40,13 +39,13 @@ public class AuthService {
 			AuthenticationManager authManager,
 			IpLogRepository ipRepository,
 			UserLogRepository ulRepository,
-			SecurityConfig config) {
+			SettingsService settings) {
 		super();
 		this.encoder = encoder;
 		this.authManager = authManager;
 		this.ipRepository = ipRepository;
 		this.ulRepository = ulRepository;
-		this.config = config;
+		this.settings = settings;
 	}
 
 	public String generateToken(Authentication authentication) {
@@ -57,7 +56,7 @@ public class AuthService {
 		JwtClaimsSet claims = JwtClaimsSet.builder()
 				.issuer("self")
 				.issuedAt(now)
-				.expiresAt(now.plus(config.getTokenDuration(), ChronoUnit.HOURS))
+				.expiresAt(now.plus(settings.getInt("seguridad.token_duration"), ChronoUnit.HOURS))
 				.subject(authentication.getName())
 				.claim("rol", scope)
 				.build();
@@ -68,6 +67,12 @@ public class AuthService {
 	public String autenticar(UserLogin login, Map<String, String> headers) {
 		
 		String ip;
+		
+		Integer max_ip  = settings.getInt("seguridad.attempts_ip");
+		Integer lock_ip = settings.getInt("seguridad.lockout_ip");
+		
+		Integer max_user  = settings.getInt("seguridad.attempts_user");
+		Integer lock_user = settings.getInt("seguridad.lockout_user");
 		
 		// Validar que existe el header X-Forwarded-For
 		if(headers.containsKey("x-forwarded-for")) {
@@ -83,18 +88,18 @@ public class AuthService {
 		//Probar que la IP o usuario no tenga demasiados intentos fallidos
 		IpLog ipLog = ipRepository.findById(ip).orElse(new IpLog());
 		UserLog userLog = ulRepository.findById(login.getUsername()).orElse(new UserLog());
-		if(ipLog.getFailedAttempts() != null && ipLog.getFailedAttempts() >= config.getMaxAttemptsIp()) {
+		if(ipLog.getFailedAttempts() != null && ipLog.getFailedAttempts() >= max_ip) {
 			// Demasiados intentos fallidos
 			// Probar que el último intento fallido haya sido hace más del tiempo determinado
-			if(now.isAfter(ipLog.getLastAttempt().plusMinutes(config.getLockoutTimeIp()))) {
+			if(now.isAfter(ipLog.getLastAttempt().plusMinutes(lock_ip))) {
 				// Reiniciar intentos
 				ipLog.setFailedAttempts((short)0);
 			} else {
 				// Bloquear intento
-				throw new BadCredentialsException("Demasiados intentos fallidos. Vuelve a intentar en " + config.getLockoutTimeIp() + " minutos.");
+				throw new BadCredentialsException("Demasiados intentos fallidos. Vuelve a intentar en " + lock_ip + " minutos.");
 			}
 		}
-		if(userLog.getLastAttempt() != null && now.isBefore(userLog.getLastAttempt().plusMinutes(config.getLockoutTimeUser()))) {
+		if(userLog.getLastAttempt() != null && now.isBefore(userLog.getLastAttempt().plusMinutes(lock_user))) {
 			throw new BadCredentialsException("Demasiados intentos fallidos");
 		}
 		
@@ -120,8 +125,8 @@ public class AuthService {
 			}
 			userAttempts.put(userLog.getUsername(), intentosUser);
 			
-			if(intentosUser >= config.getMaxAttemptsUser()) {
-				userLog.setFailedAttempts(config.getMaxAttemptsUser());
+			if(intentosUser >= max_user) {
+				userLog.setFailedAttempts(max_user.shortValue());
 				userLog.setSuccessful(false);
 				ulRepository.save(userLog);
 			}

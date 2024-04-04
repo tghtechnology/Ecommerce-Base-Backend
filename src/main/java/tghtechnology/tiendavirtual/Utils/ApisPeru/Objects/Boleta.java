@@ -80,7 +80,7 @@ public class Boleta {
 		this.fechaEmision = ApisPeruUtils.dateFormat(fechaEmision);
 		this.formaPago = new PaymentTerms(Moneda.PEN, "Contado");
 		this.client = client;
-		this.company = obtenerCompany();	// Obtener de CompanyData
+		this.company = obtenerCompany();//company;
 		this.tipoMoneda = Moneda.PEN.getLabel();
 		this.details = details;
 		this.observacion = observacion;

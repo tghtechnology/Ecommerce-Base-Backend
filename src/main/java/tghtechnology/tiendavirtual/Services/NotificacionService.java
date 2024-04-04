@@ -10,15 +10,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.stereotype.Service;
 
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
-import tghtechnology.tiendavirtual.Models.Notificacion;
 import tghtechnology.tiendavirtual.Models.Carrito;
+import tghtechnology.tiendavirtual.Models.Notificacion;
 import tghtechnology.tiendavirtual.Repository.NotificacionRepository;
 import tghtechnology.tiendavirtual.dto.NotificacionDTOForList;
 
@@ -27,22 +26,23 @@ import tghtechnology.tiendavirtual.dto.NotificacionDTOForList;
 public class NotificacionService {
 
 	private final NotificacionRepository notiRepo;
+	private final SettingsService settings;
 	
 	private final Set<UUID> listeners = new HashSet<>();
 	
 	private final Map<Integer, Set<UUID>> notis = new HashMap<>();
 	
-	@Value("${tgh.notification.interval}")
-	private Integer interval;
 	
-	public NotificacionService(NotificacionRepository notificacionRepository) {
+	public NotificacionService(NotificacionRepository notificacionRepository,
+							   SettingsService settings) {
 		this.notiRepo = notificacionRepository;
+		this.settings = settings;
 	}
 	
 	
 	public Flux<ServerSentEvent<List<NotificacionDTOForList>>> obtenerNotificaciones(UUID uuid){
 		listeners.add(uuid);
-		return Flux.interval(Duration.ofSeconds(interval))
+		return Flux.interval(Duration.ofSeconds(settings.getInt("notificaciones.intervalo")))
 				.publishOn(Schedulers.boundedElastic())
 				.map(sequence -> ServerSentEvent.<List<NotificacionDTOForList>>builder().id(String.valueOf(sequence))
 						.data(getNotifs(uuid))

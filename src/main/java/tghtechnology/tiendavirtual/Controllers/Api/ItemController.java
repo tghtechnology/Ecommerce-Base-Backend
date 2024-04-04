@@ -68,7 +68,6 @@ public class ItemController {
 		
 		ItemDTOForInsert iItem = new ObjectMapper().readValue(item, ItemDTOForInsert.class);
 		validator.validar(iItem);
-		System.out.println("a");
 		ItemDTOForList lItem = itemService.crearItem(iItem, imagen);
 		return ResponseEntity.status(HttpStatus.CREATED).body(lItem);
 	}

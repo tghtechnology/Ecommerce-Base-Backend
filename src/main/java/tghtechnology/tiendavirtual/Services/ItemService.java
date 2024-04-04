@@ -101,7 +101,6 @@ public class ItemService {
 			
 			return new ItemDTOForList().from(item, List.of(img));
         }
-    	System.out.println(item.getNombre());
     	return new ItemDTOForList().from(item);
     }
     
