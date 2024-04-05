@@ -1,5 +1,6 @@
 package tghtechnology.tiendavirtual.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,5 +21,7 @@ public interface VentaRepository extends JpaRepository<Venta, Integer>{
 
     @Query("SELECT v FROM Venta v WHERE v.estado = true AND v.id_venta = :ven_id")
     Optional<Venta> listarUno(@Param("ven_id") Integer idVenta);
+    
+    List<Venta> findAllByFecha_ventaBetween(LocalDate inicio, LocalDate fin);
     
 }

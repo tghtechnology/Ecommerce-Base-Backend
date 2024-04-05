@@ -1,5 +1,6 @@
 package tghtechnology.tiendavirtual.Services;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -10,7 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.AllArgsConstructor;
 import tghtechnology.tiendavirtual.Enums.Mes;
 import tghtechnology.tiendavirtual.Models.ReporteMensual;
+import tghtechnology.tiendavirtual.Models.Venta;
 import tghtechnology.tiendavirtual.Repository.ReporteRepository;
+import tghtechnology.tiendavirtual.Repository.VentaRepository;
 import tghtechnology.tiendavirtual.dto.Reporte.ReporteDTOForList;
 
 @Service
@@ -18,6 +21,7 @@ import tghtechnology.tiendavirtual.dto.Reporte.ReporteDTOForList;
 public class ReporteService {
 
     private ReporteRepository repRepository;
+    private VentaRepository venRepository;
 
     /**
      * Lista todos los reportes de un año en específico
@@ -44,6 +48,11 @@ public class ReporteService {
     
     @Transactional(rollbackFor = {})
     public ReporteMensual generarReporte(Integer mes,Integer anio) {
+    	
+    	//Obtener todas las ventas del mes
+    	List<Venta> ventas = venRepository.findAllByFecha_ventaBetween(LocalDate.of(anio, mes, 0), LocalDate.of(anio, mes+1, 0));
+    	
+    	
     	
     }
     
