@@ -29,6 +29,9 @@ public class VariacionDTOForInsert implements DTOForInsert<Variacion>{
 	@DecimalMin(value = "0.0", inclusive = true, message = "El precio debe ser mayor a S/.0.00")
 	private BigDecimal precio;
 	
+	@DecimalMin(value = "0.0", inclusive = true, message = "El costo debe ser mayor a S/.0.00")
+	private BigDecimal costo;
+	
 	@NotNull(message = "No puede ser nulo")
     private DisponibilidadItem disponibilidad;
 	
@@ -61,6 +64,7 @@ public class VariacionDTOForInsert implements DTOForInsert<Variacion>{
 	public Variacion updateModel(Variacion var) {
 		var.setValor_variacion(valor_variacion);
 		var.setPrecio(precio);
+		var.setCosto(costo == null ? precio : costo);
 		var.setDisponibilidad(disponibilidad);
 		var.setStock(stock);
 		var.setAplicarDescuento(aplicar_descuento);

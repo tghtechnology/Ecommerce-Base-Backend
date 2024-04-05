@@ -21,10 +21,6 @@ public class DescuentoDTOForInsert implements DTOForInsert<Descuento>{
 	@NotNull(message = "El campo no puede estar vacío")
 	private Integer id_item;
 	
-	@NotNull(message = "El campo no puede estar vacío")
-	@DecimalMin(value = "1.0", message = "El nuevo precio no puede ser menor a UN SOL")
-	private BigDecimal nuevo_precio;
-	
 	@Min(value = 1, message = "El campo no puede ser menor a 1")
 	@Max(value = 100, message = "El campo no puede ser mayor a 100")
 	private Integer porcentaje;

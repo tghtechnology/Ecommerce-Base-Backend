@@ -34,6 +34,9 @@ public class ItemDTOForInsert implements DTOForInsert<Item>{
 	@DecimalMin(value = "0.0", inclusive = true, message = "El precio debe ser mayor a S/.0.00")
 	private BigDecimal precio;
 	
+	@DecimalMin(value = "0.0", inclusive = true, message = "El costo debe ser mayor a S/.0.00")
+	private BigDecimal costo;
+	
 	@NotNull(message = "No puede ser nulo")
     private DisponibilidadItem disponibilidad;
 	
@@ -69,6 +72,7 @@ public class ItemDTOForInsert implements DTOForInsert<Item>{
 		var.setTipo_variacion(TipoVariacion.COLOR);
 		var.setValor_variacion("000000");
 		var.setPrecio(precio);
+		var.setCosto(costo == null ? precio : costo);
 		var.setStock(stock);
 		var.setDisponibilidad(disponibilidad);
 		var.setAplicarDescuento(true);

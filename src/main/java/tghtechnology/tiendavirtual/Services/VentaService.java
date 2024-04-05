@@ -85,7 +85,7 @@ public class VentaService {
         Pageable pag = PageRequest.of(pagina-1, settings.getInt("paginado.venta"));
 		Cliente cli  = cli_buscarPorId(id_persona);
 		
-		List<Venta> listaVentas = venRepository.listarPorCliente(cli.getId_persona(), pag);
+		List<Venta> listaVentas = venRepository.listarPorCliente(cli, pag);
 		
 		listaVentas.forEach(vv -> {
 			ventas.add(new VentaDTOForListMinimal().from(vv));

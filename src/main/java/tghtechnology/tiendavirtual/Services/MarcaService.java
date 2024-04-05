@@ -52,7 +52,7 @@ public class MarcaService {
     
     /**
      * Obtiene una marca en específico según su ID de texto
-     * @param id la ID de texto de la marca
+     * @param text_id la ID de texto de la marca
      * @return la marca encontrada en formato ForList o null si no existe
      */
     public MarcaDTOForList listarUno(String text_id){
