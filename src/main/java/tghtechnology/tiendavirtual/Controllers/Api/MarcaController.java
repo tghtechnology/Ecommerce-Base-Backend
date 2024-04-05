@@ -35,8 +35,8 @@ public class MarcaController {
 	private CustomBeanValidator validator;
 	
 	@GetMapping
-    public ResponseEntity<List<MarcaDTOForList>> listar(){
-        List<MarcaDTOForList> mars = marService.listarMarcas();
+    public ResponseEntity<List<MarcaDTOForList>> listar(@RequestParam(defaultValue = "1", name = "page") Integer page){
+        List<MarcaDTOForList> mars = marService.listarMarcas(page);
         return ResponseEntity.status(HttpStatus.OK).body(mars);
     }
 	

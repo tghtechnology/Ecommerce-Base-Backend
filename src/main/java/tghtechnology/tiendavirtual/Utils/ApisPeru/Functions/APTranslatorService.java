@@ -56,8 +56,8 @@ public class APTranslatorService {
 				legends,
 				ven.getObservacion(),
 				null,
-				descuentos,
-				cargos
+				descuentos.isEmpty() ? null : descuentos,
+				cargos.isEmpty() ? null : cargos
 				);
 	}
 
@@ -81,8 +81,8 @@ public class APTranslatorService {
 				new BigDecimal(settings.getInt("facturacion.igv")).divide(new BigDecimal(100), 2, RoundingMode.HALF_UP),
 				AfectacionIGV.GRAVADO_OPERACION_ONEROSA,
 				BigDecimal.ZERO,
-				descuentos,
-				cargos
+				descuentos.isEmpty() ? null : descuentos,
+				cargos.isEmpty() ? null : cargos
 				);
 	}
 	
@@ -130,8 +130,8 @@ public class APTranslatorService {
 							settings.getString("company.distrito"),
 							settings.getString("company.direccion")
 							),
-					null,//settings.getString("company.email"),
-					null//settings.getString("company.telefono")
+					settings.getString("company.email"),
+					settings.getString("company.telefono")
 				);
 	}
 }

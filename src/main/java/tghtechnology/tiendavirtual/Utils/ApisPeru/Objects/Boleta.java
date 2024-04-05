@@ -80,7 +80,7 @@ public class Boleta {
 		this.fechaEmision = ApisPeruUtils.dateFormat(fechaEmision);
 		this.formaPago = new PaymentTerms(Moneda.PEN, "Contado");
 		this.client = client;
-		this.company = obtenerCompany();//company;
+		this.company = company;//company;
 		this.tipoMoneda = Moneda.PEN.getLabel();
 		this.details = details;
 		this.observacion = observacion;
@@ -178,24 +178,6 @@ public class Boleta {
 		return total;
 	}
 	
-	private Company obtenerCompany() {
-		Company c = new Company();
-		
-		c.setRuc("20000000018");
-		c.setRazonSocial("TESTEOS SAC");
-		c.setNombreComercial("Testeos especiales");
-		
-		Address a = new Address(
-				"150101",
-				"LIMA",
-				"LIMA",
-				"LIMA",
-				"MI CASA"
-				);
-		c.setAddress(a);	
-		
-		return c;
-	}
 	
 	private List<Legend> convertirLeyendas(List<Leyenda> leg, BigDecimal subtotal) {
 		

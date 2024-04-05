@@ -4,13 +4,15 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import tghtechnology.tiendavirtual.Models.Item;
 
-public interface ItemRepository extends CrudRepository<Item, Integer>{
+public interface ItemRepository extends JpaRepository<Item, Integer>{
 
 	@Query("SELECT i FROM Item i WHERE i.estado = true")
     List<Item> listarItem();
@@ -38,7 +40,8 @@ public interface ItemRepository extends CrudRepository<Item, Integer>{
     List<Item> listar(@Param("query") String query,
     					  @Param("min") BigDecimal min,
     					  @Param("max") BigDecimal max,
-    					  @Param("catId") String catId);
+    					  @Param("catId") String catId,
+    					  Pageable pageable);
 	
 	
     @Query("SELECT i FROM Item i WHERE i.estado = true AND i.id_item = :id_item")

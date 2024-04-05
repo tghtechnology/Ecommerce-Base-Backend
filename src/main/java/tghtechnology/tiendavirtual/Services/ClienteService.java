@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
@@ -36,14 +38,19 @@ public class ClienteService {
 	private CarritoRepository carRepository;
 	
 	private UsuarioService userService;
+	private SettingsService settings;
 
     /**
      * Lista todos los clientes no eliminados
      * @return Una lista de los clientes  en formato ForList
      */
-    public List<ClienteDTOForList> listarClientes (){
+    public List<ClienteDTOForList> listarClientes (Integer pagina){
         List<ClienteDTOForList> clienteList = new ArrayList<>();
-        List<Cliente> clis = cliRepository.listarClientes();
+        
+        if(pagina < 1) throw new DataMismatchException("pagina", "No puede ser menor a 1");
+        
+        Pageable pag = PageRequest.of(pagina-1, settings.getInt("paginado.cliente"));
+        List<Cliente> clis = cliRepository.listarClientes(pag);
         
         clis.forEach( x -> {
             clienteList.add(new ClienteDTOForList().from(x));

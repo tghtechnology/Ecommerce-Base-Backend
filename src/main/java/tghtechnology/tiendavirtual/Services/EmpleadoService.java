@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -32,15 +34,17 @@ public class EmpleadoService {
     private UsuarioRepository userRepository;
     
     private UsuarioService userService;
-
+    private SettingsService settings;
 
     /**
      * Lista todos los empleados activos.
      * @return Una lista de los empleados en formato DTOForList.
      */
-    public List<EmpleadoDTOForList> listarEmpleados(){
+    public List<EmpleadoDTOForList> listarEmpleados(Integer pagina){
         List<EmpleadoDTOForList> empDto = new ArrayList<>();
-        List<Empleado> emp = (List<Empleado>) empRepository.listarEmpleados();
+        
+        Pageable pag = PageRequest.of(pagina-1, settings.getInt("paginado.empleado"));
+        List<Empleado> emp = (List<Empleado>) empRepository.listarEmpleados(pag);
 
         emp.forEach(empleado ->{
             empDto.add(new EmpleadoDTOForList().from(empleado));

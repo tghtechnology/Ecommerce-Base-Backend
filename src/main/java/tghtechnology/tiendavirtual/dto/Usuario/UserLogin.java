@@ -1,4 +1,4 @@
-package tghtechnology.tiendavirtual.dto;
+package tghtechnology.tiendavirtual.dto.Usuario;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

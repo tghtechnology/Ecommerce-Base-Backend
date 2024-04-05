@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,6 +17,7 @@ import tghtechnology.tiendavirtual.Models.Marca;
 import tghtechnology.tiendavirtual.Repository.ImagenRepository;
 import tghtechnology.tiendavirtual.Repository.MarcaRepository;
 import tghtechnology.tiendavirtual.Utils.Cloudinary.MediaManager;
+import tghtechnology.tiendavirtual.Utils.Exceptions.DataMismatchException;
 import tghtechnology.tiendavirtual.Utils.Exceptions.IdNotFoundException;
 import tghtechnology.tiendavirtual.dto.Marca.MarcaDTOForInsert;
 import tghtechnology.tiendavirtual.dto.Marca.MarcaDTOForList;
@@ -27,14 +30,19 @@ public class MarcaService {
 	private ImagenRepository imaRepository;
 	
 	private MediaManager mediaManager;
+	private SettingsService settings;
 
     /**
      * Lista todas las marcas no eliminadas
      * @return Una lista de las marcas en formato ForList
      */
-    public List<MarcaDTOForList> listarMarcas (){
+    public List<MarcaDTOForList> listarMarcas (Integer pagina){
         List<MarcaDTOForList> marcaList = new ArrayList<>();
-        List<Marca> mars = marRepository.listar();
+        
+        if(pagina < 1) throw new DataMismatchException("pagina", "No puede ser menor a 1");
+        
+        Pageable pag = PageRequest.of(pagina-1, settings.getInt("paginado.marca"));
+        List<Marca> mars = marRepository.listar(pag);
         
         mars.forEach( x -> {
         	marcaList.add(new MarcaDTOForList().from(x));

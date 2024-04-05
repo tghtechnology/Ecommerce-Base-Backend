@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.AllArgsConstructor;
 import tghtechnology.tiendavirtual.Services.AuthService;
 import tghtechnology.tiendavirtual.Services.UsuarioService;
-import tghtechnology.tiendavirtual.dto.UserLogin;
+import tghtechnology.tiendavirtual.dto.Usuario.UserLogin;
 import tghtechnology.tiendavirtual.dto.Usuario.UsuarioDTOForLoginResponse;
 
 @RestController

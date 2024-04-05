@@ -8,6 +8,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,6 +28,7 @@ import tghtechnology.tiendavirtual.Repository.ImagenRepository;
 import tghtechnology.tiendavirtual.Repository.ItemRepository;
 import tghtechnology.tiendavirtual.Repository.VariacionRepository;
 import tghtechnology.tiendavirtual.Utils.Cloudinary.MediaManager;
+import tghtechnology.tiendavirtual.Utils.Exceptions.DataMismatchException;
 import tghtechnology.tiendavirtual.Utils.Exceptions.IdNotFoundException;
 import tghtechnology.tiendavirtual.dto.Item.ItemDTOForInsert;
 import tghtechnology.tiendavirtual.dto.Item.ItemDTOForList;
@@ -43,15 +46,21 @@ public class ItemService {
 	
 	private MarcaService marService;
 	private MediaManager mediaManager;
+	private SettingsService settings;
 
     /*Listar item*/
     public List<ItemDTOForList> listar (String query,
 									    BigDecimal min,
 									    BigDecimal max,
-									    String categoria
+									    String categoria,
+									    Integer pagina
     		){
         List<ItemDTOForList> itemList = new ArrayList<>();
-        List<Item> items = (List<Item>) itemRepository.listar(query, min, max, categoria);
+        
+        if(pagina < 1) throw new DataMismatchException("pagina", "No puede ser menor a 1");
+        
+        Pageable pag = PageRequest.of(pagina-1, settings.getInt("paginado.items"));
+        List<Item> items = (List<Item>) itemRepository.listar(query, min, max, categoria, pag);
         
         items.forEach( x -> {
             itemList.add(new ItemDTOForList().from(x, imaRepository.listarPorObjeto(TipoImagen.PRODUCTO, x.getId_item())));

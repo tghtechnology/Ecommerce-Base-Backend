@@ -44,7 +44,7 @@ public class SettingsService implements ApplicationListener<ApplicationReadyEven
 	
 	private final Map<String, Setting> settings = new HashMap<>();
 
-	public SettingsService() {		
+	public SettingsService() {
 		// Inicializar mapa de settings con valores iniciales
 		addSetting("facturacion.igv"			, "18"			, SettingType.INT);
 		addSetting("facturacion.antes_de_igv"	, "true"		, SettingType.BOOL);
@@ -71,6 +71,13 @@ public class SettingsService implements ApplicationListener<ApplicationReadyEven
 		addSetting("company.provincia"			, "LIMA"		, SettingType.STRING);
 		addSetting("company.distrito"			, "LIMA"		, SettingType.STRING);
 		addSetting("company.direccion"			, "MI DIRECCION", SettingType.STRING);
+		
+		addSetting("paginado.items"				, "21"			, SettingType.INT);
+		addSetting("paginado.cliente"			, "50"			, SettingType.INT);
+		addSetting("paginado.empleado"			, "10"			, SettingType.INT);
+		addSetting("paginado.marca"				, "10"			, SettingType.INT);
+		addSetting("paginado.venta"				, "10"			, SettingType.INT);
+		addSetting("paginado.notificacion"		, "5"			, SettingType.INT);
 		
 		addSetting("apisperu.url"				, "https://facturacion.apisperu.com/api/v1"	, SettingType.STRING);
 		addSetting("apisperu.token"				, "MI TOKEN" , SettingType.STRING);
@@ -121,7 +128,6 @@ public class SettingsService implements ApplicationListener<ApplicationReadyEven
 		settings.entrySet().forEach(entry -> entry.getValue().setValor(entry.getValue().getBaseValue()));
 		setRepository.saveAll(settings.values());
 	}
-	
 	
 	/**
 	 * Obtiene un Setting sin importar su tipo.
@@ -271,9 +277,20 @@ public class SettingsService implements ApplicationListener<ApplicationReadyEven
 		});
 		log.info("Finalizada comprobación de settings.");
 		
+		// Insertando datos importantes para prueba TODO: retirar
 		alterSetting("apisperu.token",
 				"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJ1c2VybmFtZSI6IkRlc2Fycm9sbG9UR0giLCJpYXQiOjE3MTIyNzE0NjQsImV4cCI6MTcxMjM1Nzg2NH0.AzFr9Q33mp7wtKdVAV4BUKpaIZghLwuTOcQYrnbvfcp5bdCqqF1WMA_XDM_tPtw0o9GQpTSbA2slvieZvPvU1Zc2cRXFhjddUF2lNkxAzTFFNHuMgqY51lGC_BElw6p70e9DESunsjMTipPYvTPrn9cMaEbHRA31F_9I2sVXxyZYbK0ok5Z7Zn-aEw52pK6_FQoi4_WqYRSVhykfDHCYhPTJzjxl8_W4SbWrGX-hWu50XMblcAb0DnIvTG1u6ZqN_UIk694570WlJhDdfTACVwUhglgNspIaG5as94Itiq1XVulGfEBydcXFbNuqhwSsBHk6AGJNoDUixxg3EHQDP9WlCJ8HLK-wjEQgiw0QphPTn4MrIvrCq90Z9xQ-NOzGymKTZbOL074RVxlrM2Vh2hzB_nyFhwrOakOpeGoQyfQ33O2ft7ftlCMMfvZuwydRe7z0XgiyRuC2Kzx6bNut_Dmpeqvx4Kf_aCySpJhMSpoolfkQuwSlCdcxsG4mqCPoxEwFW9ErnOkdpqXCNcw7vYNMEQ0GiafekzOM7qGSrEN1HAf0Jw3IhHH56l9YMPGuIeMugcgYI27l9psNvYsNfZm8qy3aWwK3J3GMnr4UW6a28dZOIvKHaPNMmJb2oTxg4DfCRfDjHXxxwmKSsCIo8kxzcaQO7BeotMe7YaunKiI"
 				, SettingType.STRING);
+		
+		alterSetting("company.ruc", "20000000018", SettingType.STRING);
+		alterSetting("company.razon_social", "TESTEOS SAC", SettingType.STRING);
+		alterSetting("company.nombre_comercial", "Testeos especiales", SettingType.STRING);
+		
+		alterSetting("company.ubigeo", "150101", SettingType.STRING);
+		alterSetting("company.departamento", "LIMA", SettingType.STRING);
+		alterSetting("company.provincia", "LIMA", SettingType.STRING);
+		alterSetting("company.distrito", "LIMA", SettingType.STRING);
+		alterSetting("company.direccion", "MI CASA", SettingType.STRING);
 		
 	}
 	

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
@@ -32,8 +33,8 @@ public class ClienteController {
 	
 	@Gerente
 	@GetMapping
-    public ResponseEntity<List<ClienteDTOForList>> listar(){
-        List<ClienteDTOForList> clis = cliService.listarClientes();
+    public ResponseEntity<List<ClienteDTOForList>> listar(@RequestParam(defaultValue = "1", name = "page") Integer page){
+        List<ClienteDTOForList> clis = cliService.listarClientes(page);
         return ResponseEntity.status(HttpStatus.OK).body(clis);
     }
 	

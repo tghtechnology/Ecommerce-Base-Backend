@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -55,14 +57,15 @@ public class VentaService {
 	 * Utiliza la autorización de usuario para obtener la persona y
 	 * sus respectivas ventas.
 	 * 
+	 * @param page La página a seleccionar (Tamaño de página configurable mediante {@link tghtechnology.tiendavirtual.Services.SettingsService SettingsService})
 	 * @param auth La autenticación del usuario
 	 * @throws IdNotFoundException si la autenticación no se corresponde con un usuario
 	 * o si el usuario no se corresponde con ningún cliente.
 	 * @return Una lista de las ventas.
 	 */
-	public List<VentaDTOForListMinimal> listarVentasPorUsuario(Authentication auth) {
+	public List<VentaDTOForListMinimal> listarVentasPorUsuario(Integer page, Authentication auth) {
 		Usuario user = user_buscarPorUsername(auth.getName());
-		return listarVentasPorUsuario(user.getPersona().getId_persona());
+		return listarVentasPorUsuario(page, user.getPersona().getId_persona());
 	}
 	
 	/**
@@ -74,13 +77,18 @@ public class VentaService {
 	 * @throws IdNotFoundException Si la ID no se corresponde con ningún cliente.
 	 * @return Una lista de las ventas.
 	 */
-	public List<VentaDTOForListMinimal> listarVentasPorUsuario(Integer id_persona){
-		List<VentaDTOForListMinimal> ventas = new ArrayList<>();
+	public List<VentaDTOForListMinimal> listarVentasPorUsuario(Integer pagina, Integer id_persona){
+		final List<VentaDTOForListMinimal> ventas = new ArrayList<>();
 		
+		if(pagina < 1) throw new DataMismatchException("pagina", "No puede ser menor a 1");
+        
+        Pageable pag = PageRequest.of(pagina-1, settings.getInt("paginado.venta"));
 		Cliente cli  = cli_buscarPorId(id_persona);
 		
-		cli.getVentas().stream().sorted().forEach(ven -> {
-			ventas.add(new VentaDTOForListMinimal().from(ven));
+		List<Venta> listaVentas = venRepository.listarPorCliente(cli.getId_persona(), pag);
+		
+		listaVentas.forEach(vv -> {
+			ventas.add(new VentaDTOForListMinimal().from(vv));
 		});
 		
 		return ventas;
@@ -92,7 +100,7 @@ public class VentaService {
 	 * @param id_venta La ID de la venta por listar
 	 * @param auth La autenticación del usuario
 	 * @return La venta en formato DTOForList
-	 * @throws AccessDeniedException Si la venta no existe, si 
+	 * @throws AccessDeniedException Si la venta no existe
 	 */
 	public VentaDTOForList listarVenta(Integer id_venta, Authentication auth) {
 		

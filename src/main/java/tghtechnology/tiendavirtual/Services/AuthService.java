@@ -22,7 +22,7 @@ import tghtechnology.tiendavirtual.Security.Models.IpLog;
 import tghtechnology.tiendavirtual.Security.Models.UserLog;
 import tghtechnology.tiendavirtual.Security.Repository.IpLogRepository;
 import tghtechnology.tiendavirtual.Security.Repository.UserLogRepository;
-import tghtechnology.tiendavirtual.dto.UserLogin;
+import tghtechnology.tiendavirtual.dto.Usuario.UserLogin;
 
 @Service
 public class AuthService {
