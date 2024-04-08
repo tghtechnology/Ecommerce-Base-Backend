@@ -340,7 +340,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"id_item\": 2,\r\n    \"tipo_variacion\": \"COLOR\",\r\n    \"valor_variacion\": \"CDCDCD\",\r\n    \"precio\": 60.00,\r\n    \"disponibilidad\": \"DISPONIBLE\",\r\n    \"stock\": 100\r\n}",
+									"raw": "{\r\n    \"id_item\": 1,\r\n    \"tipo_variacion\": \"COLOR\",\r\n    \"valor_variacion\": \"CCCCCC\",\r\n    \"precio\": 70.00,\r\n    \"disponibilidad\": \"DISPONIBLE\",\r\n    \"stock\": 20\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -585,7 +585,7 @@
 							"formdata": [
 								{
 									"key": "item",
-									"value": "{\n    \"nombre\": \"Celular nuevo4\",\n    \"descripcion\": \"Un celular muy nuevo\",\n    \"precio\": 50.00,\n    \"disponibilidad\": \"DISPONIBLE\",\n    \"stock\": 100,\n    \"id_marca\": 1\n}",
+									"value": "{\n    \"nombre\": \"iPad\",\n    \"descripcion\": \"Una tablet grande\",\n    \"precio\": 60.00,\n\"costo\": 30,\n    \"disponibilidad\": \"DISPONIBLE\",\n    \"stock\": 150,\n    \"id_marca\": 1,\n\"id_categoria\": 1\n}",
 									"type": "text"
 								},
 								{
@@ -1328,7 +1328,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id_variacion\": 1,\r\n    \"cantidad\": 10\r\n}",
+							"raw": "{\r\n    \"id_variacion\": 102,\r\n    \"cantidad\": 200\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1469,7 +1469,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"tipo_comprobante\": \"BOLETA_DE_VENTA\",\r\n    \"tipo_documento\": \"DNI\",\r\n    \"numero_documento\": \"12345678\",\r\n    \"nombres\": \"Juanito\",\r\n    \"apellidos\": \"Ramirez\",\r\n    \"telefono\": \"+51987654321\",\r\n    \"correo\": \"cliente_anonimo@test.com\",\r\n    \"region\": \"LIMA\",\r\n    \"provincia\": \"LIMA\",\r\n    \"distrito\": \"LIMA\",\r\n    \"direccion\": \"Al lado de la casa del vecino\",\r\n    \"referencia\": \"Al lado de mi otro vecino\",\r\n    \"carrito\":[\r\n        {\r\n            \"id_variacion\": 1,\r\n            \"cantidad\": 1\r\n        }\r\n    ]\r\n}",
+							"raw": "{\r\n    \"tipo_comprobante\": \"BOLETA_DE_VENTA\",\r\n    \"tipo_documento\": \"DNI\",\r\n    \"numero_documento\": \"12345678\",\r\n    \"nombres\": \"Juanito\",\r\n    \"apellidos\": \"Ramirez\",\r\n    \"telefono\": \"+51987654321\",\r\n    \"correo\": \"cliente_anonimo@test.com\",\r\n    \"region\": \"LIMA\",\r\n    \"provincia\": \"LIMA\",\r\n    \"distrito\": \"LIMA\",\r\n    \"direccion\": \"Al lado de la casa del vecino\",\r\n    \"referencia\": \"Al lado de mi otro vecino\",\r\n    \"carrito\":[\r\n        {\r\n            \"id_variacion\": 2,\r\n            \"cantidad\": 1001\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1485,6 +1485,41 @@
 								"api",
 								"venta",
 								"no-cliente"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Reporte",
+			"item": [
+				{
+					"name": "Obtener",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{API}}/api/reporte?year=2024",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"reporte"
+							],
+							"query": [
+								{
+									"key": "year",
+									"value": "2024"
+								}
 							]
 						}
 					},
