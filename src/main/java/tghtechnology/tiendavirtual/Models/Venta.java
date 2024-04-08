@@ -39,8 +39,7 @@ public class Venta implements Comparable<Venta>{
     private String num_comprobante;
     
     @Column(nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime fecha_venta;
+    private LocalDateTime fecha;
 
     @Column(nullable = false)
     private EstadoPedido estado_pedido;
@@ -104,7 +103,7 @@ public class Venta implements Comparable<Venta>{
 
 	@Override
 	public int compareTo(Venta o) {
-		return this.fecha_venta.compareTo(o.getFecha_venta());
+		return this.fecha.compareTo(o.getFecha());
 	}
   	
 }

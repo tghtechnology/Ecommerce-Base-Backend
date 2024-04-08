@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 import tghtechnology.tiendavirtual.Models.ReporteMensual;
 public interface ReporteRepository extends CrudRepository<ReporteMensual, Integer>{
 
-	@Query("SELECT r FROM ReporteMensual r WHERE r.id.anio = :anio")
-    List<ReporteMensual> listarPorAnio(@Param("anio") Integer anio);
+	@Query("SELECT r FROM ReporteMensual r WHERE r.id.year = :year")
+    List<ReporteMensual> listarPorAnio(@Param("year") Integer anio);
 	
 }

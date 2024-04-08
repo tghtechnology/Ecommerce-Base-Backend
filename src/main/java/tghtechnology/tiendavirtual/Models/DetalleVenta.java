@@ -34,6 +34,9 @@ public class DetalleVenta {
 	private Integer id_variacion;
 	
 	@Column(nullable = false)
+	private Integer variacion_correlativo;
+	
+	@Column(nullable = false)
 	private TipoVariacion tipo_variacion;
 	
 	@Column(nullable = false, length = 10)
@@ -41,6 +44,9 @@ public class DetalleVenta {
 	
 	@Column(nullable = false)
 	private BigDecimal precio_unitario;
+	
+	@Column(nullable = false)
+	private BigDecimal costo_unitario;
 	
 	@Column(nullable = false)
 	private Integer porcentaje_descuento;

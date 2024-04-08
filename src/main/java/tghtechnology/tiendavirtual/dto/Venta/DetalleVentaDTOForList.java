@@ -19,6 +19,7 @@ public class DetalleVentaDTOForList implements DTOForList<DetalleVenta>{
 	private Integer id_item;
 	private String nombre_item;
 	private Integer id_variacion;
+	private Integer var_correlativo;
 	private TipoVariacion tipo_variacion;
 	private String valor_variacion;
 	private BigDecimal precio_unitario;
@@ -35,6 +36,7 @@ public class DetalleVentaDTOForList implements DTOForList<DetalleVenta>{
 		this.id_item = dv.getId_item();
 		this.nombre_item = dv.getNombre_item();
 		this.id_variacion = dv.getId_variacion();
+		this.var_correlativo = dv.getVariacion_correlativo();
 		this.tipo_variacion = dv.getTipo_variacion();
 		this.valor_variacion = dv.getValor_variacion();
 		this.precio_unitario = dv.getPrecio_unitario();

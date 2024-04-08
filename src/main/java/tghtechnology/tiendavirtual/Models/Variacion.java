@@ -26,6 +26,9 @@ public class Variacion implements Comparable<Variacion>{
     private Integer id_variacion;
     
     @Column(nullable = false)
+    private Integer correlativo;
+    
+    @Column(nullable = false)
     private TipoVariacion tipo_variacion;
     
     @Column(nullable = false)

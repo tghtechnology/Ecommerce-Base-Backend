@@ -64,6 +64,7 @@ public class VariacionService {
         
         Item item = item_buscarPorId(iVar.getId_item());
         var.setItem(item);
+        var.setCorrelativo(item.getVariaciones().size()+1);
         
         varRepository.save(var);
         return new VariacionDTOForList().from(var);
@@ -91,7 +92,17 @@ public class VariacionService {
         if(var.getItem().getVariaciones().stream().filter(v -> v.getEstado()).collect(Collectors.toList()).size() == 1)
         	throw new DataMismatchException("variacion", "No se puede eliminar la única variación de un item");
         var.setEstado(false);
+        
+        List<Variacion> vars = var.getItem()
+        		.getVariaciones()
+        		.stream()
+        		.filter(v -> (v.getEstado() && v.getCorrelativo() > var.getCorrelativo()))
+        		.collect(Collectors.toList());
+        
+        vars.forEach( v -> v.setCorrelativo(v.getCorrelativo()-1));
+        
         varRepository.save(var);
+        varRepository.saveAll(vars);
     }
     
     public Item item_buscarPorId(Integer id) throws IdNotFoundException{

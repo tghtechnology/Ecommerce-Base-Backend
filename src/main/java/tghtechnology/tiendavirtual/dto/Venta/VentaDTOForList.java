@@ -40,7 +40,7 @@ public class VentaDTOForList implements DTOForList<Venta>{
 		this.id_venta = ven.getId_venta();
 		this.tipo_comprobante = ven.getTipo_comprobante();
 		this.num_comprobante = ven.getNum_comprobante();
-		this.fecha_realizacion = ven.getFecha_venta();
+		this.fecha_realizacion = ven.getFecha();
 		this.estado_pedido = ven.getEstado_pedido();
 		this.observacion = ven.getObservacion();
 		this.porcentaje_igv = ven.getPorcentaje_igv();

@@ -16,6 +16,7 @@ import tghtechnology.tiendavirtual.Utils.DTOInterfaces.DTOForList;
 public class VariacionDTOForList implements DTOForList<Variacion>{
 
 	private Integer id_variacion;
+	private Integer correlativo;
 	private TipoVariacion tipo_variacion;
 	private String valor_variacion;
 	private BigDecimal precio;
@@ -26,6 +27,7 @@ public class VariacionDTOForList implements DTOForList<Variacion>{
 	@Override
 	public VariacionDTOForList from(Variacion var) {
 		this.id_variacion = var.getId_variacion();
+		this.correlativo = var.getCorrelativo();
 		this.tipo_variacion = var.getTipo_variacion();
 		this.valor_variacion = var.getValor_variacion();
 		this.precio = var.getPrecio();

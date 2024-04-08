@@ -52,6 +52,7 @@ public class VariacionDTOForInsert implements DTOForInsert<Variacion>{
 		var.setTipo_variacion(tipo_variacion);
 		var.setValor_variacion(valor_variacion);
 		var.setPrecio(precio);
+		var.setCosto(costo == null ? precio : costo);
 		var.setDisponibilidad(disponibilidad);
 		var.setStock(stock);
 		var.setAplicarDescuento(aplicar_descuento);

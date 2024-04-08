@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
@@ -21,15 +22,19 @@ public class ReporteMensual {
     @EmbeddedId
     private ReportMonth id;
     
+    @Column(nullable = false)
     private BigDecimal totalIngresos;
     
+    @Column(nullable = false)
     private BigDecimal totalGanancias;
     
+    @Column(nullable = false)
     private Integer numeroVentas;
     
-    private Integer numProductosVendidos;
+    @Column(nullable = false)
+    private Integer numItemsVendidos;
     
     @OneToMany(mappedBy = "reporte")
-    private Set<ItemReporte> relevant_items = new HashSet<>();
+    private Set<ReporteItem> relevant_items = new HashSet<>();
     
 }

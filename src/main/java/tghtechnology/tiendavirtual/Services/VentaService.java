@@ -176,11 +176,14 @@ public class VentaService {
 			dv.setTipo_variacion(var.getTipo_variacion());
 			dv.setValor_variacion(var.getValor_variacion());
 			dv.setPrecio_unitario(var.getPrecio());
+			dv.setCosto_unitario(var.getCosto());
 			if(itm.getDescuento() != null && var.getAplicarDescuento())
 				dv.setPorcentaje_descuento(itm.getDescuento().getPorcentaje());
 			else
 				dv.setPorcentaje_descuento(0);
 			
+			dv.setVenta(v);
+			dv = dvRepository.save(dv);
 			dets.add(dv);
 		});
 		
@@ -247,6 +250,7 @@ public class VentaService {
 		dv.setTipo_variacion(var.getTipo_variacion());
 		dv.setValor_variacion(var.getValor_variacion());
 		dv.setPrecio_unitario(var.getPrecio());
+		dv.setCosto_unitario(var.getCosto());
 		dv.setCantidad(dc.getCantidad().shortValue());
 		if(itm.getDescuento() != null && var.getAplicarDescuento())
 			dv.setPorcentaje_descuento(itm.getDescuento().getPorcentaje());

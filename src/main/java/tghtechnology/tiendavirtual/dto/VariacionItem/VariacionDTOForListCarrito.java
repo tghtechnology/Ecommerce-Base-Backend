@@ -20,6 +20,7 @@ public class VariacionDTOForListCarrito implements DTOForList<Variacion>{
 	private String nombre;
 	
 	private Integer id_variacion;
+	private Integer correlativo;
 	private TipoVariacion tipo_variacion;
 	private String valor_variacion;
 	private BigDecimal precio;
@@ -34,6 +35,7 @@ public class VariacionDTOForListCarrito implements DTOForList<Variacion>{
 		this.nombre = var.getItem().getNombre();
 		
 		this.id_variacion = var.getId_variacion();
+		this.correlativo = var.getCorrelativo();
 		this.tipo_variacion = var.getTipo_variacion();
 		this.valor_variacion = var.getValor_variacion();
 		this.precio = var.getPrecio();

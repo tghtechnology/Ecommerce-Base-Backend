@@ -72,7 +72,7 @@ public class APTranslatorService {
 		return new SaleDetail(
 				UnidadMedida.UNIDAD_BIENES,
 				det.getCantidad(),
-				String.format("PROD-%04d%02d",det.getId_item(), det.getId_variacion()),
+				String.format("PROD-%04d%02d",det.getId_item(), det.getVar_correlativo()),
 				String.format("%s | %s %s",
 						det.getNombre_item(),
 						det.getTipo_variacion().getDescripcion(),

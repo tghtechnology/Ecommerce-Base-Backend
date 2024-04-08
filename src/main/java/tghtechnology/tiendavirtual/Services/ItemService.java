@@ -98,6 +98,7 @@ public class ItemService {
     	item = itemRepository.save(item);
     	Variacion var = iItem.toVariacion();
     	var.setItem(item);
+    	var.setCorrelativo(1);
     	var = varRepository.save(var);
     	
     	item.getVariaciones().add(var);

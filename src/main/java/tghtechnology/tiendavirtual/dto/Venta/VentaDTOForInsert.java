@@ -84,7 +84,7 @@ public class VentaDTOForInsert implements DTOForInsert<Venta>{
 		Venta ven = new Venta();
 		
 		ven.setTipo_comprobante(tipo_comprobante);
-		ven.setFecha_venta(LocalDateTime.now());
+		ven.setFecha(LocalDateTime.now());
 		ven.setEstado_pedido(EstadoPedido.PENDIENTE);
 		ven.setEstado(true);
 		
