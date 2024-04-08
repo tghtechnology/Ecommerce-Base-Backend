@@ -63,9 +63,12 @@ public class ReporteService {
         return repMap;
     }
     
-//    public ReporteDTOForList listarReporte(Integer anio, Mes mes);
+    @Transactional
+    public ReporteDTOForList listarReporte(Integer anio, Mes mes) {
+    	return new ReporteDTOForList().from(generarReporteMensual(mes, anio));
+    }
     
-    @Transactional() //rollbackFor
+    @Transactional //rollbackFor
     public ReporteMensual generarReporteMensual(Mes mes,Integer anio) {
     	
     	Integer _mes = mes.ordinal()+1;

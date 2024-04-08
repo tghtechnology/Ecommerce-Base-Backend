@@ -35,11 +35,15 @@ public class ReporteController {
         return ResponseEntity.status(HttpStatus.OK).body(reportes);
     }
 	
-//	@Gerente
-//	@GetMapping("/{id}")
-//	public ResponseEntity<CategoriaDTOForList> listarUno(@PathVariable Integer id) {
-//        CategoriaDTOForList cat = catService.listarUno(id);
-//        return ResponseEntity.status(HttpStatus.OK).body(cat);
-//	}
+	@Gerente
+	@GetMapping
+    public ResponseEntity<ReporteDTOForList> listarPorMes(@RequestParam(name = "year") @Valid 
+    															@Min(value = 2000, message = "Año no permitido")
+    															@Max(value = 3000, message = "Año no permitido")
+    															Integer anio,
+    															@RequestParam(name = "month") Mes mes){
+		ReporteDTOForList reportes = repService.listarReporte(anio, mes);
+        return ResponseEntity.status(HttpStatus.OK).body(reportes);
+    }
 
 }
