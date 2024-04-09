@@ -34,6 +34,10 @@ public class ItemDTOForList implements DTOForList<Item>{
     
 	@Override
 	public ItemDTOForList from(Item item) {
+		return from(item, false);
+	}
+	
+	public ItemDTOForList from(Item item, Boolean extendedPermission) {
 		this.id_item = item.getId_item();
 		this.url = item.getText_id();
 		this.nombre = item.getNombre();
@@ -48,13 +52,15 @@ public class ItemDTOForList implements DTOForList<Item>{
 			.sorted()
 			.forEach(var -> {
 				variaciones.add(new VariacionDTOForList().from(var));
+				if(!extendedPermission)
+					var.setCosto(null);
 			});
 		
 		return this;
 	}
 	
-	public ItemDTOForList from(Item item, List<Imagen> imagenes){
-		from(item);
+	public ItemDTOForList from(Item item, List<Imagen> imagenes,Boolean extendedPermission){
+		from(item, extendedPermission);
 		
 		imagenes.forEach(img -> {
 			if(img.get_index() == 1) {

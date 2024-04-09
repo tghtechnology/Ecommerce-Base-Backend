@@ -36,7 +36,7 @@ public class ReporteController {
     }
 	
 	@Gerente
-	@GetMapping
+	@GetMapping("/{year}")
     public ResponseEntity<ReporteDTOForList> listarPorMes(@RequestParam(name = "year") @Valid 
     															@Min(value = 2000, message = "Año no permitido")
     															@Max(value = 3000, message = "Año no permitido")

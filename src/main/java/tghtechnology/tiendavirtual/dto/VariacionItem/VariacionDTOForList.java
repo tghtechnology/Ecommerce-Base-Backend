@@ -20,6 +20,7 @@ public class VariacionDTOForList implements DTOForList<Variacion>{
 	private TipoVariacion tipo_variacion;
 	private String valor_variacion;
 	private BigDecimal precio;
+	private BigDecimal costo;
 	private DisponibilidadItem disponibilidad;
 	private Integer stock;
 	private Boolean aplicar_descuento;
@@ -31,6 +32,7 @@ public class VariacionDTOForList implements DTOForList<Variacion>{
 		this.tipo_variacion = var.getTipo_variacion();
 		this.valor_variacion = var.getValor_variacion();
 		this.precio = var.getPrecio();
+		this.costo = var.getCosto();
 		this.disponibilidad = var.getDisponibilidad();
 		this.stock = var.getStock();
 		this.aplicar_descuento = var.getAplicarDescuento();

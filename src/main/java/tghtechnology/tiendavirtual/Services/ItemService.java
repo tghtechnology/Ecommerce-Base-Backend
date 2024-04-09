@@ -10,12 +10,14 @@ import java.util.stream.Collectors;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.AllArgsConstructor;
 import tghtechnology.tiendavirtual.Enums.TipoImagen;
+import tghtechnology.tiendavirtual.Enums.TipoUsuario;
 import tghtechnology.tiendavirtual.Models.Categoria;
 import tghtechnology.tiendavirtual.Models.Descuento;
 import tghtechnology.tiendavirtual.Models.Imagen;
@@ -53,7 +55,8 @@ public class ItemService {
 									    BigDecimal min,
 									    BigDecimal max,
 									    String categoria,
-									    Integer pagina
+									    Integer pagina,
+									    Authentication auth
     		){
         List<ItemDTOForList> itemList = new ArrayList<>();
         
@@ -62,8 +65,12 @@ public class ItemService {
         Pageable pag = PageRequest.of(pagina-1, settings.getInt("paginado.items"));
         List<Item> items = (List<Item>) itemRepository.listar(query, min, max, categoria, pag);
         
+        Boolean extendedPermission = (auth != null 
+        								&& auth.getAuthorities() != null
+        								&& TipoUsuario.checkRole(auth.getAuthorities(), TipoUsuario.GERENTE));
+        
         items.forEach( x -> {
-            itemList.add(new ItemDTOForList().from(x, imaRepository.listarPorObjeto(TipoImagen.PRODUCTO, x.getId_item())));
+            itemList.add(new ItemDTOForList().from(x, imaRepository.listarPorObjeto(TipoImagen.PRODUCTO, x.getId_item()), extendedPermission));
         });
         return itemList;
     }
@@ -109,7 +116,7 @@ public class ItemService {
 	        img.set_index(1);
 			img = imaRepository.save(img);
 			
-			return new ItemDTOForList().from(item, List.of(img));
+			return new ItemDTOForList().from(item, List.of(img), true);
         }
     	return new ItemDTOForList().from(item);
     }

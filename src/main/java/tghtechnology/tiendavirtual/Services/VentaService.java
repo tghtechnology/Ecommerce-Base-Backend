@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.AllArgsConstructor;
 import tghtechnology.tiendavirtual.Enums.TipoUsuario;
+import tghtechnology.tiendavirtual.Models.Carrito;
 import tghtechnology.tiendavirtual.Models.Cliente;
 import tghtechnology.tiendavirtual.Models.DetalleCarrito;
 import tghtechnology.tiendavirtual.Models.DetalleVenta;
@@ -21,6 +22,7 @@ import tghtechnology.tiendavirtual.Models.Usuario;
 import tghtechnology.tiendavirtual.Models.Variacion;
 import tghtechnology.tiendavirtual.Models.Venta;
 import tghtechnology.tiendavirtual.Repository.ClienteRepository;
+import tghtechnology.tiendavirtual.Repository.DetalleCarritoRepository;
 import tghtechnology.tiendavirtual.Repository.DetalleVentaRepository;
 import tghtechnology.tiendavirtual.Repository.UsuarioRepository;
 import tghtechnology.tiendavirtual.Repository.VariacionRepository;
@@ -42,6 +44,7 @@ public class VentaService {
 
 	VentaRepository venRepository;
 	DetalleVentaRepository dvRepository;
+	DetalleCarritoRepository dcRepository;
 	UsuarioRepository userRepository;
 	ClienteRepository cliRepository;
 	VariacionRepository varRepository;
@@ -125,14 +128,18 @@ public class VentaService {
 	public VentaDTOForList realizarVentaCliente(VentaDTOForInsert venta, Authentication auth) {
 		Usuario user = user_buscarPorUsername(auth.getName());
 		Cliente cli  = cli_buscarPorId(user.getPersona().getId_persona());
+		Carrito car = user.getCarrito();
 		List<DetalleVenta> dets = new ArrayList<>();
+		
+		if(car.getDetalles().isEmpty()) throw new DataMismatchException("carrito", "No se puede realizar una compra con el carrito vacío");
+		
 		Venta ven = venta.toModel();
 		ven.setCliente(cli);
 		ven.setPorcentaje_igv(settings.getInt("facturacion.igv"));
 		// Guardando venta para obtener una ID
 		final Venta v = venRepository.save(ven);
 		// Añadiendo items del carrito a la venta
-		user.getCarrito().getDetalles().forEach(det -> {
+		car.getDetalles().forEach(det -> {
 			DetalleVenta dv = detalleCarritoAVenta(det);
 			dv.setVenta(v);
 			dv = dvRepository.save(dv);
@@ -140,6 +147,9 @@ public class VentaService {
 		});
 		ven = v;
 		ven.getDetalles().addAll(dets);
+		
+		// Vaciar carrito del cliente
+		dcRepository.deleteAll(car.getDetalles());
 		
 		return new VentaDTOForList().from(ven);
 	}
@@ -173,6 +183,8 @@ public class VentaService {
 			dv.setVenta(v);
 			dv.setId_item(itm.getId_item());
 			dv.setNombre_item(itm.getNombre());
+			dv.setVariacion_correlativo(var.getCorrelativo());
+			dv.setId_variacion(var.getId_variacion());
 			dv.setTipo_variacion(var.getTipo_variacion());
 			dv.setValor_variacion(var.getValor_variacion());
 			dv.setPrecio_unitario(var.getPrecio());
@@ -247,6 +259,7 @@ public class VentaService {
 		dv.setId_item(itm.getId_item());
 		dv.setNombre_item(itm.getNombre());
 		dv.setId_variacion(var.getId_variacion());
+		dv.setVariacion_correlativo(var.getCorrelativo());
 		dv.setTipo_variacion(var.getTipo_variacion());
 		dv.setValor_variacion(var.getValor_variacion());
 		dv.setPrecio_unitario(var.getPrecio());

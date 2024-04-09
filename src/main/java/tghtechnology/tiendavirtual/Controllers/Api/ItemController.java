@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,9 +45,10 @@ public class ItemController {
 														@RequestParam(defaultValue = "99999.99", name = "max") BigDecimal maximo,
 														@RequestParam(defaultValue = "", name = "category") String categoria,
 														@RequestParam(defaultValue = "", name = "brand") String marca,
-														@RequestParam(defaultValue = "1", name = "page") Integer page
+														@RequestParam(defaultValue = "1", name = "page") Integer page,
+														Authentication auth
     												){
-        List<ItemDTOForList> items = itemService.listar(query, minimo, maximo, categoria, page);
+        List<ItemDTOForList> items = itemService.listar(query, minimo, maximo, categoria, page, auth);
         return ResponseEntity.status(HttpStatus.OK).body(items);
     }
 	
