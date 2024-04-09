@@ -11,6 +11,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
 import lombok.AllArgsConstructor;
 import tghtechnology.tiendavirtual.Enums.TipoUsuario;
 import tghtechnology.tiendavirtual.Models.Carrito;
@@ -34,6 +38,7 @@ import tghtechnology.tiendavirtual.Utils.ApisPeru.Objects.Boleta;
 import tghtechnology.tiendavirtual.Utils.ApisPeru.Objects.Response.ApisPeruResponse;
 import tghtechnology.tiendavirtual.Utils.Exceptions.DataMismatchException;
 import tghtechnology.tiendavirtual.Utils.Exceptions.IdNotFoundException;
+import tghtechnology.tiendavirtual.Utils.Sockets.SocketIOService;
 import tghtechnology.tiendavirtual.dto.Venta.VentaDTOForInsert;
 import tghtechnology.tiendavirtual.dto.Venta.VentaDTOForList;
 import tghtechnology.tiendavirtual.dto.Venta.VentaDTOForListMinimal;
@@ -51,6 +56,7 @@ public class VentaService {
 	
 	APTranslatorService apTranslator;
 	ApisPeruService apService;
+	SocketIOService socketService;
 	SettingsService settings;
 	
 	
@@ -160,7 +166,6 @@ public class VentaService {
 	 * <p>
 	 * <strong>NO</strong> requiere autenticación.
 	 * @param venta Los datos de la venta en formato ForInsert
-	 * @param auth La autenticación del cliente
 	 * @return La venta realizada en formato DTOForList
 	 * @throws IdNotFoundException Si no se encontró la ID de alguna de las variaciones proporcionadas.
 	 */
@@ -226,6 +231,19 @@ public class VentaService {
 	public byte[] apisPeruPDF(VentaDTOForList venta) throws ApisPeruResponseException {
 		Boleta bol = apTranslator.toBoleta(venta);
 		return apService.enviarBoletaPdf(bol);
+	}
+	
+	/**
+	 * Notifica a todos los encargados que esten logueados sobre la nueva venta
+	 * @param venta La venta a notificar en formato DTOForList
+	 * @throws JsonProcessingException Si ocurre algún error al realizar el mapeo hacia JSON
+	 */
+	public void notificarVenta(VentaDTOForList venta) throws JsonProcessingException {
+		ObjectMapper om = new ObjectMapper();
+		om.registerModule(new JavaTimeModule());
+		String mapped = om.writeValueAsString(venta);
+		
+		socketService.broadcast("ventas", mapped);
 	}
 	
 	private boolean checkPermitted(Cliente cli, Authentication auth) {

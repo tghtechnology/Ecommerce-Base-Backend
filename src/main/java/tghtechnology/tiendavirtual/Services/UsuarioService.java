@@ -1,8 +1,10 @@
 package tghtechnology.tiendavirtual.Services;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.AccessDeniedException;
@@ -12,8 +14,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.AllArgsConstructor;
@@ -26,6 +26,7 @@ import tghtechnology.tiendavirtual.Utils.CustomBeanValidator;
 import tghtechnology.tiendavirtual.Utils.Exceptions.CustomValidationFailedException;
 import tghtechnology.tiendavirtual.Utils.Exceptions.DataMismatchException;
 import tghtechnology.tiendavirtual.Utils.Exceptions.IdNotFoundException;
+import tghtechnology.tiendavirtual.Utils.Sockets.SocketIOAuth;
 import tghtechnology.tiendavirtual.dto.Usuario.UsuarioDTOForFirstLogin;
 import tghtechnology.tiendavirtual.dto.Usuario.UsuarioDTOForInsert;
 import tghtechnology.tiendavirtual.dto.Usuario.UsuarioDTOForList;
@@ -40,6 +41,7 @@ public class UsuarioService {
     private PersonaRepository perRepository;
     private PasswordEncoder passwordEncoder;
     
+    private SocketIOAuth socketAuth;
 	private CustomBeanValidator validator;
 
 
@@ -107,7 +109,7 @@ public class UsuarioService {
     
     //Crear por defecto
     @Transactional(rollbackFor = DataIntegrityViolationException.class)
-  	public UsuarioDTOForList crearAdminDefault(String StringUs) throws JsonMappingException, JsonProcessingException, CustomValidationFailedException {
+  	public UsuarioDTOForList crearAdminDefault(String StringUs) throws CustomValidationFailedException, IOException {
   		
   		if(!userRepository.listUser().isEmpty()) {
   			throw new BadCredentialsException(null);
@@ -174,7 +176,12 @@ public class UsuarioService {
      */
     public UsuarioDTOForLoginResponse devolverLogin(String username, String token) {
     	Usuario user = userRepository.listarPorUserName(username).get();
-    	return new UsuarioDTOForLoginResponse().from(user, token);
+    	
+    	UUID uid = null;
+    	if(TipoUsuario.checkRole(user.getAuthorities(), TipoUsuario.GERENTE))
+    		uid = socketAuth.add();
+    	
+    	return new UsuarioDTOForLoginResponse().from(user, token, uid);
     }
     
     private Usuario buscarPorId(Integer id) {

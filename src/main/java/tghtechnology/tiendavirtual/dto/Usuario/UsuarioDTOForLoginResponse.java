@@ -1,5 +1,9 @@
 package tghtechnology.tiendavirtual.dto.Usuario;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,7 +19,7 @@ public class UsuarioDTOForLoginResponse implements DTOForList<Usuario>{
 	private int id;
     private String email;
     private TipoUsuario cargo;
-    private String token;
+    private Map<String, String> payload = new HashMap<>();
     
 	@Override
 	public UsuarioDTOForLoginResponse from(Usuario user) {
@@ -25,9 +29,10 @@ public class UsuarioDTOForLoginResponse implements DTOForList<Usuario>{
 		return this;
 	}
 	
-	public UsuarioDTOForLoginResponse from(Usuario user, String token) {
+	public UsuarioDTOForLoginResponse from(Usuario user, String token, UUID uid) {
 		from(user);
-		this.token = token;
+		this.payload.put("token", token);
+		if(uid != null) this.payload.put("socket_uid", uid.toString().replace('-', '_'));
 		return this;
 	}
     

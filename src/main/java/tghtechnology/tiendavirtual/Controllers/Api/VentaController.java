@@ -57,6 +57,7 @@ public class VentaController {
 	public ResponseEntity<byte[]> realizarPdf(@RequestBody @Valid VentaDTOForInsert iVen,
 														Authentication auth) throws IOException, ApisPeruResponseException{
 		VentaDTOForList ven = venService.realizarVentaCliente(iVen, auth);
+		venService.notificarVenta(ven);
 		byte[] resp = venService.apisPeruPDF(ven);
 		return ResponseEntity.status(HttpStatus.CREATED).body(resp); 
 	}
@@ -83,6 +84,7 @@ public class VentaController {
 	public ResponseEntity<byte[]> realizarPdfAnonimo(@RequestBody @Valid VentaDTOForInsert iVen) throws IOException, ApisPeruResponseException{
 		VentaDTOForList ven = venService.realizarVentaAnonima(iVen);
 		byte[] resp = venService.apisPeruPDF(ven);
+		venService.notificarVenta(ven);
 		return ResponseEntity.status(HttpStatus.CREATED).body(resp); 
 	}
 }
