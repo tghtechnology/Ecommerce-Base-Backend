@@ -39,10 +39,14 @@ public class ReportRow implements RowBuilder<ReportSheet>{
 		int col = 0;
 		// Rellenado de fila
 		for(Object o : data) {
-			Cell cell = row.createCell(col);
-			cell.setCellValue(o.toString());
-			if(o instanceof BigDecimal)
-				cell.setCellStyle(reportSheet.getStyleCurrencyFormat()); // Puede haber error aqui
+			Cell cell = row.createCell(col++);
+			if(o instanceof BigDecimal) {
+				//cell.setCellStyle(reportSheet.getStyleCurrencyFormat()); // Puede haber error aqui
+				cell.setCellValue(((BigDecimal)o).doubleValue());
+			}else if(o instanceof Integer){
+				cell.setCellValue((Integer)o);
+			} else
+				cell.setCellValue(o.toString());
 		}
 		
 	}
@@ -104,6 +108,41 @@ public class ReportRow implements RowBuilder<ReportSheet>{
 					BigDecimal.ZERO
 				);
 		}
+	}
+
+	public static void addColumnNames(ReportSheet sheet, Integer row_index) {
+		final List<String> columnNames = new ArrayList<>();
+		columnNames.add("Mes");
+		columnNames.add("Ingresos");
+		columnNames.add("Egresos");
+		columnNames.add("Ganancias");
+		columnNames.add("Ventas");
+		columnNames.add("Items_vendidos");
+
+		final List<String> sellers = new ArrayList<>();
+		final List<String> earners = new ArrayList<>();
+		for(int i = 0; i < 5; i++) {
+			sellers.add(String.format("ID_Top_Seller_%d", i));
+			sellers.add(String.format("TS_%d_Nombre", i));
+			sellers.add(String.format("TS_%d_Ventas", i));
+			
+			earners.add(String.format("ID_Top_Earner_%d", i));
+			earners.add(String.format("TE_%d_Nombre", i));
+			earners.add(String.format("TE_%d_Ganancias", i));
+		}
+		
+		columnNames.addAll(sellers);
+		columnNames.addAll(earners);
+		
+		XSSFRow row = sheet.getSheet().createRow(row_index);
+		
+		int col = 0;
+		// Rellenado de fila
+		for(String cn : columnNames) {
+			Cell cell = row.createCell(col++);
+			cell.setCellValue(cn);
+		}
+		
 	}
 
 }

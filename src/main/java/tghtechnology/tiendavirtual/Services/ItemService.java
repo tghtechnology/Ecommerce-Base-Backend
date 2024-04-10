@@ -102,35 +102,38 @@ public class ItemService {
     	Marca mar = marService.buscarPorId(iItem.getId_marca());
     	item.setMarca(mar);
     	
-    	item = itemRepository.save(item);
+    	Item item2 = itemRepository.save(item); // Asignar a otra instancia para que no muera la transaccion
+    	
     	Variacion var = iItem.toVariacion();
-    	var.setItem(item);
+    	var.setItem(item2);
     	var.setCorrelativo(1);
+    	
     	var = varRepository.save(var);
-    	item.getVariaciones().add(var);
+    	
+    	item2.getVariaciones().add(var);
     	
     	if(imagen != null) {
-	        Imagen img = mediaManager.subirImagenItem(item.getText_id(), imagen);
+	        Imagen img = mediaManager.subirImagenItem(item2.getText_id(), imagen);
 	        img.setId_owner(item.getId_item());
 	        img.set_index(1);
 			img = imaRepository.save(img);
 			
-			return new ItemDTOForList().from(item, List.of(img), true);
+			return new ItemDTOForList().from(item2, List.of(img), true);
         }
-    	return new ItemDTOForList().from(item);
+    	return new ItemDTOForList().from(item2, true);
     }
     
     /*Actualizar item */
     @Transactional(rollbackFor = {IdNotFoundException.class})
     public void actualizarItem(Integer id, ItemDTOForInsert mItem){
     	
-    	Item item = buscarPorId(id);
+    	Item i = buscarPorId(id);
     	
     	Optional<Item> tmp = itemRepository.listarUno(Item.transform_id(mItem.getNombre()));
     	
-    	if(tmp.isEmpty() || tmp.get().getId_item().equals(item.getId_item())) {
+    	if(tmp.isEmpty() || tmp.get().getId_item().equals(i.getId_item())) {
     		
-    		item = mItem.updateModel(item);
+    		Item item = mItem.updateModel(i);
     		
     		if(item.getCategoria().getId_categoria() != mItem.getId_categoria()) {
     			Categoria cat = cat_buscarPorId(mItem.getId_categoria());

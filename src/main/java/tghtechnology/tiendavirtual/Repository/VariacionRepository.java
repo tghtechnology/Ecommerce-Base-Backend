@@ -3,14 +3,14 @@ package tghtechnology.tiendavirtual.Repository;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import tghtechnology.tiendavirtual.Models.Item;
 import tghtechnology.tiendavirtual.Models.Variacion;
 
-public interface VariacionRepository extends CrudRepository<Variacion, Integer>{
+public interface VariacionRepository extends JpaRepository<Variacion, Integer>{
 
 	@Query("SELECT v FROM Variacion v WHERE v.estado = true AND v.item = :itm")
     List<Variacion> listarPorItem(@Param("itm") Item item);

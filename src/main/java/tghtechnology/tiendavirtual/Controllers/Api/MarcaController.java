@@ -60,7 +60,7 @@ public class MarcaController {
 												 throws IOException, CustomValidationFailedException {
 		
 		MarcaDTOForInsert iMar = new ObjectMapper().readValue(marca, MarcaDTOForInsert.class);
-		validator.validar(marca);
+		validator.validar(iMar);
 		
 		MarcaDTOForList mar = marService.crearMarca(iMar, imagen);
 		return ResponseEntity.status(HttpStatus.CREATED).body(mar); 
@@ -74,7 +74,7 @@ public class MarcaController {
 										  throws IOException, CustomValidationFailedException {
 		
 		MarcaDTOForInsert mMar = new ObjectMapper().readValue(marca, MarcaDTOForInsert.class);
-		validator.validar(marca);
+		validator.validar(mMar);
 		
 		marService.actualizarMarca(id, mMar);
 		return ResponseEntity.status(HttpStatus.OK).build();
