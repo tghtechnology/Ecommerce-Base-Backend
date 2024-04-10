@@ -107,7 +107,6 @@ public class ItemService {
     	var.setItem(item);
     	var.setCorrelativo(1);
     	var = varRepository.save(var);
-    	
     	item.getVariaciones().add(var);
     	
     	if(imagen != null) {

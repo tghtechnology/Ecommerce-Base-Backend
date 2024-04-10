@@ -1,5 +1,6 @@
 package tghtechnology.tiendavirtual.Controllers.Api;
 
+import java.io.IOException;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,20 @@ public class ReporteController {
     }
 	
 	@Gerente
-	@GetMapping("/{year}")
+	@GetMapping("/xlsx")
+	public ResponseEntity<byte[]> obtenerExcel(@RequestParam(name = "year") @Valid 
+												@Min(value = 2000, message = "Año no permitido")
+												@Max(value = 3000, message = "Año no permitido")
+												Integer anio) throws IOException{
+		
+		Map<Mes, ReporteDTOForList> reportes = repService.listarReportes(anio);
+		byte[] bitearray = repService.generarReporteExcel(reportes, anio);
+        return ResponseEntity.status(HttpStatus.OK).body(bitearray);
+		
+	}
+	
+	@Gerente
+	@GetMapping("/monthly")
     public ResponseEntity<ReporteDTOForList> listarPorMes(@RequestParam(name = "year") @Valid 
     															@Min(value = 2000, message = "Año no permitido")
     															@Max(value = 3000, message = "Año no permitido")

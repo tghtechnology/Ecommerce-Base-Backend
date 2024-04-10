@@ -1,5 +1,7 @@
 package tghtechnology.tiendavirtual.Services;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -14,6 +16,7 @@ import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +31,7 @@ import tghtechnology.tiendavirtual.Repository.ItemReporteRepository;
 import tghtechnology.tiendavirtual.Repository.ItemRepository;
 import tghtechnology.tiendavirtual.Repository.ReporteRepository;
 import tghtechnology.tiendavirtual.Repository.VentaRepository;
+import tghtechnology.tiendavirtual.Utils.ExcelReports.ReportSheet;
 import tghtechnology.tiendavirtual.Utils.Exceptions.IdNotFoundException;
 import tghtechnology.tiendavirtual.dto.Reporte.ReporteDTOForList;
 
@@ -61,6 +65,20 @@ public class ReporteService {
         }
         
         return repMap;
+    }
+    
+    public byte[] generarReporteExcel(Map<Mes, ReporteDTOForList> reporte, Integer anio) throws IOException {
+    	
+    	XSSFWorkbook book = new XSSFWorkbook();
+    	new ReportSheet(book, reporte).build();
+    	
+    	ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    	try {
+    		book.write(bos);
+    	} finally {
+    		bos.close();
+    	}
+    	return bos.toByteArray();
     }
     
     @Transactional

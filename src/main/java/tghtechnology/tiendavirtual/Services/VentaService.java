@@ -131,7 +131,7 @@ public class VentaService {
 	 * @return La venta realizada en formato DTOForList
 	 */
 	@Transactional(rollbackFor = {Exception.class})
-	public VentaDTOForList realizarVentaCliente(VentaDTOForInsert venta, Authentication auth) {
+	public Venta realizarVentaCliente(VentaDTOForInsert venta, Authentication auth) {
 		Usuario user = user_buscarPorUsername(auth.getName());
 		Cliente cli  = cli_buscarPorId(user.getPersona().getId_persona());
 		Carrito car = user.getCarrito();
@@ -157,7 +157,7 @@ public class VentaService {
 		// Vaciar carrito del cliente
 		dcRepository.deleteAll(car.getDetalles());
 		
-		return new VentaDTOForList().from(ven);
+		return ven;
 	}
 	
 	/**
@@ -170,7 +170,7 @@ public class VentaService {
 	 * @throws IdNotFoundException Si no se encontró la ID de alguna de las variaciones proporcionadas.
 	 */
 	@Transactional(rollbackFor = {Exception.class})
-	public VentaDTOForList realizarVentaAnonima(VentaDTOForInsert venta) {
+	public Venta realizarVentaAnonima(VentaDTOForInsert venta) {
 		List<DetalleVenta> dets = new ArrayList<>();
 		Venta ven = venta.toModel();
 		ven.setPorcentaje_igv(settings.getInt("facturacion.igv"));
@@ -207,7 +207,7 @@ public class VentaService {
 		ven = v;
 		ven.getDetalles().addAll(dets);
 		
-		return new VentaDTOForList().from(ven);
+		return ven;
 	}
 	
 	/**
@@ -217,8 +217,9 @@ public class VentaService {
 	 * @throws IOException Si hay algún problema al transcribir la solicitud o recibir la respuesta de ApisPeru
 	 * @throws ApisPeruResponseException Si ApisPeru responde con un error.
 	 */
-	public ApisPeruResponse enviarApisPeru(VentaDTOForList venta) throws IOException, ApisPeruResponseException {
-		Boleta bol = apTranslator.toBoleta(venta);
+	public ApisPeruResponse enviarApisPeru(Venta venta) throws IOException, ApisPeruResponseException {
+		VentaDTOForList vd = new VentaDTOForList().from(venta);
+		Boleta bol = apTranslator.toBoleta(vd);
 		return apService.enviarBoleta(bol);
 	}
 	
@@ -228,8 +229,9 @@ public class VentaService {
 	 * @return La boleta correspondiente al pedido como un bytearray.
 	 * @throws ApisPeruResponseException Si ApisPeru responde con un error.
 	 */
-	public byte[] apisPeruPDF(VentaDTOForList venta) throws ApisPeruResponseException {
-		Boleta bol = apTranslator.toBoleta(venta);
+	public byte[] apisPeruPDF(Venta venta) throws ApisPeruResponseException {
+		VentaDTOForList vd = new VentaDTOForList().from(venta);
+		Boleta bol = apTranslator.toBoleta(vd);
 		return apService.enviarBoletaPdf(bol);
 	}
 	
@@ -238,10 +240,11 @@ public class VentaService {
 	 * @param venta La venta a notificar en formato DTOForList
 	 * @throws JsonProcessingException Si ocurre algún error al realizar el mapeo hacia JSON
 	 */
-	public void notificarVenta(VentaDTOForList venta) throws JsonProcessingException {
+	public void notificarVenta(Venta venta) throws JsonProcessingException {
+		VentaDTOForListMinimal vd = new VentaDTOForListMinimal().from(venta);
 		ObjectMapper om = new ObjectMapper();
 		om.registerModule(new JavaTimeModule());
-		String mapped = om.writeValueAsString(venta);
+		String mapped = om.writeValueAsString(vd);
 		
 		socketService.broadcast("ventas", mapped);
 	}

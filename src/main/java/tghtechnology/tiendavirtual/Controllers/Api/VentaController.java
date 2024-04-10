@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
+import tghtechnology.tiendavirtual.Models.Venta;
 import tghtechnology.tiendavirtual.Security.Interfaces.Cliente;
 import tghtechnology.tiendavirtual.Services.VentaService;
 import tghtechnology.tiendavirtual.Utils.ApisPeru.Exceptions.ApisPeruResponseException;
@@ -41,6 +43,15 @@ public class VentaController {
 		return ResponseEntity.status(HttpStatus.OK).body(ventas);
 	}
 	
+	@Cliente
+	@GetMapping("/{id}")
+	public ResponseEntity<VentaDTOForList> listarUno(@PathVariable Integer id, Authentication auth){
+		
+		VentaDTOForList venta = venService.listarVenta(id, auth);
+		return ResponseEntity.status(HttpStatus.OK).body(venta);
+		
+	}
+	
 	//Venta de cliente
 //	@Cliente
 //	@PostMapping("/cliente")
@@ -56,7 +67,7 @@ public class VentaController {
 	@PostMapping("/cliente")
 	public ResponseEntity<byte[]> realizarPdf(@RequestBody @Valid VentaDTOForInsert iVen,
 														Authentication auth) throws IOException, ApisPeruResponseException{
-		VentaDTOForList ven = venService.realizarVentaCliente(iVen, auth);
+		Venta ven = venService.realizarVentaCliente(iVen, auth);
 		venService.notificarVenta(ven);
 		byte[] resp = venService.apisPeruPDF(ven);
 		return ResponseEntity.status(HttpStatus.CREATED).body(resp); 
@@ -82,7 +93,7 @@ public class VentaController {
 	//Venta test
 	@PostMapping("/no-cliente")
 	public ResponseEntity<byte[]> realizarPdfAnonimo(@RequestBody @Valid VentaDTOForInsert iVen) throws IOException, ApisPeruResponseException{
-		VentaDTOForList ven = venService.realizarVentaAnonima(iVen);
+		Venta ven = venService.realizarVentaAnonima(iVen);
 		byte[] resp = venService.apisPeruPDF(ven);
 		venService.notificarVenta(ven);
 		return ResponseEntity.status(HttpStatus.CREATED).body(resp); 
