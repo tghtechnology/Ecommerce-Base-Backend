@@ -57,8 +57,9 @@ public class ReportRow implements RowBuilder<ReportSheet>{
 					// Datos principales
 					mes,
 					report.getTotal_ingresos(),
-					report.getTotal_ingresos().subtract(report.getTotal_ganancias()),
-					report.getTotal_ganancias(),
+					report.getTotal_egresos(),
+					report.getTotal_impuestos(),
+					report.getTotal_ingresos().subtract(report.getTotal_egresos().add(report.getTotal_impuestos())),
 					report.getNumero_ventas(),
 					report.getItems_vendidos()
 				);
@@ -99,7 +100,7 @@ public class ReportRow implements RowBuilder<ReportSheet>{
 			return List.of(
 					item.getId_item(),
 					item.getNombre_item(),
-					item.getGanancias()
+					item.getIngresos().subtract(item.getEgresos().add(item.getImpuestos()))
 				);
 		} else {
 			return List.of(
@@ -115,6 +116,7 @@ public class ReportRow implements RowBuilder<ReportSheet>{
 		columnNames.add("Mes");
 		columnNames.add("Ingresos");
 		columnNames.add("Egresos");
+		columnNames.add("Impuestos");
 		columnNames.add("Ganancias");
 		columnNames.add("Ventas");
 		columnNames.add("Items_vendidos");

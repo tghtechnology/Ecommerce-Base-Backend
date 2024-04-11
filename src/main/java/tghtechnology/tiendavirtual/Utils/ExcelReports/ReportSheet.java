@@ -3,14 +3,10 @@ package tghtechnology.tiendavirtual.Utils.ExcelReports;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.xssf.usermodel.XSSFCellStyle;
-import org.apache.poi.xssf.usermodel.XSSFCreationHelper;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import lombok.Getter;
 import tghtechnology.tiendavirtual.Enums.Mes;
 import tghtechnology.tiendavirtual.Utils.ExcelReports.builders.SheetBuilder;
 import tghtechnology.tiendavirtual.dto.Reporte.ReporteDTOForList;
@@ -53,6 +49,7 @@ public class ReportSheet implements SheetBuilder{
 		row.createCell(3).setCellFormula("SUM(D2:D13)");
 		row.createCell(4).setCellFormula("SUM(E2:E13)");
 		row.createCell(5).setCellFormula("SUM(F2:F13)");
+		row.createCell(6).setCellFormula("SUM(G2:G13)");
 	}
 
 }

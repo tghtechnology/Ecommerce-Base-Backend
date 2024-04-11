@@ -36,7 +36,7 @@ public class Venta implements Comparable<Venta>{
     private TipoComprobante tipo_comprobante;
     
     @Column(nullable = true)
-    private String num_comprobante;
+    private String correlativo;
     
     @Column(nullable = false)
     private LocalDateTime fecha;

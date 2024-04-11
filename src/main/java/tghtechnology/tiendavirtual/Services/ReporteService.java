@@ -3,6 +3,7 @@ package tghtechnology.tiendavirtual.Services;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -96,6 +97,7 @@ public class ReporteService {
     	
     	final AtomicReference<BigDecimal> ingresos = new AtomicReference<>(BigDecimal.ZERO); // Ingresos totales del mes
     	final AtomicReference<BigDecimal> egresos = new AtomicReference<>(BigDecimal.ZERO); // Egresos totales del mes
+    	final AtomicReference<BigDecimal> impuestos = new AtomicReference<>(BigDecimal.ZERO); // Impuestos totales del mes
     	final AtomicReference<Integer> num_items = new AtomicReference<>(0); // Numero de items vendidos en el mes
     	final Map<Integer, ReporteItem> items = new HashMap<>(); // Reportes de todos los items vendidos en el mes (para filtrar)
     	Integer num_ventas; // Numero de ventas realizadas en el mes
@@ -114,10 +116,13 @@ public class ReporteService {
 				BigDecimal cant = new BigDecimal(vend);
 				BigDecimal ingr = dv.getPrecio_unitario().multiply(cant);
 				BigDecimal egre = dv.getCosto_unitario().multiply(cant);
+				BigDecimal imps = dv.getPrecio_unitario().multiply(new BigDecimal(ven.getPorcentaje_igv()/100.0).setScale(2, RoundingMode.HALF_UP));
 				// Sumar ingresos totales
 				ingresos.set(ingresos.get().add(ingr));
 				// Sumar egresos totales
 				egresos.set(egresos.get().add(egre));
+				// Sumar impuestos totales
+				impuestos.set(impuestos.get().add(imps));
 				// Sumar cantidad de items totales
 				num_items.set(num_items.get() + vend);
 				
@@ -129,15 +134,17 @@ public class ReporteService {
 					items.put(dv.getId_item(), ri);
 				}
 				// Asignar valores al reporte de item
-				ri.setGanancias(ri.getGanancias().add(ingr.subtract(egre)));
+				ri.setEgresos(ri.getEgresos().add(egre));
 				ri.setIngresos(ri.getIngresos().add(ingr));
+				ri.setImpuestos(ri.getImpuestos().add(imps));
 				ri.setVentas(ri.getVentas() + vend);
 			});
 		});
     	// Guardar reporte mensual
 		ReporteMensual rep = new ReporteMensual();
 		rep.setTotalIngresos(ingresos.get());
-		rep.setTotalGanancias(ingresos.get().subtract(egresos.get()));
+		rep.setTotalEgresos(egresos.get());
+		rep.setTotalImpuestos(impuestos.get());
 		rep.setNumeroVentas(num_ventas);
 		rep.setNumItemsVendidos(num_items.get());
 		rep.setId(new ReportMonth(anio.shortValue(), mes));
@@ -174,7 +181,7 @@ public class ReporteService {
 				.sorted(new Comparator<ReporteItem>() {
 					@Override
 					public int compare(ReporteItem o1, ReporteItem o2) {
-						return o1.getGanancias().compareTo(o2.getGanancias());
+						return o1.getIngresos().subtract(o1.getEgresos()).compareTo(o2.getIngresos().subtract(o2.getEgresos()));
 					}
 				})
 				.limit(5)

@@ -59,7 +59,7 @@ public class Boleta {
 	
 	public Boleta(TipoOperacion tipoOperacion,
 					TipoComprobante tipoDoc,
-					Integer idBoleta,
+					String correlativo,
 					LocalDateTime fechaEmision,
 					Client client,
 					Company company,
@@ -76,7 +76,7 @@ public class Boleta {
 		this.tipoOperacion = tipoOperacion.getLabel();
 		this.tipoDoc = tipoDoc.getLabel();
 		this.serie = "B001";			// Autogenerar
-		this.correlativo = String.format("%08d", idBoleta);	//Investigar
+		this.correlativo = String.format("%08d", Integer.valueOf(correlativo));
 		this.fechaEmision = ApisPeruUtils.dateFormat(fechaEmision);
 		this.formaPago = new PaymentTerms(Moneda.PEN, "Contado");
 		this.client = client;

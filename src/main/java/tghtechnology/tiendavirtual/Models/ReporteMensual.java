@@ -26,7 +26,10 @@ public class ReporteMensual {
     private BigDecimal totalIngresos;
     
     @Column(nullable = false)
-    private BigDecimal totalGanancias;
+    private BigDecimal totalEgresos;
+    
+    @Column(nullable = false)
+    private BigDecimal totalImpuestos;
     
     @Column(nullable = false)
     private Integer numeroVentas;

@@ -17,7 +17,7 @@ import tghtechnology.tiendavirtual.Utils.DTOInterfaces.DTOForList;
 public class VentaDTOForListMinimal implements DTOForList<Venta>{
 
 	private Integer id_venta;
-	private String num_comprobante;
+	private String correlativo;
 	private LocalDateTime fecha_realizacion;
 	private EstadoPedido estado_pedido;
 	private BigDecimal precio_total;
@@ -29,7 +29,7 @@ public class VentaDTOForListMinimal implements DTOForList<Venta>{
 		BigDecimal igv;
 		
 		this.id_venta = ven.getId_venta();
-		this.num_comprobante = ven.getNum_comprobante();
+		this.correlativo = ven.getCorrelativo();
 		this.fecha_realizacion = ven.getFecha();
 		this.estado_pedido = ven.getEstado_pedido();
 		

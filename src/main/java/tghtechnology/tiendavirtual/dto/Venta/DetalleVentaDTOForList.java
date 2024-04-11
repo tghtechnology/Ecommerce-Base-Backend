@@ -58,7 +58,7 @@ public class DetalleVentaDTOForList implements DTOForList<DetalleVenta>{
 				? dv.getPrecio_unitario()
 				// Después de igv, el precio se reduce a aproximadamente 84.7458%
 				// (4 decimales para que no hayan errores de redondeo hasta los 1000 productos aprox.)
-				: dv.getPrecio_unitario().divide(BigDecimal.ONE.setScale(2).add(new BigDecimal(igv)), 4, RoundingMode.UP)
+				: dv.getPrecio_unitario().divide(BigDecimal.ONE.setScale(2).add(new BigDecimal(igv/100.0)), 4, RoundingMode.UP)
 				;
 	}
 

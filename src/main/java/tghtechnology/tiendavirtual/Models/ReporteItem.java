@@ -38,7 +38,10 @@ public class ReporteItem {
     private BigDecimal ingresos = BigDecimal.ZERO;
     
     @Column(nullable = false)
-    private BigDecimal ganancias = BigDecimal.ZERO;
+    private BigDecimal egresos = BigDecimal.ZERO;
+    
+    @Column(nullable = false)
+    private BigDecimal impuestos = BigDecimal.ZERO;
     
     @ManyToOne
     @JoinColumns({

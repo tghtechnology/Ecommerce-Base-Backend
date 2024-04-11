@@ -17,7 +17,8 @@ public class ItemReporteDTOForList implements DTOForList<ReporteItem>{
 	private String nombre_item;
 	private Integer ventas;
 	private BigDecimal ingresos;
-	private BigDecimal ganancias;
+	private BigDecimal egresos;
+	private BigDecimal impuestos;
 	
 	@Override
 	public ItemReporteDTOForList from(ReporteItem item) {
@@ -26,7 +27,8 @@ public class ItemReporteDTOForList implements DTOForList<ReporteItem>{
 		this.nombre_item = item.getItem().getNombre();
 		this.ventas = item.getVentas();
 		this.ingresos = item.getIngresos();
-		this.ganancias = item.getGanancias();
+		this.egresos = item.getEgresos();
+		this.impuestos = item.getImpuestos();
 		return this;
 	}
 }

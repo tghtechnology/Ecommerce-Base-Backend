@@ -17,6 +17,8 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import lombok.AllArgsConstructor;
 import tghtechnology.tiendavirtual.Enums.DisponibilidadItem;
+import tghtechnology.tiendavirtual.Enums.EstadoPedido;
+import tghtechnology.tiendavirtual.Enums.SettingType;
 import tghtechnology.tiendavirtual.Enums.TipoUsuario;
 import tghtechnology.tiendavirtual.Models.Carrito;
 import tghtechnology.tiendavirtual.Models.Cliente;
@@ -31,6 +33,7 @@ import tghtechnology.tiendavirtual.Repository.DetalleVentaRepository;
 import tghtechnology.tiendavirtual.Repository.UsuarioRepository;
 import tghtechnology.tiendavirtual.Repository.VariacionRepository;
 import tghtechnology.tiendavirtual.Repository.VentaRepository;
+import tghtechnology.tiendavirtual.Utils.ApisPeru.Enums.TipoComprobante;
 import tghtechnology.tiendavirtual.Utils.ApisPeru.Exceptions.ApisPeruResponseException;
 import tghtechnology.tiendavirtual.Utils.ApisPeru.Functions.APTranslatorService;
 import tghtechnology.tiendavirtual.Utils.ApisPeru.Functions.ApisPeruService;
@@ -175,6 +178,7 @@ public class VentaService {
 	public Venta realizarVentaAnonima(VentaDTOForInsert venta) {
 		List<DetalleVenta> dets = new ArrayList<>();
 		Venta ven = venta.toModel();
+		ven.setCorrelativo(nextComprobante(ven.getTipo_comprobante()));
 		ven.setPorcentaje_igv(settings.getInt("facturacion.igv"));
 		ven.setAntes_de_igv(settings.getBoolean("facturacion.antes_de_igv"));
 		// Guardando venta para obtener una ID
@@ -239,14 +243,72 @@ public class VentaService {
 		socketService.broadcast("ventas", mapped);
 	}
 	
+	/**
+	 * Cambia el estado de una venta.<br>
+	 * Si el estado es cambiado a CANCELADO, también se reestablece el stock de los items incluidos en la compra.
+	 * @param id_venta ID de la venta a cambiar
+	 * @param estado Estado al que cambiar la venta
+	 * @throws DataMismatchException Si se intenta cambiar el estado de una venta finalizada (Cancelada o Completada)
+	 */
+	public void cambiarEstado(Integer id_venta, EstadoPedido estado) {
+		
+		Venta ven = buscarPorId(id_venta);
+		
+		if(ven.getEstado_pedido() == EstadoPedido.CANCELADO || ven.getEstado_pedido() == EstadoPedido.COMPLETADO) {
+			throw new DataMismatchException("estado", "No se puede cambiar el estado de una venta completada");
+		}
+		
+		ven.setEstado_pedido(estado);
+		
+		// Restablcer el stock de los pedidos si la venta fue cancelada
+		if(estado == EstadoPedido.CANCELADO) {
+			ven.getDetalles().forEach(dv -> {
+				Variacion var = var_buscarPorId(dv.getId_variacion());
+				var.setStock(var.getStock() + dv.getCantidad());
+				varRepository.save(var);
+			});
+		}
+		
+		venRepository.save(ven);
+	}
+	
+	/**
+	 * Cancela una venta si es que no se ha completado anteriormente.<br>
+	 * También reestablece el stock de los items comprados.
+	 * @param id_venta La ID de la venta a cancelar.
+	 * @param auth La autenticación del usuario.
+	 * @throws DataMismatchException Si se intenta cambiar el estado de una venta finalizada (Cancelada o Completada)
+	 */
+	public void cancelarVenta(Integer id_venta, Authentication auth) {
+		
+		Venta ven = venRepository.listarUno(id_venta).orElse(null);
+		
+		if(ven == null || !checkPermitted(ven.getCliente(), auth)) 
+			throw new AccessDeniedException("");
+		
+		cambiarEstado(id_venta, EstadoPedido.CANCELADO);
+		
+	}
+	
+	private String nextComprobante(TipoComprobante tc) {
+		String tipo = tc == TipoComprobante.BOLETA_DE_VENTA ? "facturacion.serie_boleta" : "facturacion.serie_factura";
+		
+		// Obtener el numero de comprobante
+		Integer numComprobante = settings.getInt(tipo);
+		// Aumentar el numero en 1 para el siguiente
+		settings.alterSetting(tipo, numComprobante+1, SettingType.INT);
+		
+		return numComprobante.toString();
+	}
+	
 	private boolean checkPermitted(Cliente cli, Authentication auth) {
     	return (cli != null && auth.getName().equals(cli.getUsuario().getUsername())) // Si la venta tiene un cliente y ese cliente es el que esta solicitando
     			|| TipoUsuario.checkRole(auth.getAuthorities(), TipoUsuario.GERENTE); // O si es un gerente quien hace la solicitud.
     }
 	
-//	private Venta buscarPorId(Integer id) {
-//		return venRepository.listarUno(id).orElseThrow( () -> new IdNotFoundException("venta"));
-//	}
+	private Venta buscarPorId(Integer id) {
+		return venRepository.listarUno(id).orElseThrow( () -> new IdNotFoundException("venta"));
+	}
 	
 	private Usuario user_buscarPorUsername(String username) {
 		return userRepository.listarPorUserName(username).orElseThrow( () -> new IdNotFoundException("usuario"));
@@ -278,6 +340,12 @@ public class VentaService {
 			dv.setPorcentaje_descuento(itm.getDescuento().getPorcentaje());
 		else
 			dv.setPorcentaje_descuento(0);
+		
+		//Disminuir el stock
+		var.setStock(var.getStock()-cantidad);
+		if(var.getStock() == 0)
+			var.setDisponibilidad(DisponibilidadItem.NO_DISPONIBLE);
+		varRepository.save(var);
 		
 		return dv;
 	}

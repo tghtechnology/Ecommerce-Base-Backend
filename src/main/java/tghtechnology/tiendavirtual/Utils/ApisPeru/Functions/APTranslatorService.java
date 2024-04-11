@@ -46,7 +46,7 @@ public class APTranslatorService {
 		return new Boleta(
 				TipoOperacion.VENTA_INTERNA,
 				ven.getTipo_comprobante(),
-				ven.getId_venta(), //TODO: Cambiar por correlativo de boletas/facturas
+				ven.getCorrelativo(),
 				ven.getFecha_realizacion(),
 				client,
 				getCompanyData(),

@@ -25,7 +25,8 @@ public class ReporteDTOForList implements DTOForList<ReporteMensual>{
 	private Mes mes;
 	
 	private BigDecimal total_ingresos;
-	private BigDecimal total_ganancias;
+	private BigDecimal total_egresos;
+	private BigDecimal total_impuestos;
 	private Integer numero_ventas;
 	private Integer items_vendidos;
 	
@@ -41,7 +42,8 @@ public class ReporteDTOForList implements DTOForList<ReporteMensual>{
 		this.mes = rep.getId().getMonth();
 		
 		this.total_ingresos = rep.getTotalIngresos();
-		this.total_ganancias = rep.getTotalGanancias();
+		this.total_egresos = rep.getTotalEgresos();
+		this.total_impuestos = rep.getTotalImpuestos();
 		this.numero_ventas = rep.getNumeroVentas();
 		this.items_vendidos = rep.getNumItemsVendidos();
 		
@@ -69,7 +71,7 @@ public class ReporteDTOForList implements DTOForList<ReporteMensual>{
 				.sorted(new Comparator<ItemReporteDTOForList>() {
 					@Override
 					public int compare(ItemReporteDTOForList o1, ItemReporteDTOForList o2) {
-						return o2.getGanancias().compareTo(o1.getGanancias());
+						return o2.getIngresos().subtract(o2.getEgresos()).compareTo(o1.getIngresos().subtract(o1.getEgresos()));
 					}
 				})
 				.collect(Collectors.toList());

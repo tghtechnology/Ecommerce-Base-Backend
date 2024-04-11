@@ -20,7 +20,7 @@ public class VentaDTOForList implements DTOForList<Venta>{
 
 	private Integer id_venta;
 	private TipoComprobante tipo_comprobante;
-	private String num_comprobante;
+	private String correlativo;
 	private LocalDateTime fecha_realizacion;
 	private EstadoPedido estado_pedido;
 	
@@ -39,7 +39,7 @@ public class VentaDTOForList implements DTOForList<Venta>{
 	public VentaDTOForList from(Venta ven) {
 		this.id_venta = ven.getId_venta();
 		this.tipo_comprobante = ven.getTipo_comprobante();
-		this.num_comprobante = ven.getNum_comprobante();
+		this.correlativo = ven.getCorrelativo();
 		this.fecha_realizacion = ven.getFecha();
 		this.estado_pedido = ven.getEstado_pedido();
 		this.observacion = ven.getObservacion();
