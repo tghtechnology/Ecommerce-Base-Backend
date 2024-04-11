@@ -51,7 +51,7 @@ public class APTranslatorService {
 				client,
 				getCompanyData(),
 				BigDecimal.ZERO, // Suma de otros cargos
-				ven.getAntes_de_igv(),
+				ven.getValor_antes_de_igv().setScale(2, RoundingMode.HALF_UP),
 				detalles,
 				legends,
 				ven.getObservacion(),

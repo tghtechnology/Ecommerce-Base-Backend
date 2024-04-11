@@ -16,10 +16,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import lombok.AllArgsConstructor;
+import tghtechnology.tiendavirtual.Enums.DisponibilidadItem;
 import tghtechnology.tiendavirtual.Enums.TipoUsuario;
 import tghtechnology.tiendavirtual.Models.Carrito;
 import tghtechnology.tiendavirtual.Models.Cliente;
-import tghtechnology.tiendavirtual.Models.DetalleCarrito;
 import tghtechnology.tiendavirtual.Models.DetalleVenta;
 import tghtechnology.tiendavirtual.Models.Item;
 import tghtechnology.tiendavirtual.Models.Usuario;
@@ -142,11 +142,13 @@ public class VentaService {
 		Venta ven = venta.toModel();
 		ven.setCliente(cli);
 		ven.setPorcentaje_igv(settings.getInt("facturacion.igv"));
+		ven.setAntes_de_igv(settings.getBoolean("facturacion.antes_de_igv"));
 		// Guardando venta para obtener una ID
 		final Venta v = venRepository.save(ven);
 		// Añadiendo items del carrito a la venta
 		car.getDetalles().forEach(det -> {
-			DetalleVenta dv = detalleCarritoAVenta(det);
+			validarDetalle(det.getVariacion(), det.getCantidad().shortValue());
+			DetalleVenta dv = procesarDetalle(det.getVariacion(), det.getCantidad().shortValue());
 			dv.setVenta(v);
 			dv = dvRepository.save(dv);
 			dets.add(dv);
@@ -174,6 +176,7 @@ public class VentaService {
 		List<DetalleVenta> dets = new ArrayList<>();
 		Venta ven = venta.toModel();
 		ven.setPorcentaje_igv(settings.getInt("facturacion.igv"));
+		ven.setAntes_de_igv(settings.getBoolean("facturacion.antes_de_igv"));
 		// Guardando venta para obtener una ID
 		final Venta v = venRepository.save(ven);
 		// Añadiendo items del carrito a la venta
@@ -181,24 +184,11 @@ public class VentaService {
 			throw new DataMismatchException("carrito", "No puede estar vacío");
 		
 		venta.getCarrito().forEach(vv -> {
-			DetalleVenta dv = vv.toModel();
 			Variacion var = var_buscarPorId(vv.getId_variacion());
-			Item itm = var.getItem();
 			
-			dv.setVenta(v);
-			dv.setId_item(itm.getId_item());
-			dv.setNombre_item(itm.getNombre());
-			dv.setVariacion_correlativo(var.getCorrelativo());
-			dv.setId_variacion(var.getId_variacion());
-			dv.setTipo_variacion(var.getTipo_variacion());
-			dv.setValor_variacion(var.getValor_variacion());
-			dv.setPrecio_unitario(var.getPrecio());
-			dv.setCosto_unitario(var.getCosto());
-			if(itm.getDescuento() != null && var.getAplicarDescuento())
-				dv.setPorcentaje_descuento(itm.getDescuento().getPorcentaje());
-			else
-				dv.setPorcentaje_descuento(0);
+			validarDetalle(var, vv.getCantidad());
 			
+			DetalleVenta dv = procesarDetalle(var, vv.getCantidad());
 			dv.setVenta(v);
 			dv = dvRepository.save(dv);
 			dets.add(dv);
@@ -254,9 +244,9 @@ public class VentaService {
     			|| TipoUsuario.checkRole(auth.getAuthorities(), TipoUsuario.GERENTE); // O si es un gerente quien hace la solicitud.
     }
 	
-	private Venta buscarPorId(Integer id) {
-		return venRepository.listarUno(id).orElseThrow( () -> new IdNotFoundException("venta"));
-	}
+//	private Venta buscarPorId(Integer id) {
+//		return venRepository.listarUno(id).orElseThrow( () -> new IdNotFoundException("venta"));
+//	}
 	
 	private Usuario user_buscarPorUsername(String username) {
 		return userRepository.listarPorUserName(username).orElseThrow( () -> new IdNotFoundException("usuario"));
@@ -270,9 +260,7 @@ public class VentaService {
 		return varRepository.listarUno(id).orElseThrow( () -> new IdNotFoundException("variacion"));
 	}
 	
-	private DetalleVenta detalleCarritoAVenta(DetalleCarrito dc) {
-		
-		Variacion var = dc.getVariacion();
+	private DetalleVenta procesarDetalle(Variacion var, Short cantidad) {
 		Item itm = var.getItem();
 		
 		DetalleVenta dv = new DetalleVenta();
@@ -285,13 +273,28 @@ public class VentaService {
 		dv.setValor_variacion(var.getValor_variacion());
 		dv.setPrecio_unitario(var.getPrecio());
 		dv.setCosto_unitario(var.getCosto());
-		dv.setCantidad(dc.getCantidad().shortValue());
+		dv.setCantidad(cantidad.shortValue());
 		if(itm.getDescuento() != null && var.getAplicarDescuento())
 			dv.setPorcentaje_descuento(itm.getDescuento().getPorcentaje());
 		else
 			dv.setPorcentaje_descuento(0);
 		
 		return dv;
+	}
+	
+	private void validarDetalle(Variacion var, Short cantidad) {
+		Item itm = var.getItem();
+		
+		// Validar disponibilidad de item y variación
+		if(var.getDisponibilidad() == DisponibilidadItem.NO_DISPONIBLE || itm.getDisponibilidad() == DisponibilidadItem.NO_DISPONIBLE)
+			throw new DataMismatchException("item", "No está disponible para la venta.");
+		
+		// Validar stock de item
+		if(var.getStock() < cantidad)
+			throw new DataMismatchException("item", "No hay stock suficiente.");
+		
+		
+		
 	}
 	
 }

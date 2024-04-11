@@ -47,6 +47,9 @@ public class Venta implements Comparable<Venta>{
     @Column(nullable = false)
     private Integer porcentaje_igv;
     
+    @Column(nullable = false)
+    private Boolean antes_de_igv;
+    
     // Datos del cliente
     @Column(nullable = false)
 	private TipoDocIdentidad tipo_documento;

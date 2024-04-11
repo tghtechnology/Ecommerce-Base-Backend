@@ -26,7 +26,7 @@ public class VentaDTOForList implements DTOForList<Venta>{
 	
 	private List<DetalleVentaDTOForList> detalles = new ArrayList<>();
 	
-	private BigDecimal antes_de_igv = BigDecimal.ZERO;
+	private BigDecimal valor_antes_de_igv = BigDecimal.ZERO;
 	private Integer porcentaje_igv;
 	private BigDecimal igv;
 	private BigDecimal precio_total;
@@ -46,14 +46,14 @@ public class VentaDTOForList implements DTOForList<Venta>{
 		this.porcentaje_igv = ven.getPorcentaje_igv();
 		
 		ven.getDetalles().forEach(dv -> {
-			DetalleVentaDTOForList det = new DetalleVentaDTOForList().from(dv);
+			DetalleVentaDTOForList det = new DetalleVentaDTOForList().from(dv,ven.getPorcentaje_igv(), ven.getAntes_de_igv());
 			detalles.add(det);
-			antes_de_igv = antes_de_igv.add(det.getSubtotal());
+			valor_antes_de_igv = valor_antes_de_igv.add(det.getSubtotal());
 		});
 		
-		this.igv = new BigDecimal(this.porcentaje_igv).multiply(this.antes_de_igv);
+		this.igv = new BigDecimal(this.porcentaje_igv).multiply(this.valor_antes_de_igv);
 		
-		this.precio_total = this.antes_de_igv.add(this.igv);
+		this.precio_total = this.valor_antes_de_igv.add(this.igv);
 		
 		this.cliente = new ClienteVentaDTOForList().from(ven);
 		

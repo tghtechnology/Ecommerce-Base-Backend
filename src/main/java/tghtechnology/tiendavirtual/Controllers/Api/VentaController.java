@@ -21,6 +21,7 @@ import tghtechnology.tiendavirtual.Security.Interfaces.Cliente;
 import tghtechnology.tiendavirtual.Services.VentaService;
 import tghtechnology.tiendavirtual.Utils.ApisPeru.Exceptions.ApisPeruResponseException;
 import tghtechnology.tiendavirtual.Utils.ApisPeru.Functions.APTranslatorService;
+import tghtechnology.tiendavirtual.Utils.ApisPeru.Objects.Response.ApisPeruResponse;
 import tghtechnology.tiendavirtual.dto.Venta.VentaDTOForInsert;
 import tghtechnology.tiendavirtual.dto.Venta.VentaDTOForList;
 import tghtechnology.tiendavirtual.dto.Venta.VentaDTOForListMinimal;
@@ -82,10 +83,10 @@ public class VentaController {
 //		return ResponseEntity.status(HttpStatus.CREATED).body(apTranslator.toBoleta(ven)); 
 //	}
 	
-	//Venta anonima
+//	//Venta anonima
 //	@PostMapping("/no-cliente")
 //	public ResponseEntity<ApisPeruResponse> realizarAnonimo(@RequestBody @Valid VentaDTOForInsert iVen) throws IOException, ApisPeruResponseException{
-//		VentaDTOForList ven = venService.realizarVentaAnonima(iVen);
+//		Venta ven = venService.realizarVentaAnonima(iVen);
 //		ApisPeruResponse resp = venService.enviarApisPeru(ven);
 //		return ResponseEntity.status(HttpStatus.CREATED).body(resp); 
 //	}
