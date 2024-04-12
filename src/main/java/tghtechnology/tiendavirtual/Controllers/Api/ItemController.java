@@ -53,14 +53,14 @@ public class ItemController {
     }
 	
 	@GetMapping("/id/{id}")
-	public ResponseEntity<ItemDTOForListFull> listarUno(@PathVariable Integer id) {
-		ItemDTOForListFull item = itemService.listarUno(id);
+	public ResponseEntity<ItemDTOForListFull> listarUno(@PathVariable Integer id, Authentication auth) {
+		ItemDTOForListFull item = itemService.listarUno(id, auth);
         return ResponseEntity.status(HttpStatus.OK).body(item);
 	}
 	
 	@GetMapping("/{text_id}")
-	public ResponseEntity<ItemDTOForListFull> listarUno(@PathVariable String text_id) {
-		ItemDTOForListFull item = itemService.listarUno(text_id);
+	public ResponseEntity<ItemDTOForListFull> listarUno(@PathVariable String text_id, Authentication auth) {
+		ItemDTOForListFull item = itemService.listarUno(text_id, auth);
         return ResponseEntity.status(HttpStatus.OK).body(item);
 	}
 	
@@ -87,23 +87,6 @@ public class ItemController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> eliminar(@PathVariable Integer id){
 		itemService.eliminarItem(id);
-		return ResponseEntity.status(HttpStatus.OK).build();
-	}
-	
-	@Empleado
-	@PostMapping("/{id}/imagen")
-	public ResponseEntity<Void> addImagen(@PathVariable Integer id,
-										  @RequestParam(value = "imagen", required = true) MultipartFile imagen) throws IOException{
-		
-		itemService.addImagen(id, imagen);
-		return ResponseEntity.status(HttpStatus.CREATED).build();
-	}
-	
-	@Empleado
-	@DeleteMapping("/{id}/imagen/{index}")
-	public ResponseEntity<Void> eliminarImagen(@PathVariable Integer id, @PathVariable Integer index) throws Exception{
-		
-		itemService.eliminarImagen(id, index);
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 

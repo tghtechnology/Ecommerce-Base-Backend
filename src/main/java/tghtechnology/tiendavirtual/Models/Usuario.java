@@ -59,9 +59,6 @@ public class Usuario implements UserDetails {
 	@JoinColumn(name = "id_persona")
 	private Persona persona;
 	
-	@OneToOne(mappedBy = "usuario")
-	private Carrito carrito;
-	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return List.of(this.cargo);

@@ -5,7 +5,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
@@ -16,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.AllArgsConstructor;
-import tghtechnology.tiendavirtual.Enums.TipoImagen;
 import tghtechnology.tiendavirtual.Enums.TipoUsuario;
 import tghtechnology.tiendavirtual.Models.Categoria;
 import tghtechnology.tiendavirtual.Models.Descuento;
@@ -65,26 +63,24 @@ public class ItemService {
         Pageable pag = PageRequest.of(pagina-1, settings.getInt("paginado.items"));
         List<Item> items = (List<Item>) itemRepository.listar(query, min, max, categoria, pag);
         
-        Boolean extendedPermission = (auth != null 
-        								&& auth.getAuthorities() != null
-        								&& TipoUsuario.checkRole(auth.getAuthorities(), TipoUsuario.GERENTE));
+        Boolean extendedPermission = checkExtendedPermission(auth);
         
         items.forEach( x -> {
-            itemList.add(new ItemDTOForList().from(x, imaRepository.listarPorObjeto(TipoImagen.PRODUCTO, x.getId_item()), extendedPermission));
+            itemList.add(new ItemDTOForList().from(x, extendedPermission));
         });
         return itemList;
     }
     
     /*Obtener un item especifico*/
-    public ItemDTOForListFull listarUno(Integer id){
+    public ItemDTOForListFull listarUno(Integer id, Authentication auth){
     	Item item = itemRepository.listarUno(id).orElse(null);
-        return item == null ? null : new ItemDTOForListFull().from(item, imaRepository.listarPorObjeto(TipoImagen.PRODUCTO, item.getId_item()));
+        return item == null ? null : new ItemDTOForListFull().from(item, checkExtendedPermission(auth));
     }
     
     /*Obtener un item especifico*/
-    public ItemDTOForListFull listarUno(String text_id){
+    public ItemDTOForListFull listarUno(String text_id, Authentication auth){
     	Item item = buscarPorId(text_id);
-        return new ItemDTOForListFull().from(item, imaRepository.listarPorObjeto(TipoImagen.PRODUCTO, item.getId_item()));
+        return new ItemDTOForListFull().from(item, checkExtendedPermission(auth));
     }
     
     /**Registrar nuevo item
@@ -108,19 +104,16 @@ public class ItemService {
     	var.setItem(item2);
     	var.setCorrelativo(1);
     	
-    	var = varRepository.save(var);
-    	
+        Imagen img = mediaManager.subirImagenItem(var.composite_text_id(), imagen);
+        img.setId_owner(var.getId_variacion());
+		img = imaRepository.save(img);
+		var.setImagen(img);
+		
+		var = varRepository.save(var);
     	item2.getVariaciones().add(var);
-    	
-    	if(imagen != null) {
-	        Imagen img = mediaManager.subirImagenItem(item2.getText_id(), imagen);
-	        img.setId_owner(item.getId_item());
-	        img.set_index(1);
-			img = imaRepository.save(img);
-			
-			return new ItemDTOForList().from(item2, List.of(img), true);
-        }
-    	return new ItemDTOForList().from(item2, true);
+		
+		return new ItemDTOForList().from(item2, true);
+
     }
     
     /*Actualizar item */
@@ -182,45 +175,11 @@ public class ItemService {
         itemRepository.save(item);
     }
     
-    /**Añadir imagen 
-     * @throws IOException */
-    @Transactional(rollbackFor = {IdNotFoundException.class, IOException.class, DataIntegrityViolationException.class})
-    public void addImagen(Integer id, MultipartFile imagen) throws IOException {
-    	Item item = buscarPorId(id);
-    	
-    	List<Imagen> imagenes = imaRepository.listarPorObjeto(TipoImagen.PRODUCTO, id);
-    	
-    	Imagen img = mediaManager.subirImagenItem(item.getText_id(), imagen);
-        img.setId_owner(item.getId_item());
-        img.set_index(imagenes.size()+1);
-		img = imaRepository.save(img);
+    private boolean checkExtendedPermission(Authentication auth) {
+    	return (auth != null 
+				&& auth.getAuthorities() != null
+				&& TipoUsuario.checkRole(auth.getAuthorities(), TipoUsuario.GERENTE));
     }
-    
-    /** Elimina una imagen
-     * @throws Exception */
-    public void eliminarImagen(Integer id, Integer index) throws Exception {
-    	Item item = buscarPorId(id);
-    	
-    	List<Imagen> imagenes = imaRepository.listarPorObjeto(TipoImagen.PRODUCTO, item.getId_item());
-    	
-    	Imagen img = imagenes
-						.stream()
-						.filter(i -> i.get_index() == index)
-						.findFirst()
-						.orElseThrow(() -> new IdNotFoundException("imagen"));
-    	
-    	mediaManager.eliminarImagenes(List.of(img.getPublic_id_Imagen(), img.getPublic_id_Miniatura()));
-    	imaRepository.delete(img);
-    	
-    	imagenes = imagenes
-    				.stream()
-    				.filter(i -> i.get_index() > index)
-    				.collect(Collectors.toList());
-    	
-    	imagenes.forEach(i -> i.set_index(i.get_index()-1));
-    	imaRepository.saveAll(imagenes);
-    }
-    
     
     public Item buscarPorId(Integer id) {
 		return itemRepository.listarUno(id).orElseThrow( () -> new IdNotFoundException("item"));

@@ -12,7 +12,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
-import tghtechnology.tiendavirtual.Enums.TipoVariacion;
 
 @Entity
 @Table(name = "detalle_venta" )
@@ -36,11 +35,14 @@ public class DetalleVenta {
 	@Column(nullable = false)
 	private Integer variacion_correlativo;
 	
-	@Column(nullable = false)
-	private TipoVariacion tipo_variacion;
+	@Column(nullable = false, length = 40)
+	private String nombre_variacion;
 	
-	@Column(nullable = false, length = 10)
-	private String valor_variacion;
+	@Column(nullable = true)
+	private Integer id_especificacion;
+	
+	@Column(nullable = true, length = 40)
+	private String nombre_especificacion;
 	
 	@Column(nullable = false)
 	private BigDecimal precio_unitario;

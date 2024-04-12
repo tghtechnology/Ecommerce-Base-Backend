@@ -1,16 +1,14 @@
 package tghtechnology.tiendavirtual.dto.Item;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.SortedMap;
-import java.util.TreeMap;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tghtechnology.tiendavirtual.Enums.DisponibilidadItem;
-import tghtechnology.tiendavirtual.Models.Imagen;
 import tghtechnology.tiendavirtual.Models.Item;
 import tghtechnology.tiendavirtual.Utils.DTOInterfaces.DTOForList;
 import tghtechnology.tiendavirtual.dto.Categoria.CategoriaDTOForList;
@@ -31,16 +29,18 @@ public class ItemDTOForListFull implements DTOForList<Item>{
     private LocalDateTime fecha_creacion;
     private LocalDateTime fecha_modificacion;
     
-    private final SortedMap<Integer, String> imagenes = new TreeMap<>();
-    private List<VariacionDTOForList> variaciones = new ArrayList<>();
+    private BigDecimal precio;
+    private BigDecimal costo;
+    
+    private List<VariacionDTOForList> modelos = new ArrayList<>();
     
     private CategoriaDTOForList categoria;
     private MarcaDTOForListMinimal marca;
     private DescuentoDTOForListMinimal descuento;
     
     
-	@Override
-	public ItemDTOForListFull from(Item item) {
+
+	public ItemDTOForListFull from(Item item, boolean extendedPermission) {
 		this.id_item = item.getId_item();
 		this.url = item.getText_id();
 		this.nombre = item.getNombre();
@@ -49,23 +49,21 @@ public class ItemDTOForListFull implements DTOForList<Item>{
 		this.fecha_creacion = item.getFecha_creacion();
 		this.fecha_modificacion = item.getFecha_modificacion();
 		
+		this.precio = item.getPrecio();
+		this.costo = extendedPermission ? item.getCosto() : null;
+		
 		this.descuento = item.getDescuento() == null ? null : new DescuentoDTOForListMinimal().from(item.getDescuento());
-		item.getVariaciones().forEach(var -> variaciones.add(new VariacionDTOForList().from(var)));
+		item.getVariaciones().forEach(var -> modelos.add(new VariacionDTOForList().from(var)));
 		this.categoria = new CategoriaDTOForList().from(item.getCategoria());
 		this.marca = new MarcaDTOForListMinimal().from(item.getMarca());
 		return this;
 	}
-	
-	public ItemDTOForListFull from(Item item, List<Imagen> imgs){
-		from(item);
-		
-		imgs.forEach(img -> {
-			imagenes.put(img.get_index(), img.getImagen()); 
-		});
-		
-		return this;
+
+
+
+	@Override
+	public DTOForList<Item> from(Item item) {
+		return from(item, false);
 	}
-    
-    
    
 }

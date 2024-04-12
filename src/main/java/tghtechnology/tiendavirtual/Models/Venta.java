@@ -9,8 +9,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
@@ -93,11 +91,6 @@ public class Venta implements Comparable<Venta>{
     // Datos de entidad
     @Column(nullable = false)
     private boolean estado;
-    
-  	//Cliente
-  	@ManyToOne
-  	@JoinColumn(name = "id_cliente", nullable = true)
-	private Cliente cliente;
   	
   	@OneToMany(mappedBy = "venta")
   	private Set<DetalleVenta> detalles = new HashSet<>();

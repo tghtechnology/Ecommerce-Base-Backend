@@ -55,10 +55,6 @@ public class Persona {
 	@OneToOne(mappedBy = "persona")
 	private Usuario usuario;
 	
-	// Cliente ligado
-	@OneToOne(mappedBy = "persona")
-	private Cliente cliente;
-	
 	// Empleado ligado
 	@OneToOne(mappedBy = "persona")
 	private Empleado empleado;

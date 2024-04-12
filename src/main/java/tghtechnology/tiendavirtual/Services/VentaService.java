@@ -3,6 +3,7 @@ package tghtechnology.tiendavirtual.Services;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,16 +20,10 @@ import lombok.AllArgsConstructor;
 import tghtechnology.tiendavirtual.Enums.DisponibilidadItem;
 import tghtechnology.tiendavirtual.Enums.EstadoPedido;
 import tghtechnology.tiendavirtual.Enums.SettingType;
-import tghtechnology.tiendavirtual.Enums.TipoUsuario;
-import tghtechnology.tiendavirtual.Models.Carrito;
-import tghtechnology.tiendavirtual.Models.Cliente;
 import tghtechnology.tiendavirtual.Models.DetalleVenta;
 import tghtechnology.tiendavirtual.Models.Item;
-import tghtechnology.tiendavirtual.Models.Usuario;
 import tghtechnology.tiendavirtual.Models.Variacion;
 import tghtechnology.tiendavirtual.Models.Venta;
-import tghtechnology.tiendavirtual.Repository.ClienteRepository;
-import tghtechnology.tiendavirtual.Repository.DetalleCarritoRepository;
 import tghtechnology.tiendavirtual.Repository.DetalleVentaRepository;
 import tghtechnology.tiendavirtual.Repository.UsuarioRepository;
 import tghtechnology.tiendavirtual.Repository.VariacionRepository;
@@ -52,9 +47,7 @@ public class VentaService {
 
 	VentaRepository venRepository;
 	DetalleVentaRepository dvRepository;
-	DetalleCarritoRepository dcRepository;
 	UsuarioRepository userRepository;
-	ClienteRepository cliRepository;
 	VariacionRepository varRepository;
 	
 	APTranslatorService apTranslator;
@@ -75,35 +68,16 @@ public class VentaService {
 	 * o si el usuario no se corresponde con ningún cliente.
 	 * @return Una lista de las ventas.
 	 */
-	public List<VentaDTOForListMinimal> listarVentasPorUsuario(Integer page, Authentication auth) {
-		Usuario user = user_buscarPorUsername(auth.getName());
-		return listarVentasPorUsuario(page, user.getPersona().getId_persona());
-	}
-	
-	/**
-	 * Lista todas las ventas de un cliente en formato DTOForList (Minimal).
-	 * <p>
-	 * Utiliza una ID de persona para obtener las ventas.
-	 * 
-	 * @param id_persona La ID de la persona.
-	 * @throws IdNotFoundException Si la ID no se corresponde con ningún cliente.
-	 * @return Una lista de las ventas.
-	 */
-	public List<VentaDTOForListMinimal> listarVentasPorUsuario(Integer pagina, Integer id_persona){
-		final List<VentaDTOForListMinimal> ventas = new ArrayList<>();
+	public List<VentaDTOForListMinimal> listarVentas(Integer page) {
 		
-		if(pagina < 1) throw new DataMismatchException("pagina", "No puede ser menor a 1");
-        
-        Pageable pag = PageRequest.of(pagina-1, settings.getInt("paginado.venta"));
-		Cliente cli  = cli_buscarPorId(id_persona);
+		Pageable pag = PageRequest.of(page-1, settings.getInt("paginado.items"));
+		List<Venta> ventas = venRepository.listar(pag);
 		
-		List<Venta> listaVentas = venRepository.listarPorCliente(cli, pag);
 		
-		listaVentas.forEach(vv -> {
-			ventas.add(new VentaDTOForListMinimal().from(vv));
-		});
-		
-		return ventas;
+		return ventas
+				.stream()
+				.map( v -> new VentaDTOForListMinimal().from(v))
+				.collect(Collectors.toList());
 	}
 	
 	/**
@@ -114,55 +88,10 @@ public class VentaService {
 	 * @return La venta en formato DTOForList
 	 * @throws AccessDeniedException Si la venta no existe
 	 */
-	public VentaDTOForList listarVenta(Integer id_venta, Authentication auth) {
+	public VentaDTOForList listarVenta(Integer id_venta) {
 		
-		Venta ven = venRepository.listarUno(id_venta).orElse(null);
-		
-		if(ven == null || !checkPermitted(ven.getCliente(), auth)) 
-			throw new AccessDeniedException("");
-		
+		Venta ven = ven_buscarPorId(id_venta);
 		return new VentaDTOForList().from(ven);
-	}
-	
-	/**
-	 * Realiza una venta tomando de base un {@link tghtechnology.tiendavirtual.Models.Cliente Cliente}
-	 * para obtener los productos del carrito de venta.
-	 * <p>
-	 * Requiere autenticación.
-	 * @param venta Los datos de la venta en formato ForInsert
-	 * @param auth La autenticación del cliente
-	 * @return La venta realizada en formato DTOForList
-	 */
-	@Transactional(rollbackFor = {Exception.class})
-	public Venta realizarVentaCliente(VentaDTOForInsert venta, Authentication auth) {
-		Usuario user = user_buscarPorUsername(auth.getName());
-		Cliente cli  = cli_buscarPorId(user.getPersona().getId_persona());
-		Carrito car = user.getCarrito();
-		List<DetalleVenta> dets = new ArrayList<>();
-		
-		if(car.getDetalles().isEmpty()) throw new DataMismatchException("carrito", "No se puede realizar una compra con el carrito vacío");
-		
-		Venta ven = venta.toModel();
-		ven.setCliente(cli);
-		ven.setPorcentaje_igv(settings.getInt("facturacion.igv"));
-		ven.setAntes_de_igv(settings.getBoolean("facturacion.antes_de_igv"));
-		// Guardando venta para obtener una ID
-		final Venta v = venRepository.save(ven);
-		// Añadiendo items del carrito a la venta
-		car.getDetalles().forEach(det -> {
-			validarDetalle(det.getVariacion(), det.getCantidad().shortValue());
-			DetalleVenta dv = procesarDetalle(det.getVariacion(), det.getCantidad().shortValue());
-			dv.setVenta(v);
-			dv = dvRepository.save(dv);
-			dets.add(dv);
-		});
-		ven = v;
-		ven.getDetalles().addAll(dets);
-		
-		// Vaciar carrito del cliente
-		dcRepository.deleteAll(car.getDetalles());
-		
-		return ven;
 	}
 	
 	/**
@@ -281,15 +210,8 @@ public class VentaService {
 	 * @param auth La autenticación del usuario.
 	 * @throws DataMismatchException Si se intenta cambiar el estado de una venta finalizada (Cancelada o Completada)
 	 */
-	public void cancelarVenta(Integer id_venta, Authentication auth) {
-		
-		Venta ven = venRepository.listarUno(id_venta).orElse(null);
-		
-		if(ven == null || !checkPermitted(ven.getCliente(), auth)) 
-			throw new AccessDeniedException("");
-		
+	public void cancelarVenta(Integer id_venta, Authentication auth) {		
 		cambiarEstado(id_venta, EstadoPedido.CANCELADO);
-		
 	}
 	
 	private String nextComprobante(TipoComprobante tc) {
@@ -303,21 +225,12 @@ public class VentaService {
 		return numComprobante.toString();
 	}
 	
-	private boolean checkPermitted(Cliente cli, Authentication auth) {
-    	return (cli != null && auth.getName().equals(cli.getUsuario().getUsername())) // Si la venta tiene un cliente y ese cliente es el que esta solicitando
-    			|| TipoUsuario.checkRole(auth.getAuthorities(), TipoUsuario.GERENTE); // O si es un gerente quien hace la solicitud.
-    }
-	
 	private Venta buscarPorId(Integer id) {
 		return venRepository.listarUno(id).orElseThrow( () -> new IdNotFoundException("venta"));
 	}
 	
-	private Usuario user_buscarPorUsername(String username) {
-		return userRepository.listarPorUserName(username).orElseThrow( () -> new IdNotFoundException("usuario"));
-	}
-	
-	private Cliente cli_buscarPorId(Integer id) {
-		return cliRepository.listarUno(id).orElseThrow( () -> new IdNotFoundException("cliente"));
+	private Venta ven_buscarPorId(Integer id) {
+		return venRepository.listarUno(id).orElseThrow( () -> new IdNotFoundException("venta"));
 	}
 	
 	private Variacion var_buscarPorId(Integer id) {
@@ -333,10 +246,9 @@ public class VentaService {
 		dv.setNombre_item(itm.getNombre());
 		dv.setId_variacion(var.getId_variacion());
 		dv.setVariacion_correlativo(var.getCorrelativo());
-		dv.setTipo_variacion(var.getTipo_variacion());
-		dv.setValor_variacion(var.getValor_variacion());
-		dv.setPrecio_unitario(var.getPrecio());
-		dv.setCosto_unitario(var.getCosto());
+		dv.setNombre_variacion(var.getNombre_variacion());
+		dv.setPrecio_unitario(itm.getPrecio());
+		dv.setCosto_unitario(itm.getCosto());
 		dv.setCantidad(cantidad.shortValue());
 		if(itm.getDescuento() != null && var.getAplicarDescuento())
 			dv.setPorcentaje_descuento(itm.getDescuento().getPorcentaje());

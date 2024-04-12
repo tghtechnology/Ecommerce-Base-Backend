@@ -6,7 +6,6 @@ import java.math.RoundingMode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import tghtechnology.tiendavirtual.Enums.TipoVariacion;
 import tghtechnology.tiendavirtual.Models.DetalleVenta;
 import tghtechnology.tiendavirtual.Utils.DTOInterfaces.DTOForList;
 
@@ -21,8 +20,7 @@ public class DetalleVentaDTOForList implements DTOForList<DetalleVenta>{
 	private String nombre_item;
 	private Integer id_variacion;
 	private Integer var_correlativo;
-	private TipoVariacion tipo_variacion;
-	private String valor_variacion;
+	private String nombre_variacion;
 	private BigDecimal precio_unitario;
 	
 	private Integer porcentaje_descuento;
@@ -42,8 +40,7 @@ public class DetalleVentaDTOForList implements DTOForList<DetalleVenta>{
 		this.nombre_item = dv.getNombre_item();
 		this.id_variacion = dv.getId_variacion();
 		this.var_correlativo = dv.getVariacion_correlativo();
-		this.tipo_variacion = dv.getTipo_variacion();
-		this.valor_variacion = dv.getValor_variacion();
+		this.nombre_variacion = dv.getNombre_variacion();
 		this.precio_unitario = calcularPrecioUnitario(dv, igv, antes_de_igv);
 		this.porcentaje_descuento = dv.getPorcentaje_descuento();
 		this.descuento_unitario = porcentaje_descuento == null ? BigDecimal.ZERO : precio_unitario.multiply(new BigDecimal(porcentaje_descuento).divide(new BigDecimal(100)));

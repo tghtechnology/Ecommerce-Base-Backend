@@ -1,5 +1,6 @@
 package tghtechnology.tiendavirtual.Models;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -30,12 +31,21 @@ public class Item {
     
     @Column(nullable = false, unique = true, length = 100)
 	private String text_id;
+    
+    @Column(nullable = false, unique = true, length = 20)
+    private String codigo_item;
 
     @Column(nullable = false)
     private String nombre;
 
     @Column(nullable = false, length = 150)
     private String descripcion;
+    
+    @Column(nullable = false)
+    private BigDecimal costo;
+    
+    @Column(nullable = false)
+    private BigDecimal precio;
 
     @Column(nullable = false)
     private DisponibilidadItem disponibilidad;

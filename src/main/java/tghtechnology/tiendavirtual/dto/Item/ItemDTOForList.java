@@ -1,5 +1,6 @@
 package tghtechnology.tiendavirtual.dto.Item;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tghtechnology.tiendavirtual.Enums.DisponibilidadItem;
-import tghtechnology.tiendavirtual.Models.Imagen;
 import tghtechnology.tiendavirtual.Models.Item;
 import tghtechnology.tiendavirtual.Utils.DTOInterfaces.DTOForList;
 import tghtechnology.tiendavirtual.dto.Categoria.CategoriaDTOForList;
@@ -24,6 +24,9 @@ public class ItemDTOForList implements DTOForList<Item>{
 	private String url;
 	private String nombre;
     private DisponibilidadItem disponibilidad;
+    
+    private BigDecimal precio;
+    private BigDecimal costo;
     
     private String thumbnail;
     private DescuentoDTOForListMinimal descuento;
@@ -46,31 +49,19 @@ public class ItemDTOForList implements DTOForList<Item>{
 		this.marca = new MarcaDTOForListMinimal().from(item.getMarca());
 		this.descuento = item.getDescuento() == null ? null : new DescuentoDTOForListMinimal().from(item.getDescuento());
 		
+		this.precio = item.getPrecio();
+		if(!extendedPermission)
+			this.setCosto(null);
+		
 		item.getVariaciones()
 			.stream()
 			.filter(v -> v.getEstado())
 			.sorted()
 			.forEach(var -> {
 				variaciones.add(new VariacionDTOForList().from(var));
-				if(!extendedPermission)
-					var.setCosto(null);
 			});
 		
 		return this;
-	}
-	
-	public ItemDTOForList from(Item item, List<Imagen> imagenes,Boolean extendedPermission){
-		from(item, extendedPermission);
-		
-		imagenes.forEach(img -> {
-			if(img.get_index() == 1) {
-				this.thumbnail = img.getMiniatura();
-			}
-		});
-		
-		return this;
-	}
-    
-    
+	}    
    
 }

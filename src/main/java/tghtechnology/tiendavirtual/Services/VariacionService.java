@@ -1,17 +1,22 @@
 package tghtechnology.tiendavirtual.Services;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import lombok.AllArgsConstructor;
+import tghtechnology.tiendavirtual.Models.Imagen;
 import tghtechnology.tiendavirtual.Models.Item;
 import tghtechnology.tiendavirtual.Models.Variacion;
+import tghtechnology.tiendavirtual.Repository.ImagenRepository;
 import tghtechnology.tiendavirtual.Repository.ItemRepository;
 import tghtechnology.tiendavirtual.Repository.VariacionRepository;
+import tghtechnology.tiendavirtual.Utils.Cloudinary.MediaManager;
 import tghtechnology.tiendavirtual.Utils.Exceptions.DataMismatchException;
 import tghtechnology.tiendavirtual.Utils.Exceptions.IdNotFoundException;
 import tghtechnology.tiendavirtual.dto.VariacionItem.VariacionDTOForInsert;
@@ -24,6 +29,9 @@ public class VariacionService {
 	@Autowired
     private VariacionRepository varRepository;
 	private ItemRepository itemRepository;
+	private ImagenRepository imaRepository;
+	
+	private MediaManager mediaManager;
 
     /**
      * Lista todas las variaciones no eliminadas de un producto
@@ -56,15 +64,22 @@ public class VariacionService {
     /**
      * Registra una nueva variación
      * @param iVar Variación en formato ForInsert
+     * @param imagen La imagen en formato MultipartFile
      * @return la vriación creada en formato ForList
+     * @throws IOException Si hay un error al subir la imagen
      */
-    public VariacionDTOForList crearVariacionItem(VariacionDTOForInsert iVar){
+    public VariacionDTOForList crearVariacionItem(VariacionDTOForInsert iVar, MultipartFile imagen) throws IOException{
     	
         Variacion var = iVar.toModel();
         
         Item item = item_buscarPorId(iVar.getId_item());
         var.setItem(item);
         var.setCorrelativo(item.getVariaciones().size()+1);
+        
+        Imagen img = mediaManager.subirImagenItem(var.composite_text_id(), imagen);
+        img.setId_owner(var.getId_variacion());
+		img = imaRepository.save(img);
+		var.setImagen(img);
         
         varRepository.save(var);
         return new VariacionDTOForList().from(var);
@@ -80,6 +95,24 @@ public class VariacionService {
         Variacion variacion = buscarPorId(id);
         variacion = mVar.updateModel(variacion);
         varRepository.save(variacion);
+    }
+    
+    public void actualizarImagen(Integer id, MultipartFile imagen) throws Exception {
+    	Variacion var = buscarPorId(id);
+    	Imagen old_img = var.getImagen();
+    	
+    	mediaManager.eliminarImagenes(List.of(old_img.getPublic_id_Imagen(), old_img.getPublic_id_Miniatura()));
+    	
+    	
+    	Imagen new_img = mediaManager.subirImagenItem(var.composite_text_id(), imagen);
+    	new_img.setId_owner(var.getId_variacion());
+    	var.setImagen(new_img);
+    	
+    	imaRepository.save(new_img);
+    	varRepository.save(var);
+    	
+    	imaRepository.delete(old_img);
+    	
     }
     
     /**
