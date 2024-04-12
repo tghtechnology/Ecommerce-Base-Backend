@@ -265,6 +265,8 @@ public class VentaService {
 			ven.getDetalles().forEach(dv -> {
 				Variacion var = var_buscarPorId(dv.getId_variacion());
 				var.setStock(var.getStock() + dv.getCantidad());
+				if(var.getDisponibilidad() == DisponibilidadItem.SIN_STOCK)
+					var.setDisponibilidad(DisponibilidadItem.DISPONIBLE);
 				varRepository.save(var);
 			});
 		}
@@ -344,7 +346,7 @@ public class VentaService {
 		//Disminuir el stock
 		var.setStock(var.getStock()-cantidad);
 		if(var.getStock() == 0)
-			var.setDisponibilidad(DisponibilidadItem.NO_DISPONIBLE);
+			var.setDisponibilidad(DisponibilidadItem.SIN_STOCK);
 		varRepository.save(var);
 		
 		return dv;
@@ -354,7 +356,7 @@ public class VentaService {
 		Item itm = var.getItem();
 		
 		// Validar disponibilidad de item y variación
-		if(var.getDisponibilidad() == DisponibilidadItem.NO_DISPONIBLE || itm.getDisponibilidad() == DisponibilidadItem.NO_DISPONIBLE)
+		if(var.getDisponibilidad() != DisponibilidadItem.DISPONIBLE || itm.getDisponibilidad() != DisponibilidadItem.DISPONIBLE)
 			throw new DataMismatchException("item", "No está disponible para la venta.");
 		
 		// Validar stock de item
