@@ -1,6 +1,7 @@
 package tghtechnology.tiendavirtual.dto.EspecificacionItem;
 
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,9 @@ public class EspecificacionDTOForInsert implements DTOForInsert<Especificacion>{
 	private String nombre;
 	
 	private DisponibilidadItem disponibilidad;
+	
+	@NotNull(message = "No puede ser nulo")
+	private Integer id_variacion;
 
 	@Override
 	public Especificacion toModel() {

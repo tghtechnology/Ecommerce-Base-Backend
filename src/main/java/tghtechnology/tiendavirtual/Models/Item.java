@@ -59,6 +59,10 @@ public class Item {
     @Column(nullable = false)
     private Boolean estado;
     
+    @OneToOne
+    @JoinColumn(name = "id_imagen", nullable = false)
+    private Imagen imagen;
+    
     @ManyToOne
     @JoinColumn(name = "id_categoria", nullable = true)
     private Categoria categoria;
@@ -81,7 +85,7 @@ public class Item {
 		return nombre.strip()				// sin espacios al inicio o final
 				.replace(' ', '_')			// espacios y guiones por _
 				.replace('-', '_')
-				.replaceAll("(\\+|,|')+","")// simbolos por vacio
+				.replaceAll("(\\+|,|\\<\\>')+","")// simbolos por vacio
 				.toLowerCase();				// minusculas
 	}
 

@@ -1,5 +1,8 @@
 package tghtechnology.tiendavirtual.Models;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -7,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
@@ -48,6 +52,9 @@ public class Variacion implements Comparable<Variacion>{
     @OneToOne
     @JoinColumn(name = "id_imagen", nullable = false)
     private Imagen imagen;
+    
+    @OneToMany(mappedBy = "variacion")
+    private Set<Especificacion> especificaciones = new HashSet<>();
 
 	@Override
 	public int compareTo(Variacion o) {
@@ -58,7 +65,7 @@ public class Variacion implements Comparable<Variacion>{
 		String var_text_id = this.nombre_variacion.strip()	// sin espacios al inicio o final
 				.replace(' ', '_')			// espacios y guiones por _
 				.replace('-', '_')
-				.replaceAll("(\\+|,|')+","")// simbolos por vacio
+				.replaceAll("(\\+|,|'\\{\\})+","")// simbolos por vacio
 				.toLowerCase();				// minusculas
 		
 		

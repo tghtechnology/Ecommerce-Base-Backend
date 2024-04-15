@@ -67,7 +67,7 @@ public class ItemController {
 	@Empleado
 	@PostMapping
 	public ResponseEntity<ItemDTOForList> crear(@RequestParam String item,
-			 									@RequestParam(value = "imagen", required = false) MultipartFile imagen) throws IOException, CustomValidationFailedException{
+			 									@RequestParam(value = "imagen", required = true) MultipartFile imagen) throws IOException, CustomValidationFailedException{
 		
 		ItemDTOForInsert iItem = new ObjectMapper().readValue(item, ItemDTOForInsert.class);
 		validator.validar(iItem);

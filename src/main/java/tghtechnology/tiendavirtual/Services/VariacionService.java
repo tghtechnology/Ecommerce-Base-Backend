@@ -104,7 +104,7 @@ public class VariacionService {
     	mediaManager.eliminarImagenes(List.of(old_img.getPublic_id_Imagen(), old_img.getPublic_id_Miniatura()));
     	
     	
-    	Imagen new_img = mediaManager.subirImagenItem(var.composite_text_id(), imagen);
+    	Imagen new_img = mediaManager.subirImagenVariacion(var.composite_text_id(), imagen);
     	new_img.setId_owner(var.getId_variacion());
     	var.setImagen(new_img);
     	

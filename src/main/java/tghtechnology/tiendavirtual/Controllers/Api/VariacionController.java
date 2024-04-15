@@ -31,6 +31,7 @@ public class VariacionController {
 
 	@Autowired
     private VariacionService varService;
+	@Autowired
 	private CustomBeanValidator validator;
 	
 	@Empleado

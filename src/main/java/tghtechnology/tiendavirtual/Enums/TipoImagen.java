@@ -7,6 +7,7 @@ public enum TipoImagen {
 	ANUNCIO("Anuncio"),
 	MARCA("Marca"),
 	PRODUCTO("Producto"),
+	VARIACION("Variacion"),
 	RED_SOCIAL("RedSocial");
 	
 	@Getter

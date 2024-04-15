@@ -109,6 +109,33 @@ public class MediaManager {
 	}
 	
 	/**
+	 * Sube dos imagenes a Cloudinary:<br>
+	 * - La imagen completa en la carpeta "variaciones/full", tamaño full<br>
+	 * - La miniatura de la imagen en la carpeta "variaciones/thumbs", tamaño 264x177<br>
+	 * 
+	 * @param name Nombre del archivo
+	 * @param file Archivo de imagen
+	 * @return Los enlaces de la imagen en un objeto Img
+	 * @throws IOException
+	 */
+	public Imagen subirImagenVariacion(String name, MultipartFile file) throws IOException {
+		
+		String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss"));
+		
+		name = name + "-" + now;
+		
+		Img img = new Img();
+		Map<?, ?> resource1 = upload(name, "productos/full", file);
+		img.setImagen(resource1.get("url").toString());
+		img.setId_imagen(resource1.get("public_id").toString());
+		
+		Map<?, ?> resource2 = uploadExt(name, "productos/thumbs", file, new SizeTransformation(177, 264, "thumb"));
+		img.setMiniatura(resource2.get("url").toString());
+		img.setId_miniataura(resource2.get("public_id").toString());
+		return toImagen(img, TipoImagen.VARIACION);
+	}
+	
+	/**
 	 * Elimina una lista de imágenes de cloudinary
 	 * 
 	 * @param public_ids Lista de ids públicas de las imágenes a borrar

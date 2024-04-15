@@ -1,11 +1,15 @@
 package tghtechnology.tiendavirtual.dto.VariacionItem;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tghtechnology.tiendavirtual.Enums.DisponibilidadItem;
 import tghtechnology.tiendavirtual.Models.Variacion;
 import tghtechnology.tiendavirtual.Utils.DTOInterfaces.DTOForList;
+import tghtechnology.tiendavirtual.dto.EspecificacionItem.EspecificacionDTOForList;
 
 @Getter
 @Setter
@@ -20,6 +24,8 @@ public class VariacionDTOForList implements DTOForList<Variacion>{
 	private Boolean aplicar_descuento;
 	private String imagen;
 	
+	private List<EspecificacionDTOForList> especificaciones = new ArrayList<>();
+	
 	@Override
 	public VariacionDTOForList from(Variacion var) {
 		this.id_variacion = var.getId_variacion();
@@ -29,6 +35,15 @@ public class VariacionDTOForList implements DTOForList<Variacion>{
 		this.stock = var.getStock();
 		this.aplicar_descuento = var.getAplicarDescuento();
 		this.imagen = var.getImagen().getImagen();
+		
+		var.getEspecificaciones()
+		.stream()
+		.filter(v -> v.getEstado())
+		.sorted()
+		.forEach(esp -> {
+			especificaciones.add(new EspecificacionDTOForList().from(esp));
+		});
+		
 		return this;
 	}
 

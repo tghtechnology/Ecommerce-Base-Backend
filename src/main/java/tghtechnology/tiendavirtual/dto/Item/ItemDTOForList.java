@@ -50,8 +50,8 @@ public class ItemDTOForList implements DTOForList<Item>{
 		this.descuento = item.getDescuento() == null ? null : new DescuentoDTOForListMinimal().from(item.getDescuento());
 		
 		this.precio = item.getPrecio();
-		if(!extendedPermission)
-			this.setCosto(null);
+		if(extendedPermission)
+			this.setCosto(item.getCosto());
 		
 		item.getVariaciones()
 			.stream()

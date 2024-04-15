@@ -294,6 +294,8 @@ public class SettingsService implements ApplicationListener<ApplicationReadyEven
 		alterSetting("company.distrito", "LIMA", SettingType.STRING);
 		alterSetting("company.direccion", "MI CASA", SettingType.STRING);
 		
+		alterSetting("cloudinary.directory", "ecomm-brl/", SettingType.STRING);
+		
 	}
 	
 	private void addSetting(String key, String val, SettingType type) {

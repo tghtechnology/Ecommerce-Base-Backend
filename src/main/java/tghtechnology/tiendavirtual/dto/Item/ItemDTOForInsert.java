@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tghtechnology.tiendavirtual.Enums.DisponibilidadItem;
 import tghtechnology.tiendavirtual.Models.Item;
-import tghtechnology.tiendavirtual.Models.Variacion;
 import tghtechnology.tiendavirtual.Utils.DTOInterfaces.DTOForInsert;
 
 @Getter
@@ -21,6 +20,10 @@ import tghtechnology.tiendavirtual.Utils.DTOInterfaces.DTOForInsert;
 @NoArgsConstructor
 public class ItemDTOForInsert implements DTOForInsert<Item>{
 
+	@NotEmpty(message = "El campo no puede estar vacío")
+    @Size(min = 1, max = 20, message = "El codigo del item debe tener menos de 20 caracteres")
+	private String codigo;
+	
 	@NotEmpty(message = "El campo no puede estar vacío")
     @Size(min = 1, max = 40, message = "El nombre del item debe tener menos de 40 caracteres")
 	private String nombre;
@@ -36,7 +39,6 @@ public class ItemDTOForInsert implements DTOForInsert<Item>{
 	@DecimalMin(value = "0.0", inclusive = true, message = "El costo debe ser mayor a S/.0.00")
 	private BigDecimal costo;
 	
-	@NotNull(message = "No puede ser nulo")
     private DisponibilidadItem disponibilidad;
 	
 	@NotNull(message = "No puede ser nulo")
@@ -55,10 +57,11 @@ public class ItemDTOForInsert implements DTOForInsert<Item>{
 		LocalDateTime now = LocalDateTime.now();
 		
 		Item item = new Item();
+		item.setCodigo_item(codigo);
 		item.setNombre(nombre);
 		item.setText_id(Item.transform_id(nombre));
 		item.setDescripcion(descripcion);
-		item.setDisponibilidad(disponibilidad);
+		item.setDisponibilidad(DisponibilidadItem.NO_DISPONIBLE);
 		item.setPrecio(precio);
 		item.setCosto(costo == null ? precio : costo);
 		item.setFecha_creacion(now);
@@ -66,17 +69,6 @@ public class ItemDTOForInsert implements DTOForInsert<Item>{
 		item.setEstado(true);
 		
 		return item;
-	}
-	
-	public Variacion toVariacion() {
-		Variacion var = new Variacion();
-		var.setNombre_variacion("<DEFAULT>");
-		var.setStock(stock);
-		var.setDisponibilidad(disponibilidad);
-		var.setAplicarDescuento(true);
-		var.setEstado(true);
-		
-		return var;
 	}
 
 	@Override

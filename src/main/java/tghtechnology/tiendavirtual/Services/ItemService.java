@@ -15,18 +15,17 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.AllArgsConstructor;
+import tghtechnology.tiendavirtual.Enums.DisponibilidadItem;
 import tghtechnology.tiendavirtual.Enums.TipoUsuario;
 import tghtechnology.tiendavirtual.Models.Categoria;
 import tghtechnology.tiendavirtual.Models.Descuento;
 import tghtechnology.tiendavirtual.Models.Imagen;
 import tghtechnology.tiendavirtual.Models.Item;
 import tghtechnology.tiendavirtual.Models.Marca;
-import tghtechnology.tiendavirtual.Models.Variacion;
 import tghtechnology.tiendavirtual.Repository.CategoriaRepository;
 import tghtechnology.tiendavirtual.Repository.DescuentoRepository;
 import tghtechnology.tiendavirtual.Repository.ImagenRepository;
 import tghtechnology.tiendavirtual.Repository.ItemRepository;
-import tghtechnology.tiendavirtual.Repository.VariacionRepository;
 import tghtechnology.tiendavirtual.Utils.Cloudinary.MediaManager;
 import tghtechnology.tiendavirtual.Utils.Exceptions.DataMismatchException;
 import tghtechnology.tiendavirtual.Utils.Exceptions.IdNotFoundException;
@@ -41,7 +40,6 @@ public class ItemService {
     private ItemRepository itemRepository;
 	private DescuentoRepository desRepository;
 	private CategoriaRepository catRepository;
-	private VariacionRepository varRepository;
 	private ImagenRepository imaRepository;
 	
 	private MarcaService marService;
@@ -59,11 +57,11 @@ public class ItemService {
         List<ItemDTOForList> itemList = new ArrayList<>();
         
         if(pagina < 1) throw new DataMismatchException("pagina", "No puede ser menor a 1");
+        Boolean extendedPermission = checkExtendedPermission(auth);
         
         Pageable pag = PageRequest.of(pagina-1, settings.getInt("paginado.items"));
-        List<Item> items = (List<Item>) itemRepository.listar(query, min, max, categoria, pag);
+        List<Item> items = (List<Item>) itemRepository.listar(query, min, max, categoria, extendedPermission, pag);
         
-        Boolean extendedPermission = checkExtendedPermission(auth);
         
         items.forEach( x -> {
             itemList.add(new ItemDTOForList().from(x, extendedPermission));
@@ -98,19 +96,14 @@ public class ItemService {
     	Marca mar = marService.buscarPorId(iItem.getId_marca());
     	item.setMarca(mar);
     	
+    	Imagen img = mediaManager.subirImagenItem(item.getText_id(), imagen);
+		img = imaRepository.save(img);
+    	item.setImagen(img);
+		
     	Item item2 = itemRepository.save(item); // Asignar a otra instancia para que no muera la transaccion
     	
-    	Variacion var = iItem.toVariacion();
-    	var.setItem(item2);
-    	var.setCorrelativo(1);
-    	
-        Imagen img = mediaManager.subirImagenItem(var.composite_text_id(), imagen);
-        img.setId_owner(var.getId_variacion());
+        img.setId_owner(item2.getId_item());
 		img = imaRepository.save(img);
-		var.setImagen(img);
-		
-		var = varRepository.save(var);
-    	item2.getVariaciones().add(var);
 		
 		return new ItemDTOForList().from(item2, true);
 
@@ -173,6 +166,16 @@ public class ItemService {
         });
         desRepository.saveAll(item.getDescuentos());
         itemRepository.save(item);
+    }
+    
+    public void cambiarDisponibilidad(Integer id, DisponibilidadItem disp) {
+    	Item item = buscarPorId(id);
+    	
+    	if(disp == DisponibilidadItem.DISPONIBLE && item.getVariaciones().isEmpty())
+    		throw new DataMismatchException("disponibilidad", "No se puede activar un item sin variaciones");
+    	
+    	item.setDisponibilidad(disp);
+    	itemRepository.save(item);
     }
     
     private boolean checkExtendedPermission(Authentication auth) {
