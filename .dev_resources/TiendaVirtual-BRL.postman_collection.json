@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "aad94f9d-4add-41a2-b418-33316c9fa33b",
-		"name": "TiendaVirtual-Base",
+		"_postman_id": "4ff8ffaa-5417-4555-8ff0-3bdc5f12698e",
+		"name": "TiendaVirtual-BRL",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "29571097"
 	},
@@ -92,7 +92,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\":\"cliente@test.com\",\r\n    \"password\":\"Te$t1234\"\r\n}",
+							"raw": "{\r\n    \"username\":\"admin@test.com\",\r\n    \"password\":\"Te$t1234\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -339,13 +339,19 @@
 									}
 								],
 								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"id_item\": 1,\r\n    \"tipo_variacion\": \"COLOR\",\r\n    \"valor_variacion\": \"CCCCCC\",\r\n    \"precio\": 70.00,\r\n    \"disponibilidad\": \"DISPONIBLE\",\r\n    \"stock\": 20\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "variacion",
+											"value": "{\n    \"id_item\": 2,\n    \"nombre_variacion\": \"grande\",\n    \"disponibilidad\": \"DISPONIBLE\",\n    \"stock\": 20,\n\"aplicar_descuento\": true\n}",
+											"type": "text"
+										},
+										{
+											"key": "imagen",
+											"type": "file",
+											"src": "tEnkOYzIh/61K1zLmJTLL._AC_UF1000,1000_QL80_.jpg"
 										}
-									}
+									]
 								},
 								"url": {
 									"raw": "{{API}}/api/variacion",
@@ -355,6 +361,103 @@
 									"path": [
 										"api",
 										"variacion"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Editar",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{AUTH}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id_item\": 1,\r\n    \"tipo_variacion\": \"COLOR\",\r\n    \"valor_variacion\": \"CDFFFF\",\r\n    \"precio\": 950.90,\r\n    \"disponibilidad\": \"DISPONIBLE\",\r\n    \"stock\": 100\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{API}}/api/variacion/102",
+									"host": [
+										"{{API}}"
+									],
+									"path": [
+										"api",
+										"variacion",
+										"102"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Eliminar",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{AUTH}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{API}}/api/variacion/1",
+									"host": [
+										"{{API}}"
+									],
+									"path": [
+										"api",
+										"variacion",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Especificacion",
+					"item": [
+						{
+							"name": "Crear",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{AUTH}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id_variacion\": 2,\r\n    \"nombre\": \"Rojo-azul\",\r\n    \"disponibilidad\": \"DISPONIBLE\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{API}}/api/especificacion",
+									"host": [
+										"{{API}}"
+									],
+									"path": [
+										"api",
+										"especificacion"
 									]
 								}
 							},
@@ -516,7 +619,13 @@
 					"name": "Leer",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{API}}/api/item",
 							"host": [
@@ -585,14 +694,13 @@
 							"formdata": [
 								{
 									"key": "item",
-									"value": "{\n    \"nombre\": \"iPad\",\n    \"descripcion\": \"Una tablet grande\",\n    \"precio\": 60.00,\n\"costo\": 30,\n    \"disponibilidad\": \"DISPONIBLE\",\n    \"stock\": 150,\n    \"id_marca\": 1,\n\"id_categoria\": 1\n}",
+									"value": "{\n    \"nombre\": \"Protector de pantalla 2\",\n    \"descripcion\": \"Una tablet grande\",\n\"codigo\": \"0000002\",\n    \"precio\": 7.00,\n\"costo\": 2.50,\n    \"disponibilidad\": \"DISPONIBLE\",\n    \"stock\": 150,\n    \"id_marca\": 1,\n\"id_categoria\": 1\n}",
 									"type": "text"
 								},
 								{
 									"key": "imagen",
 									"type": "file",
-									"src": [],
-									"disabled": true
+									"src": "S6-2dodfd/CatComputer.jpg"
 								}
 							]
 						},
@@ -1456,6 +1564,56 @@
 					"response": []
 				},
 				{
+					"name": "Cancelar",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{API}}/api/venta/502",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"venta",
+								"502"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Leer",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{API}}/api/venta/502",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"venta",
+								"502"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Venta anonima",
 					"request": {
 						"method": "POST",
@@ -1469,7 +1627,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"tipo_comprobante\": \"BOLETA_DE_VENTA\",\r\n    \"tipo_documento\": \"DNI\",\r\n    \"numero_documento\": \"12345678\",\r\n    \"nombres\": \"Juanito\",\r\n    \"apellidos\": \"Ramirez\",\r\n    \"telefono\": \"+51987654321\",\r\n    \"correo\": \"cliente_anonimo@test.com\",\r\n    \"region\": \"LIMA\",\r\n    \"provincia\": \"LIMA\",\r\n    \"distrito\": \"LIMA\",\r\n    \"direccion\": \"Al lado de la casa del vecino\",\r\n    \"referencia\": \"Al lado de mi otro vecino\",\r\n    \"carrito\":[\r\n        {\r\n            \"id_variacion\": 2,\r\n            \"cantidad\": 1001\r\n        }\r\n    ]\r\n}",
+							"raw": "{\r\n    \"tipo_comprobante\": \"BOLETA_DE_VENTA\",\r\n    \"tipo_documento\": \"DNI\",\r\n    \"numero_documento\": \"12345678\",\r\n    \"nombres\": \"Juanito\",\r\n    \"apellidos\": \"Ramirez\",\r\n    \"telefono\": \"+51987654321\",\r\n    \"correo\": \"cliente_anonimo@test.com\",\r\n    \"region\": \"LIMA\",\r\n    \"provincia\": \"LIMA\",\r\n    \"distrito\": \"LIMA\",\r\n    \"direccion\": \"Al lado de la casa del vecino\",\r\n    \"referencia\": \"Al lado de mi otro vecino\",\r\n    \"carrito\":[\r\n        {\r\n            \"id_variacion\": 1,\r\n            \"cantidad\": 10\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1523,7 +1681,97 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Obtener",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{AUTH}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{API}}/api/reporte/xlsx?year=2024",
+									"host": [
+										"{{API}}"
+									],
+									"path": [
+										"api",
+										"reporte",
+										"xlsx"
+									],
+									"query": [
+										{
+											"key": "year",
+											"value": "2024"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "text/plain;charset=ISO-8859-1"
+								},
+								{
+									"key": "Content-Length",
+									"value": "86"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 10 Apr 2024 23:04:19 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "The specified formula '=SUMA(B2:B13)' starts with an equals sign which is not allowed."
+						}
+					]
 				}
 			]
 		}
