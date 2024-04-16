@@ -1,9 +1,10 @@
 {
 	"info": {
-		"_postman_id": "4ff8ffaa-5417-4555-8ff0-3bdc5f12698e",
+		"_postman_id": "94d91a05-a9f1-4c25-aa31-3093e55b6200",
 		"name": "TiendaVirtual-BRL",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "29571097"
+		"_exporter_id": "31763898",
+		"_collection_link": "https://winter-equinox-881682.postman.co/workspace/Base~1dd33edd-a5f1-48e2-8384-d7cb95fa3661/collection/31763898-94d91a05-a9f1-4c25-aa31-3093e55b6200?action=share&source=collection_link&creator=31763898"
 	},
 	"item": [
 		{
@@ -343,13 +344,13 @@
 									"formdata": [
 										{
 											"key": "variacion",
-											"value": "{\n    \"id_item\": 2,\n    \"nombre_variacion\": \"grande\",\n    \"disponibilidad\": \"DISPONIBLE\",\n    \"stock\": 20,\n\"aplicar_descuento\": true\n}",
+											"value": "{\n    \"id_item\": 1,\n    \"nombre_variacion\": \"grande\",\n    \"disponibilidad\": \"DISPONIBLE\",\n    \"stock\": 20,\n\"aplicar_descuento\": true\n}",
 											"type": "text"
 										},
 										{
 											"key": "imagen",
 											"type": "file",
-											"src": "tEnkOYzIh/61K1zLmJTLL._AC_UF1000,1000_QL80_.jpg"
+											"src": "/C:/Users/Usuario/Downloads/gatito.jpeg"
 										}
 									]
 								},
@@ -401,6 +402,38 @@
 							"response": []
 						},
 						{
+							"name": "Restock",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{AUTH}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{API}}/api/variacion/restock/1?cantidad=10",
+									"host": [
+										"{{API}}"
+									],
+									"path": [
+										"api",
+										"variacion",
+										"restock",
+										"1"
+									],
+									"query": [
+										{
+											"key": "cantidad",
+											"value": "10"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "Eliminar",
 							"request": {
 								"method": "DELETE",
@@ -443,7 +476,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"id_variacion\": 2,\r\n    \"nombre\": \"Rojo-azul\",\r\n    \"disponibilidad\": \"DISPONIBLE\"\r\n}",
+									"raw": "{\r\n    \"id_variacion\": 1,\r\n    \"nombre\": \"Rojo-azul\",\r\n    \"disponibilidad\": \"DISPONIBLE\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -623,7 +656,8 @@
 							{
 								"key": "Authorization",
 								"value": "{{AUTH}}",
-								"type": "text"
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"url": {
@@ -694,13 +728,13 @@
 							"formdata": [
 								{
 									"key": "item",
-									"value": "{\n    \"nombre\": \"Protector de pantalla 2\",\n    \"descripcion\": \"Una tablet grande\",\n\"codigo\": \"0000002\",\n    \"precio\": 7.00,\n\"costo\": 2.50,\n    \"disponibilidad\": \"DISPONIBLE\",\n    \"stock\": 150,\n    \"id_marca\": 1,\n\"id_categoria\": 1\n}",
+									"value": "{\n    \"nombre\": \"Protector de pantalla 2\",\n    \"descripcion\": \"Una tablet grande\",\n\"codigo\": \"0000002\",\n    \"precio\": 7.00,\n\"costo\": 2.50,\n    \"stock\": 150,\n    \"id_marca\": 1,\n\"id_categoria\": 1\n}",
 									"type": "text"
 								},
 								{
 									"key": "imagen",
 									"type": "file",
-									"src": "S6-2dodfd/CatComputer.jpg"
+									"src": "/C:/Users/Usuario/Downloads/gato.jpg"
 								}
 							]
 						},
@@ -753,6 +787,42 @@
 					"response": []
 				},
 				{
+					"name": "Cambiar disponibilidad",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{API}}/api/item/disp/1?disponibilidad=DISPONIBLE&cascade=true",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"item",
+								"disp",
+								"1"
+							],
+							"query": [
+								{
+									"key": "disponibilidad",
+									"value": "DISPONIBLE"
+								},
+								{
+									"key": "cascade",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Eliminar",
 					"request": {
 						"method": "DELETE",
@@ -782,6 +852,159 @@
 								"api",
 								"item",
 								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Valoracion",
+			"item": [
+				{
+					"name": "Leer por Item",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API}}/api/valoracion/item/1?order=RECENT&page=1",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"valoracion",
+								"item",
+								"1"
+							],
+							"query": [
+								{
+									"key": "order",
+									"value": "RECENT"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Leer por Usuario",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{API}}/api/valoracion/user/2",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"valoracion",
+								"user",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id_item\": 1,\r\n    \"estrellas\": 5,\r\n    \"comentario\": \"Yo lo hice\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API}}/api/valoracion",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"valoracion"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Editar",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id_item\": 1,\r\n    \"estrellas\": 2,\r\n    \"comentario\": \"Yo lo hice, pero no me gusta\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API}}/api/valoracion/103",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"valoracion",
+								"103"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{API}}/api/valoracion/103",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"valoracion",
+								"103"
 							]
 						}
 					},
@@ -1397,172 +1620,8 @@
 			]
 		},
 		{
-			"name": "Carrito",
-			"item": [
-				{
-					"name": "Listar Carrito",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{AUTH}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{API}}/api/carrito",
-							"host": [
-								"{{API}}"
-							],
-							"path": [
-								"api",
-								"carrito"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Añadir al carrito",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{AUTH}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"id_variacion\": 102,\r\n    \"cantidad\": 200\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{API}}/api/carrito",
-							"host": [
-								"{{API}}"
-							],
-							"path": [
-								"api",
-								"carrito"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Actualizar detalle carrito",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{AUTH}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"cantidad\": 0\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{API}}/api/carrito/3",
-							"host": [
-								"{{API}}"
-							],
-							"path": [
-								"api",
-								"carrito",
-								"3"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Eliminar detalle carrito",
-					"request": {
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{AUTH}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"cantidad\": 0\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{API}}/api/carrito/1",
-							"host": [
-								"{{API}}"
-							],
-							"path": [
-								"api",
-								"carrito",
-								"1"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
 			"name": "Venta",
 			"item": [
-				{
-					"name": "Venta cliente",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{AUTH}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"tipo_comprobante\": \"BOLETA_DE_VENTA\",\r\n    \"tipo_documento\": \"DNI\",\r\n    \"numero_documento\": \"12345678\",\r\n    \"nombres\": \"Juanito\",\r\n    \"apellidos\": \"Perez\",\r\n    \"telefono\": \"+51987654321\",\r\n    \"correo\": \"cliente@test.com\",\r\n    \"region\": \"LIMA\",\r\n    \"provincia\": \"LIMA\",\r\n    \"distrito\": \"LIMA\",\r\n    \"direccion\": \"Al lado de la casa del vecino\",\r\n    \"referencia\": \"Al lado de mi otro vecino\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{API}}/api/venta/cliente",
-							"host": [
-								"{{API}}"
-							],
-							"path": [
-								"api",
-								"venta",
-								"cliente"
-							]
-						}
-					},
-					"response": []
-				},
 				{
 					"name": "Cancelar",
 					"request": {
@@ -1635,14 +1694,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{API}}/api/venta/no-cliente",
+							"raw": "{{API}}/api/venta",
 							"host": [
 								"{{API}}"
 							],
 							"path": [
 								"api",
-								"venta",
-								"no-cliente"
+								"venta"
 							]
 						}
 					},
