@@ -41,10 +41,6 @@ public class Cliente {
 	 
 	@OneToOne
 	@JoinColumn(name = "id_usuario", nullable = false)
-	private Usuario usuario;
-	
-	@OneToMany(mappedBy = "cliente")
-	private Set<Venta> ventas = new HashSet<>();
-	
+	private Usuario usuario;	
 	
 }

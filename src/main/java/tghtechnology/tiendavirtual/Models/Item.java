@@ -42,6 +42,12 @@ public class Item {
     private String descripcion;
     
     @Column(nullable = false)
+    private Integer valoraciones;
+    
+    @Column(nullable = false)
+    private Double estrellas;
+    
+    @Column(nullable = false)
     private BigDecimal costo;
     
     @Column(nullable = false)
@@ -64,7 +70,7 @@ public class Item {
     private Imagen imagen;
     
     @ManyToOne
-    @JoinColumn(name = "id_categoria", nullable = true)
+    @JoinColumn(name = "id_categoria", nullable = false)
     private Categoria categoria;
     
     @ManyToOne

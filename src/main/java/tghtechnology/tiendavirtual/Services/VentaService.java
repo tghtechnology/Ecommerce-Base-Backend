@@ -252,6 +252,7 @@ public class VentaService {
 		
 		dv.setId_item(itm.getId_item());
 		dv.setNombre_item(itm.getNombre());
+		dv.setCodigo_item(itm.getCodigo_item());
 		dv.setId_variacion(var.getId_variacion());
 		dv.setVariacion_correlativo(var.getCorrelativo());
 		dv.setNombre_variacion(var.getNombre_variacion());

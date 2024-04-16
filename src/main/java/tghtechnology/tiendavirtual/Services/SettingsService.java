@@ -78,6 +78,7 @@ public class SettingsService implements ApplicationListener<ApplicationReadyEven
 		addSetting("paginado.marca"				, "10"			, SettingType.INT);
 		addSetting("paginado.venta"				, "10"			, SettingType.INT);
 		addSetting("paginado.notificacion"		, "5"			, SettingType.INT);
+		addSetting("paginado.valoracion"		, "5"			, SettingType.INT);
 		
 		addSetting("apisperu.url"				, "https://facturacion.apisperu.com/api/v1"	, SettingType.STRING);
 		addSetting("apisperu.token"				, "MI TOKEN" , SettingType.STRING);

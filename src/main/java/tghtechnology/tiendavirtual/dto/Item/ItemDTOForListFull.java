@@ -1,6 +1,7 @@
 package tghtechnology.tiendavirtual.dto.Item;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +39,8 @@ public class ItemDTOForListFull implements DTOForList<Item>{
     private MarcaDTOForListMinimal marca;
     private DescuentoDTOForListMinimal descuento;
     
-    
+    private BigDecimal estrellas;
+    private Integer valoraciones;
 
 	public ItemDTOForListFull from(Item item, boolean extendedPermission) {
 		this.id_item = item.getId_item();
@@ -46,11 +48,14 @@ public class ItemDTOForListFull implements DTOForList<Item>{
 		this.nombre = item.getNombre();
 		this.disponibilidad = item.getDisponibilidad();
 		this.descripcion = item.getDescripcion();
-		this.fecha_creacion = item.getFecha_creacion();
-		this.fecha_modificacion = item.getFecha_modificacion();
+		this.fecha_creacion = !extendedPermission ? null : item.getFecha_creacion();
+		this.fecha_modificacion = !extendedPermission ? null : item.getFecha_modificacion();
+		
+		this.valoraciones = item.getValoraciones();
+		this.estrellas = BigDecimal.valueOf(item.getEstrellas()).setScale(2, RoundingMode.HALF_UP);
 		
 		this.precio = item.getPrecio();
-		this.costo = extendedPermission ? item.getCosto() : null;
+		this.costo = !extendedPermission ? null : item.getCosto();
 		
 		this.descuento = item.getDescuento() == null ? null : new DescuentoDTOForListMinimal().from(item.getDescuento());
 		item.getVariaciones().forEach(var -> modelos.add(new VariacionDTOForList().from(var)));

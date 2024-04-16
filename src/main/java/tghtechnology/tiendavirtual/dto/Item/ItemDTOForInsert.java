@@ -45,6 +45,7 @@ public class ItemDTOForInsert implements DTOForInsert<Item>{
 	@Positive(message = "El stock debe ser positivo")
 	private Integer stock;
     
+	@NotNull(message = "No puede ser nulo")
     private Integer id_categoria;
 	
     private Integer id_marca;
@@ -61,6 +62,8 @@ public class ItemDTOForInsert implements DTOForInsert<Item>{
 		item.setText_id(Item.transform_id(nombre));
 		item.setDescripcion(descripcion);
 		item.setDisponibilidad(DisponibilidadItem.NO_DISPONIBLE);
+		item.setEstrellas(0.0);
+		item.setValoraciones(0);
 		item.setPrecio(precio);
 		item.setCosto(costo == null ? precio : costo);
 		item.setFecha_creacion(now);
