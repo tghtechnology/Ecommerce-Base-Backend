@@ -68,7 +68,7 @@ public class Item {
     private Categoria categoria;
     
     @ManyToOne
-    @JoinColumn(name = "id_marca", nullable = false)
+    @JoinColumn(name = "id_marca", nullable = true)
     private Marca marca;
     
     @OneToOne

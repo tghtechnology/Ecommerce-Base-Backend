@@ -13,7 +13,7 @@ import tghtechnology.tiendavirtual.Utils.DTOInterfaces.DTOForList;
 import tghtechnology.tiendavirtual.dto.Categoria.CategoriaDTOForList;
 import tghtechnology.tiendavirtual.dto.Descuento.DescuentoDTOForListMinimal;
 import tghtechnology.tiendavirtual.dto.Marca.MarcaDTOForListMinimal;
-import tghtechnology.tiendavirtual.dto.VariacionItem.VariacionDTOForList;
+import tghtechnology.tiendavirtual.dto.VariacionItem.VariacionDTOForListMinimal;
 
 @Getter
 @Setter
@@ -33,7 +33,7 @@ public class ItemDTOForList implements DTOForList<Item>{
     private CategoriaDTOForList categoria;
     private MarcaDTOForListMinimal marca;
     
-    private List<VariacionDTOForList> variaciones = new ArrayList<>();
+    private List<VariacionDTOForListMinimal> variaciones = new ArrayList<>();
     
 	@Override
 	public ItemDTOForList from(Item item) {
@@ -44,6 +44,7 @@ public class ItemDTOForList implements DTOForList<Item>{
 		this.id_item = item.getId_item();
 		this.url = item.getText_id();
 		this.nombre = item.getNombre();
+		this.thumbnail = item.getImagen().getMiniatura();
 		this.disponibilidad = item.getDisponibilidad();
 		this.categoria = new CategoriaDTOForList().from(item.getCategoria());
 		this.marca = new MarcaDTOForListMinimal().from(item.getMarca());
@@ -58,7 +59,7 @@ public class ItemDTOForList implements DTOForList<Item>{
 			.filter(v -> v.getEstado())
 			.sorted()
 			.forEach(var -> {
-				variaciones.add(new VariacionDTOForList().from(var));
+				variaciones.add(new VariacionDTOForListMinimal().from(var));
 			});
 		
 		return this;

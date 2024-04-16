@@ -3,8 +3,10 @@ package tghtechnology.tiendavirtual.Services;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
@@ -19,13 +21,17 @@ import tghtechnology.tiendavirtual.Enums.DisponibilidadItem;
 import tghtechnology.tiendavirtual.Enums.TipoUsuario;
 import tghtechnology.tiendavirtual.Models.Categoria;
 import tghtechnology.tiendavirtual.Models.Descuento;
+import tghtechnology.tiendavirtual.Models.Especificacion;
 import tghtechnology.tiendavirtual.Models.Imagen;
 import tghtechnology.tiendavirtual.Models.Item;
 import tghtechnology.tiendavirtual.Models.Marca;
+import tghtechnology.tiendavirtual.Models.Variacion;
 import tghtechnology.tiendavirtual.Repository.CategoriaRepository;
 import tghtechnology.tiendavirtual.Repository.DescuentoRepository;
+import tghtechnology.tiendavirtual.Repository.EspecificacionRepository;
 import tghtechnology.tiendavirtual.Repository.ImagenRepository;
 import tghtechnology.tiendavirtual.Repository.ItemRepository;
+import tghtechnology.tiendavirtual.Repository.VariacionRepository;
 import tghtechnology.tiendavirtual.Utils.Cloudinary.MediaManager;
 import tghtechnology.tiendavirtual.Utils.Exceptions.DataMismatchException;
 import tghtechnology.tiendavirtual.Utils.Exceptions.IdNotFoundException;
@@ -38,6 +44,8 @@ import tghtechnology.tiendavirtual.dto.Item.ItemDTOForListFull;
 public class ItemService {
 
     private ItemRepository itemRepository;
+    private VariacionRepository varRepository;
+    private EspecificacionRepository espRepository;
 	private DescuentoRepository desRepository;
 	private CategoriaRepository catRepository;
 	private ImagenRepository imaRepository;
@@ -89,6 +97,9 @@ public class ItemService {
     	Item item = iItem.toModel();
     	if(itemRepository.listarUno(item.getText_id()).isPresent())
     		throw new DataIntegrityViolationException("El nombre (" + item.getText_id() + ") ya existe para producto.");
+    	
+    	if(itemRepository.listarPorCodigo(item.getCodigo_item()).isPresent())
+    		throw new DataIntegrityViolationException("El codigo (" + item.getCodigo_item() + ") ya existe para producto.");
     	
     	Categoria cat = cat_buscarPorId(iItem.getId_categoria());
     	item.setCategoria(cat);
@@ -154,10 +165,15 @@ public class ItemService {
     }
     
     /**Eliminar item */
+    @Transactional
     public void eliminarItem(Integer id){
+    	
+    	List<String> imgs = new ArrayList<>();
+    	
     	Item item = buscarPorId(id);
         item.setEstado(false);
         item.setText_id(item.getId_item() + "%DELETED%" + item.getText_id());
+        item.setCodigo_item(item.getId_item() + "%" + item.getCodigo_item());
         
         // Elimina los descuentos
         item.getDescuentos().forEach(desc -> {
@@ -165,17 +181,54 @@ public class ItemService {
         	desc.setEstado(false);
         });
         desRepository.saveAll(item.getDescuentos());
+        
+        //Añade las imagenes para su eliminacion
+        imgs.add(item.getImagen().getPublic_id_Imagen());
+    	imgs.add(item.getImagen().getPublic_id_Miniatura());
+        
+        
+        // Elimina las variaciones
+        item.getVariaciones().forEach(var -> {
+        	var.setEstado(false);
+        	imgs.add(var.getImagen().getPublic_id_Imagen());
+        	imgs.add(var.getImagen().getPublic_id_Miniatura());
+        	// Elimina las especificaciones
+        	var.getEspecificaciones().forEach( esp -> {
+        		esp.setEstado(false);
+        	});
+        });
+        
         itemRepository.save(item);
     }
     
-    public void cambiarDisponibilidad(Integer id, DisponibilidadItem disp) {
+    public void cambiarDisponibilidad(Integer id, DisponibilidadItem disp, Boolean cascade) {
     	Item item = buscarPorId(id);
     	
-    	if(disp == DisponibilidadItem.DISPONIBLE && item.getVariaciones().isEmpty())
-    		throw new DataMismatchException("disponibilidad", "No se puede activar un item sin variaciones");
+    	Set<Variacion> vars = new HashSet<>();
+    	Set<Especificacion> esps = new HashSet<>();
     	
+    	if(disp == DisponibilidadItem.DISPONIBLE) {
+    		if(item.getVariaciones().isEmpty())
+    			throw new DataMismatchException("disponibilidad", "No se puede activar un item sin variaciones");
+    	}
     	item.setDisponibilidad(disp);
+    	
+    	if(cascade) {
+    		item.getVariaciones().forEach(var -> {
+    			if(var.getDisponibilidad() != DisponibilidadItem.SIN_STOCK)
+    				var.setDisponibilidad(disp);
+    			vars.add(var);
+				var.getEspecificaciones().forEach( esp -> {
+					esp.setDisponibilidad(disp);
+					esps.add(esp);
+				});
+    		});
+    	}
+    	
     	itemRepository.save(item);
+    	varRepository.saveAll(vars);
+    	espRepository.saveAll(esps);
+    	
     }
     
     private boolean checkExtendedPermission(Authentication auth) {

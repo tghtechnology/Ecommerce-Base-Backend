@@ -21,10 +21,12 @@ import tghtechnology.tiendavirtual.Enums.DisponibilidadItem;
 import tghtechnology.tiendavirtual.Enums.EstadoPedido;
 import tghtechnology.tiendavirtual.Enums.SettingType;
 import tghtechnology.tiendavirtual.Models.DetalleVenta;
+import tghtechnology.tiendavirtual.Models.Especificacion;
 import tghtechnology.tiendavirtual.Models.Item;
 import tghtechnology.tiendavirtual.Models.Variacion;
 import tghtechnology.tiendavirtual.Models.Venta;
 import tghtechnology.tiendavirtual.Repository.DetalleVentaRepository;
+import tghtechnology.tiendavirtual.Repository.EspecificacionRepository;
 import tghtechnology.tiendavirtual.Repository.UsuarioRepository;
 import tghtechnology.tiendavirtual.Repository.VariacionRepository;
 import tghtechnology.tiendavirtual.Repository.VentaRepository;
@@ -49,6 +51,7 @@ public class VentaService {
 	DetalleVentaRepository dvRepository;
 	UsuarioRepository userRepository;
 	VariacionRepository varRepository;
+	EspecificacionRepository espRepository;
 	
 	APTranslatorService apTranslator;
 	ApisPeruService apService;
@@ -118,10 +121,11 @@ public class VentaService {
 		
 		venta.getCarrito().forEach(vv -> {
 			Variacion var = var_buscarPorId(vv.getId_variacion());
+			Especificacion esp = esp_buscarPorId(vv.getId_especificacion());
 			
-			validarDetalle(var, vv.getCantidad());
+			validarDetalle(var, esp, vv.getCantidad());
 			
-			DetalleVenta dv = procesarDetalle(var, vv.getCantidad());
+			DetalleVenta dv = procesarDetalle(var, esp, vv.getCantidad());
 			dv.setVenta(v);
 			dv = dvRepository.save(dv);
 			dets.add(dv);
@@ -237,7 +241,11 @@ public class VentaService {
 		return varRepository.listarUno(id).orElseThrow( () -> new IdNotFoundException("variacion"));
 	}
 	
-	private DetalleVenta procesarDetalle(Variacion var, Short cantidad) {
+	private Especificacion esp_buscarPorId(Integer id) {
+		return espRepository.listarUno(id).orElse(null);
+	}
+	
+	private DetalleVenta procesarDetalle(Variacion var, Especificacion esp, Short cantidad) {
 		Item itm = var.getItem();
 		
 		DetalleVenta dv = new DetalleVenta();
@@ -247,6 +255,11 @@ public class VentaService {
 		dv.setId_variacion(var.getId_variacion());
 		dv.setVariacion_correlativo(var.getCorrelativo());
 		dv.setNombre_variacion(var.getNombre_variacion());
+		if(esp != null) {
+			dv.setId_especificacion(esp.getId_especificacion());
+			dv.setEspecificacion_correlativo(esp.getCorrelativo());
+			dv.setNombre_especificacion(esp.getNombre_especificacion());
+		}
 		dv.setPrecio_unitario(itm.getPrecio());
 		dv.setCosto_unitario(itm.getCosto());
 		dv.setCantidad(cantidad.shortValue());
@@ -264,11 +277,17 @@ public class VentaService {
 		return dv;
 	}
 	
-	private void validarDetalle(Variacion var, Short cantidad) {
+	private void validarDetalle(Variacion var, Especificacion esp, Short cantidad) {
 		Item itm = var.getItem();
 		
-		// Validar disponibilidad de item y variación
-		if(var.getDisponibilidad() != DisponibilidadItem.DISPONIBLE || itm.getDisponibilidad() != DisponibilidadItem.DISPONIBLE)
+		//validar la especificación
+		if(esp != null && !esp.getVariacion().equals(var)) 
+			throw new DataMismatchException("especificacion", "Las IDs no concuerdan");
+		
+		// Validar disponibilidad de item, variación y especificación
+		if(itm.getDisponibilidad() != DisponibilidadItem.DISPONIBLE
+				|| var.getDisponibilidad() != DisponibilidadItem.DISPONIBLE
+				|| (esp != null && esp.getDisponibilidad() != DisponibilidadItem.DISPONIBLE))
 			throw new DataMismatchException("item", "No está disponible para la venta.");
 		
 		// Validar stock de item

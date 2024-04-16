@@ -37,11 +37,11 @@ public interface ItemRepository extends JpaRepository<Item, Integer>{
     		+ "AND (:allowDisabled = true OR i.disponibilidad != 1)"
     		+ "AND i.estado=true")
     List<Item> listar(@Param("query") String query,
-    					  @Param("min") BigDecimal min,
-    					  @Param("max") BigDecimal max,
-    					  @Param("catId") String catId,
-    					  @Param("allowDisabled") boolean allowDisabled,
-    					  Pageable pageable);
+					  @Param("min") BigDecimal min,
+					  @Param("max") BigDecimal max,
+					  @Param("catId") String catId,
+					  @Param("allowDisabled") boolean allowDisabled,
+					  Pageable pageable);
 	
 	
     @Query("SELECT i FROM Item i WHERE i.estado = true AND i.id_item = :id_item")
@@ -49,6 +49,9 @@ public interface ItemRepository extends JpaRepository<Item, Integer>{
     
     @Query("SELECT i FROM Item i WHERE i.estado = true AND i.text_id = :text_id")
     Optional<Item> listarUno(@Param("text_id") String text_id);
+    
+    @Query("SELECT i FROM Item i WHERE i.estado = true AND i.codigo_item = :cod")
+    Optional<Item> listarPorCodigo(@Param("cod") String codigo);
     
     //Optional<Item> findByText_id(@Param("text_id") String textId);
 }

@@ -16,6 +16,8 @@ public class DetalleVentaDTOForInsert implements DTOForInsert<DetalleVenta>{
 	@NotNull(message = "No puede ser nulo")
 	private Integer id_variacion;
 	
+	private Integer id_especificacion;
+	
 	@Min(value = 1, message = "No puede ser menor a 1")
 	@NotNull(message = "No puede ser nulo")
 	private Short cantidad;
@@ -24,6 +26,7 @@ public class DetalleVentaDTOForInsert implements DTOForInsert<DetalleVenta>{
 	public DetalleVenta toModel() {
 		DetalleVenta det = new DetalleVenta();
 		det.setId_variacion(id_variacion);
+		det.setId_especificacion(id_especificacion);
 		det.setCantidad(cantidad);
 		return det;
 	}

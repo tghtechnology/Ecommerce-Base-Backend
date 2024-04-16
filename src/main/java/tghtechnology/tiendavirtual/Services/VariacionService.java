@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.AllArgsConstructor;
+import tghtechnology.tiendavirtual.Enums.DisponibilidadItem;
 import tghtechnology.tiendavirtual.Models.Imagen;
 import tghtechnology.tiendavirtual.Models.Item;
 import tghtechnology.tiendavirtual.Models.Variacion;
@@ -112,6 +113,18 @@ public class VariacionService {
     	varRepository.save(var);
     	
     	imaRepository.delete(old_img);
+    	
+    }
+    
+    public Integer restock(Integer id, Integer cantidad) {
+    	Variacion var = buscarPorId(id);
+    	
+    	var.setStock(var.getStock() + cantidad);
+    	if(var.getDisponibilidad() == DisponibilidadItem.SIN_STOCK);
+    		var.setDisponibilidad(DisponibilidadItem.NO_DISPONIBLE);
+    	
+    	varRepository.save(var);
+    	return var.getStock();
     	
     }
     

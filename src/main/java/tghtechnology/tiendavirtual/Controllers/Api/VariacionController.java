@@ -63,6 +63,14 @@ public class VariacionController {
 	}
 	
 	@Empleado
+	@PutMapping("/restock/{id}")
+	public ResponseEntity<Integer> restock(@PathVariable Integer id,
+											@RequestParam(value = "cantidad", required = true) Integer cantidad){
+		Integer resp = varService.restock(id, cantidad);
+		return ResponseEntity.status(HttpStatus.OK).body(resp);
+	}
+	
+	@Empleado
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> eliminar(@PathVariable Integer id){
 		varService.eliminarVariacionItem(id);

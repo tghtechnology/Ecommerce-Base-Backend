@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import tghtechnology.tiendavirtual.Enums.DisponibilidadItem;
 import tghtechnology.tiendavirtual.Security.Interfaces.Empleado;
 import tghtechnology.tiendavirtual.Security.Interfaces.Gerente;
 import tghtechnology.tiendavirtual.Services.ItemService;
@@ -80,6 +81,15 @@ public class ItemController {
 	public ResponseEntity<Void> actualizar(@PathVariable Integer id,
 											@RequestBody @Valid ItemDTOForInsert mItem){
 		itemService.actualizarItem(id, mItem);
+		return ResponseEntity.status(HttpStatus.OK).build();
+	}
+	
+	@Empleado
+	@PutMapping("/disp/{id}")
+	public ResponseEntity<Void> cambiarDisponibilidad(@PathVariable Integer id,
+											@RequestParam(name = "disponibilidad", required = true) DisponibilidadItem disponibilidad,
+											@RequestParam(defaultValue = "false", name = "cascade") Boolean cascade){
+		itemService.cambiarDisponibilidad(id, disponibilidad, cascade);
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 	

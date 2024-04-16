@@ -47,7 +47,6 @@ public class ItemDTOForInsert implements DTOForInsert<Item>{
     
     private Integer id_categoria;
 	
-	@NotNull(message = "No puede ser nulo")
     private Integer id_marca;
 	
 	private Integer id_descuento;

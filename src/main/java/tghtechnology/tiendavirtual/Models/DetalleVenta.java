@@ -30,6 +30,9 @@ public class DetalleVenta {
 	private String nombre_item;
 	
 	@Column(nullable = false)
+	private String codigo_item;
+	
+	@Column(nullable = false)
 	private Integer id_variacion;
 	
 	@Column(nullable = false)
@@ -43,6 +46,9 @@ public class DetalleVenta {
 	
 	@Column(nullable = true, length = 40)
 	private String nombre_especificacion;
+	
+	@Column(nullable = true)
+	private Integer especificacion_correlativo;
 	
 	@Column(nullable = false)
 	private BigDecimal precio_unitario;

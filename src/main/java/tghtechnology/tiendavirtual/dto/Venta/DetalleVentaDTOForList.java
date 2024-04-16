@@ -21,6 +21,9 @@ public class DetalleVentaDTOForList implements DTOForList<DetalleVenta>{
 	private Integer id_variacion;
 	private Integer var_correlativo;
 	private String nombre_variacion;
+	private Integer id_especificacion;
+	private Integer esp_correlativo;
+	private String nombre_especificacion;
 	private BigDecimal precio_unitario;
 	
 	private Integer porcentaje_descuento;
@@ -41,6 +44,10 @@ public class DetalleVentaDTOForList implements DTOForList<DetalleVenta>{
 		this.id_variacion = dv.getId_variacion();
 		this.var_correlativo = dv.getVariacion_correlativo();
 		this.nombre_variacion = dv.getNombre_variacion();
+		this.id_especificacion = dv.getId_especificacion();
+		this.esp_correlativo = dv.getEspecificacion_correlativo();
+		this.nombre_especificacion = dv.getNombre_especificacion();
+		
 		this.precio_unitario = calcularPrecioUnitario(dv, igv, antes_de_igv);
 		this.porcentaje_descuento = dv.getPorcentaje_descuento();
 		this.descuento_unitario = porcentaje_descuento == null ? BigDecimal.ZERO : precio_unitario.multiply(new BigDecimal(porcentaje_descuento).divide(new BigDecimal(100)));
