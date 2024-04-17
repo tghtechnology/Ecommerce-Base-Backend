@@ -45,11 +45,12 @@ public class ItemController {
 														@RequestParam(defaultValue = "1.00", name = "min") BigDecimal minimo,
 														@RequestParam(defaultValue = "99999.99", name = "max") BigDecimal maximo,
 														@RequestParam(defaultValue = "", name = "category") String categoria,
+														@RequestParam(defaultValue = "", name = "sale") String rebaja,
 														@RequestParam(defaultValue = "", name = "brand") String marca,
 														@RequestParam(defaultValue = "1", name = "page") Integer page,
 														Authentication auth
     												){
-        List<ItemDTOForList> items = itemService.listar(query, minimo, maximo, categoria, page, auth);
+        List<ItemDTOForList> items = itemService.listar(query, minimo, maximo, categoria, rebaja, page, auth);
         return ResponseEntity.status(HttpStatus.OK).body(items);
     }
 	

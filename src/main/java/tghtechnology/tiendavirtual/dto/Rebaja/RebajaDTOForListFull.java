@@ -19,6 +19,10 @@ import tghtechnology.tiendavirtual.dto.Item.ItemDTOForListMinimal;
 public class RebajaDTOForListFull implements DTOForList<Rebaja>{
 
     private Integer id_rebaja;
+    private String url;
+    private String nombre;
+    private String descripcion;
+    
 	private LocalDate fecha_inicio;
 	private LocalDate fecha_fin;
 	
@@ -35,16 +39,22 @@ public class RebajaDTOForListFull implements DTOForList<Rebaja>{
 	@Override
 	public RebajaDTOForListFull from(Rebaja reb) {
 
-		id_rebaja = reb.getId_rebaja();
-		fecha_inicio = reb.getFecha_inicio();
-		fecha_fin = reb.getFecha_fin();
-		es_descuento = reb.getEs_descuento();
-		valor_descuento = reb.getValor_descuento();
-		es_evento = reb.getEs_descuento();
-		activo = reb.getActivo();
+		this.id_rebaja = reb.getId_rebaja();
+		this.url = reb.getText_id();
+		this.nombre = reb.getNombre();
+		this.descripcion = reb.getDescripcion();
 		
-		categorias.addAll(reb.getCategorias().stream().map(cc -> new CategoriaDTOForList().from(cc)).collect(Collectors.toList()));
-		items.addAll(reb.getItems().stream().map(ii -> new ItemDTOForListMinimal().from(ii)).collect(Collectors.toList()));
+		this.fecha_inicio = reb.getFecha_inicio();
+		this.fecha_fin = reb.getFecha_fin();
+		
+		this.es_descuento = reb.getEs_descuento();
+		this.valor_descuento = reb.getValor_descuento();
+		
+		this.es_evento = reb.getEs_descuento();
+		this.activo = reb.getActivo();
+		
+		this.categorias.addAll(reb.getCategorias().stream().map(cc -> new CategoriaDTOForList().from(cc)).collect(Collectors.toList()));
+		this.items.addAll(reb.getItems().stream().map(ii -> new ItemDTOForListMinimal().from(ii)).collect(Collectors.toList()));
 		
 		return this;
 	}

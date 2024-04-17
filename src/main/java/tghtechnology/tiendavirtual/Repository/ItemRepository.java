@@ -33,7 +33,7 @@ public interface ItemRepository extends JpaRepository<Item, Integer>{
     		+ "OR i.descripcion LIKE %:query%) "
     		+ "AND i.precio > :min "
     		+ "AND i.precio < :max "
-    		+ "AND (:catId LIKE '' OR c.text_id = :catId)"
+    		+ "AND (:catId LIKE '' OR c.text_id = :catId) "
     		+ "AND (:allowDisabled = true OR i.disponibilidad != 1)"
     		+ "AND i.estado=true")
     List<Item> listar(@Param("query") String query,
@@ -42,7 +42,7 @@ public interface ItemRepository extends JpaRepository<Item, Integer>{
 					  @Param("catId") String catId,
 					  @Param("allowDisabled") boolean allowDisabled,
 					  Pageable pageable);
-	
+    
 	
     @Query("SELECT i FROM Item i WHERE i.estado = true AND i.id_item = :id_item")
     Optional<Item> listarUno(@Param("id_item") Integer idItem);

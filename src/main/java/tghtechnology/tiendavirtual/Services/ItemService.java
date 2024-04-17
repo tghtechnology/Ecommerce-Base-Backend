@@ -59,6 +59,7 @@ public class ItemService {
 									    BigDecimal min,
 									    BigDecimal max,
 									    String categoria,
+									    String rebaja,
 									    Integer pagina,
 									    Authentication auth
     		){

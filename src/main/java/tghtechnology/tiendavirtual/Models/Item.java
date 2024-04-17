@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.hibernate.annotations.SQLRestriction;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -92,6 +94,7 @@ public class Item {
     private Set<Descuento> descuentos = new HashSet<>();
     
     @ManyToMany(cascade = CascadeType.ALL, mappedBy = "items")
+    @SQLRestriction("activo = true AND estado = true")
     private Set<Rebaja> rebajas = new HashSet<>();
     
     public static String transform_id(String nombre) {
