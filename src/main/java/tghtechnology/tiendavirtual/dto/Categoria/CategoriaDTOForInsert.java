@@ -3,6 +3,7 @@ package tghtechnology.tiendavirtual.dto.Categoria;
 import java.time.LocalDateTime;
 
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,6 +17,7 @@ import tghtechnology.tiendavirtual.Utils.DTOInterfaces.DTOForInsert;
 public class CategoriaDTOForInsert implements DTOForInsert<Categoria> {
 
 	@NotEmpty(message = "El campo no puede estar vacío")
+	@Pattern(regexp = "^[\\w\\-\\s]+$", message = "Texto inválido.")
     @Size(min = 3, max = 50, message = "la categoría debe tener entre 3 y 50 caracteres")
 	private String descripcion;
 

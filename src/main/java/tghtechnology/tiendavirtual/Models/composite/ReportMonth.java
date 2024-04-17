@@ -2,6 +2,7 @@ package tghtechnology.tiendavirtual.Models.composite;
 
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,6 +13,7 @@ import tghtechnology.tiendavirtual.Enums.Mes;
 @Embeddable
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
 public class ReportMonth {
 
 	private short year;

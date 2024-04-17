@@ -33,7 +33,7 @@ public class ValoracionController {
 	@GetMapping("/item/{id_item}")
     public ResponseEntity<List<ValoracionDTOForList>> listarPorItem(@PathVariable String id_item,
     								@RequestParam(defaultValue = "-1", name = "stars") Short stars,
-    								@RequestParam(defaultValue = "RELEVANT", name = "order") OrdenValoracion orden,
+    								@RequestParam(defaultValue = "RECENT", name = "order") OrdenValoracion orden,
     								@RequestParam(defaultValue = "1", name = "page") Integer page){
         List<ValoracionDTOForList> vals = valService.listarPorItem(id_item, stars, orden, page);
         return ResponseEntity.status(HttpStatus.OK).body(vals);

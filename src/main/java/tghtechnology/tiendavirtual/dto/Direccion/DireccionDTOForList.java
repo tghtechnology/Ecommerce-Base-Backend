@@ -11,6 +11,7 @@ import tghtechnology.tiendavirtual.Utils.DTOInterfaces.DTOForList;
 @NoArgsConstructor
 public class DireccionDTOForList implements DTOForList<Direccion>{
 	
+	private Integer id_direccion;
 	private String region;
 	private String provincia;
 	private String distrito;
@@ -19,6 +20,7 @@ public class DireccionDTOForList implements DTOForList<Direccion>{
 
 	@Override
 	public DireccionDTOForList from(Direccion direccion) {
+		this.id_direccion = direccion.getId_direccion();
 		this.region = direccion.getRegion();
 		this.provincia = direccion.getProvincia();
 		this.distrito = direccion.getDistrito();

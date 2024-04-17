@@ -240,6 +240,7 @@ public class ItemService {
     public Item buscarPorId(Integer id) {
 		return itemRepository.listarUno(id).orElseThrow( () -> new IdNotFoundException("item"));
 	}
+    
     private Item buscarPorId(String text_id) {
 		return itemRepository.listarUno(text_id).orElseThrow( () -> new IdNotFoundException("item"));
 	}

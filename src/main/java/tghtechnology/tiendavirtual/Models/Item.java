@@ -5,12 +5,14 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
@@ -65,6 +67,8 @@ public class Item {
     @Column(nullable = false)
     private Boolean estado;
     
+    private Integer id_rebaja;
+    
     @OneToOne
     @JoinColumn(name = "id_imagen", nullable = false)
     private Imagen imagen;
@@ -86,6 +90,9 @@ public class Item {
     
     @OneToMany(mappedBy = "item")
     private Set<Descuento> descuentos = new HashSet<>();
+    
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "items")
+    private Set<Rebaja> rebajas = new HashSet<>();
     
     public static String transform_id(String nombre) {
 		return nombre.strip()				// sin espacios al inicio o final
