@@ -1,5 +1,7 @@
 package tghtechnology.tiendavirtual.Utils.Handlers;
 
+import java.util.Map;
+
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,11 +17,11 @@ public class DataIntegrityHandler extends ResponseEntityExceptionHandler{
 	protected ResponseEntity<Object> handleDataIntegrityException(DataIntegrityViolationException ex) {
 		
 		if(ex.getMessage().contains("Duplicate entry")) {
-			return new ResponseEntity<Object>("Ya existe una entrada con ese nombre", HttpStatus.CONFLICT);
+			return new ResponseEntity<Object>(Map.of("error", "Ya existe una entrada con ese nombre"), HttpStatus.CONFLICT);
 		} else if(ex.getMessage().contains("El nombre"))
-			return new ResponseEntity<Object>(ex.getMessage(), HttpStatus.CONFLICT);
+			return new ResponseEntity<Object>(Map.of("error", ex.getMessage()), HttpStatus.CONFLICT);
 		else
-			return new ResponseEntity<Object>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<Object>(Map.of("error", ex.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 }

@@ -1,6 +1,7 @@
 package tghtechnology.tiendavirtual.Utils.Handlers;
 
 import java.io.IOException;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,7 @@ public class IOExceptionHandler extends ResponseEntityExceptionHandler{
 	@ExceptionHandler(IOException.class)
 	protected ResponseEntity<Object> handleIOException(IOException ex) {
 		ex.printStackTrace();
-		return new ResponseEntity<Object>("Datos de entrada incorrectos", HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<Object>(Map.of("error", "Datos de entrada incorrectos"), HttpStatus.BAD_REQUEST);
 	}
 	
 }
