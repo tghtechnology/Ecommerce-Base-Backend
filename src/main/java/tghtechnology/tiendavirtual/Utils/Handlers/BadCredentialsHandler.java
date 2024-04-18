@@ -1,5 +1,7 @@
 package tghtechnology.tiendavirtual.Utils.Handlers;
 
+import java.util.Map;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,11 +15,11 @@ public class BadCredentialsHandler extends ResponseEntityExceptionHandler{
 	
 	// Argumentos no validos para un campo con @Valid
 	@ExceptionHandler(BadCredentialsException.class)
-	protected ResponseEntity<String> handleUnknownException(BadCredentialsException ex) {
+	protected ResponseEntity<Map<String, String>> handleUnknownException(BadCredentialsException ex) {
 		
 		final String mensaje = (ex.getMessage() != null && ex.getMessage().equalsIgnoreCase("Bad Credentials")) ? "Usuario o contraseña incorrectos" : ex.getMessage();
 		
-		ResponseEntity<String> res = new ResponseEntity<String>(mensaje, HttpStatus.UNAUTHORIZED);
+		ResponseEntity<Map<String, String>> res = new ResponseEntity<Map<String, String>>(Map.of("error", mensaje), HttpStatus.UNAUTHORIZED);
 		HttpHeaders.writableHttpHeaders(res.getHeaders()).add("WWW-Authenticate", "Bearer");
 		//System.out.println(ex.getMessage());
 		return res ;

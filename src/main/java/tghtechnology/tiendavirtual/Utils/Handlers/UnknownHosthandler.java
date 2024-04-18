@@ -1,6 +1,7 @@
 package tghtechnology.tiendavirtual.Utils.Handlers;
 
 import java.net.UnknownHostException;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,7 @@ public class UnknownHosthandler extends ResponseEntityExceptionHandler{
 	@ExceptionHandler(UnknownHostException.class)
 	protected ResponseEntity<Object> handleIOException(UnknownHostException ex) {
 		ex.printStackTrace();
-		return new ResponseEntity<Object>("Error de conexion", HttpStatus.INTERNAL_SERVER_ERROR);
+		return new ResponseEntity<Object>(Map.of("error", "Error de conexion"), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 }
