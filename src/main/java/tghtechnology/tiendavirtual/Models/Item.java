@@ -1,5 +1,6 @@
 package tghtechnology.tiendavirtual.Models;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -39,12 +40,27 @@ public class Item {
 
     @Column(nullable = false)
     private DisponibilidadItem disponibilidad;
+    
+    @Column(nullable = false)
+    private BigDecimal costo;
+    
+    @Column(nullable = false)
+    private BigDecimal precio;
+    
+    @Column(nullable = false)
+    private Integer stock;
 
     @Column(nullable = false)
     private LocalDateTime fecha_creacion;
 
     @Column(nullable = false)
     private LocalDateTime fecha_modificacion;
+    
+    @Column(nullable = false)
+    private Double estrellas;
+    
+    @Column(nullable = false)
+    private Integer valoraciones;
 
     @Column(nullable = false)
     private Boolean estado;
@@ -60,9 +76,6 @@ public class Item {
     @OneToOne
     @JoinColumn(name = "id_descuento", nullable = true)
     private Descuento descuento;
-
-    @OneToMany(mappedBy = "item")
-    private Set<Variacion> variaciones = new HashSet<>();
     
     @OneToMany(mappedBy = "item")
     private Set<Descuento> descuentos = new HashSet<>();

@@ -72,11 +72,8 @@ public class APTranslatorService {
 		return new SaleDetail(
 				UnidadMedida.UNIDAD_BIENES,
 				det.getCantidad(),
-				String.format("PROD-%04d%02d",det.getId_item(), det.getVar_correlativo()),
-				String.format("%s | %s %s",
-						det.getNombre_item(),
-						det.getTipo_variacion().getDescripcion(),
-						det.getValor_variacion()),
+				String.format("PROD-%06d",det.getId_item()),
+				det.getNombre_item(),
 				det.getPrecio_unitario(),
 				new BigDecimal(settings.getInt("facturacion.igv")).divide(new BigDecimal(100), 2, RoundingMode.HALF_UP),
 				AfectacionIGV.GRAVADO_OPERACION_ONEROSA,

@@ -22,7 +22,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import tghtechnology.tiendavirtual.Security.Interfaces.Empleado;
 import tghtechnology.tiendavirtual.Security.Interfaces.Gerente;
 import tghtechnology.tiendavirtual.Services.ItemService;
 import tghtechnology.tiendavirtual.Utils.CustomBeanValidator;
@@ -64,7 +63,7 @@ public class ItemController {
         return ResponseEntity.status(HttpStatus.OK).body(item);
 	}
 	
-	@Empleado
+	@Gerente
 	@PostMapping
 	public ResponseEntity<ItemDTOForList> crear(@RequestParam String item,
 			 									@RequestParam(value = "imagen", required = false) MultipartFile imagen) throws IOException, CustomValidationFailedException{
@@ -75,7 +74,7 @@ public class ItemController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(lItem);
 	}
 	
-	@Empleado
+	@Gerente
 	@PutMapping("/{id}")
 	public ResponseEntity<Void> actualizar(@PathVariable Integer id,
 											@RequestBody @Valid ItemDTOForInsert mItem){
@@ -90,7 +89,7 @@ public class ItemController {
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 	
-	@Empleado
+	@Gerente
 	@PostMapping("/{id}/imagen")
 	public ResponseEntity<Void> addImagen(@PathVariable Integer id,
 										  @RequestParam(value = "imagen", required = true) MultipartFile imagen) throws IOException{
@@ -99,7 +98,7 @@ public class ItemController {
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 	
-	@Empleado
+	@Gerente
 	@DeleteMapping("/{id}/imagen/{index}")
 	public ResponseEntity<Void> eliminarImagen(@PathVariable Integer id, @PathVariable Integer index) throws Exception{
 		

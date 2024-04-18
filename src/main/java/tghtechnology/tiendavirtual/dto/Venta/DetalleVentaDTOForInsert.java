@@ -14,7 +14,7 @@ import tghtechnology.tiendavirtual.Utils.DTOInterfaces.DTOForInsert;
 public class DetalleVentaDTOForInsert implements DTOForInsert<DetalleVenta>{
 
 	@NotNull(message = "No puede ser nulo")
-	private Integer id_variacion;
+	private Integer id_item;
 	
 	@Min(value = 1, message = "No puede ser menor a 1")
 	@NotNull(message = "No puede ser nulo")
@@ -23,7 +23,7 @@ public class DetalleVentaDTOForInsert implements DTOForInsert<DetalleVenta>{
 	@Override
 	public DetalleVenta toModel() {
 		DetalleVenta det = new DetalleVenta();
-		det.setId_variacion(id_variacion);
+		det.setId_item(id_item);
 		det.setCantidad(cantidad);
 		return det;
 	}

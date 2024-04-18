@@ -18,7 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.AllArgsConstructor;
-import tghtechnology.tiendavirtual.Security.Interfaces.Empleado;
 import tghtechnology.tiendavirtual.Security.Interfaces.Gerente;
 import tghtechnology.tiendavirtual.Services.MarcaService;
 import tghtechnology.tiendavirtual.Utils.CustomBeanValidator;
@@ -46,14 +45,14 @@ public class MarcaController {
         return ResponseEntity.status(HttpStatus.OK).body(mar);
 	}
 	
-	@Empleado
+	@Gerente
 	@GetMapping("/id/{id}")
 	public ResponseEntity<MarcaDTOForList> listarUnoPorID(@PathVariable Integer id) {
         MarcaDTOForList mar = marService.listarUnoPorID(id);
         return ResponseEntity.status(HttpStatus.OK).body(mar);
 	}
 	
-	@Empleado
+	@Gerente
 	@PostMapping
 	public ResponseEntity<MarcaDTOForList> crear(@RequestParam String marca,
 												 @RequestParam(value = "imagen", required = false) MultipartFile imagen)
@@ -66,7 +65,7 @@ public class MarcaController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(mar); 
 	}
 	
-	@Empleado
+	@Gerente
 	@PutMapping("/{id}")
 	public ResponseEntity<Void> actualizar(@PathVariable Integer id,
 										  @RequestParam String marca,

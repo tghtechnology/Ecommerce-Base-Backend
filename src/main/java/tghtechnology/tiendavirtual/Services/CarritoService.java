@@ -13,11 +13,11 @@ import lombok.AllArgsConstructor;
 import tghtechnology.tiendavirtual.Enums.TipoUsuario;
 import tghtechnology.tiendavirtual.Models.Carrito;
 import tghtechnology.tiendavirtual.Models.DetalleCarrito;
+import tghtechnology.tiendavirtual.Models.Item;
 import tghtechnology.tiendavirtual.Models.Usuario;
-import tghtechnology.tiendavirtual.Models.Variacion;
 import tghtechnology.tiendavirtual.Repository.DetalleCarritoRepository;
+import tghtechnology.tiendavirtual.Repository.ItemRepository;
 import tghtechnology.tiendavirtual.Repository.UsuarioRepository;
-import tghtechnology.tiendavirtual.Repository.VariacionRepository;
 import tghtechnology.tiendavirtual.Utils.Exceptions.IdNotFoundException;
 import tghtechnology.tiendavirtual.dto.Carrito.CarritoDTOForList;
 import tghtechnology.tiendavirtual.dto.Carrito.DetalleCarrito.DetalleCarritoDTOForInsert;
@@ -26,7 +26,7 @@ import tghtechnology.tiendavirtual.dto.Carrito.DetalleCarrito.DetalleCarritoDTOF
 @AllArgsConstructor
 public class CarritoService {
 
-	private VariacionRepository varRepository;
+	private ItemRepository itemRepository;
 	private DetalleCarritoRepository dcRepository;
 	private UsuarioRepository userRepository;
     
@@ -72,8 +72,8 @@ public class CarritoService {
         dc.setCarrito(user.getCarrito());
         dc.setCorrelativo(user.getCarrito().getDetalles().size()+1);
         
-        Variacion var = var_buscarPorId(iDet.getId_variacion());
-        dc.setVariacion(var);
+        Item item = item_buscarPorId(iDet.getId_item());
+        dc.setItem(item);
         
         dcRepository.save(dc);
     } 
@@ -157,8 +157,8 @@ public class CarritoService {
 		return userRepository.listarPorUserName(username).orElseThrow( () -> new IdNotFoundException("usuario"));
 	}
     
-    private Variacion var_buscarPorId(Integer id) {
-		return varRepository.listarUno(id).orElseThrow( () -> new IdNotFoundException("item"));
+    private Item item_buscarPorId(Integer id) {
+		return itemRepository.listarUno(id).orElseThrow( () -> new IdNotFoundException("item"));
 	}
     
 }

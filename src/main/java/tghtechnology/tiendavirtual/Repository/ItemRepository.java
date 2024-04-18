@@ -28,12 +28,11 @@ public interface ItemRepository extends JpaRepository<Item, Integer>{
 	 */
     @Query("SELECT i FROM Item i "
     		+ "LEFT JOIN i.categoria AS c "
-    		+ "LEFT JOIN Variacion AS v ON i = v.item "
     		+ "WHERE "
     		+ "(i.nombre LIKE %:query% "
     		+ "OR i.descripcion LIKE %:query%) "
-    		+ "AND v.precio > :min "
-    		+ "AND v.precio < :max "
+    		+ "AND i.precio > :min "
+    		+ "AND i.precio < :max "
     		+ "AND (:catId LIKE '' OR c.text_id = :catId)"
     		+ "AND i.estado=true")
     List<Item> listar(@Param("query") String query,

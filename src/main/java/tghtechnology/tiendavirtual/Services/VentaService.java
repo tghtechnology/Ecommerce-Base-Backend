@@ -25,13 +25,12 @@ import tghtechnology.tiendavirtual.Models.Cliente;
 import tghtechnology.tiendavirtual.Models.DetalleVenta;
 import tghtechnology.tiendavirtual.Models.Item;
 import tghtechnology.tiendavirtual.Models.Usuario;
-import tghtechnology.tiendavirtual.Models.Variacion;
 import tghtechnology.tiendavirtual.Models.Venta;
 import tghtechnology.tiendavirtual.Repository.ClienteRepository;
 import tghtechnology.tiendavirtual.Repository.DetalleCarritoRepository;
 import tghtechnology.tiendavirtual.Repository.DetalleVentaRepository;
+import tghtechnology.tiendavirtual.Repository.ItemRepository;
 import tghtechnology.tiendavirtual.Repository.UsuarioRepository;
-import tghtechnology.tiendavirtual.Repository.VariacionRepository;
 import tghtechnology.tiendavirtual.Repository.VentaRepository;
 import tghtechnology.tiendavirtual.Utils.ApisPeru.Enums.TipoComprobante;
 import tghtechnology.tiendavirtual.Utils.ApisPeru.Exceptions.ApisPeruResponseException;
@@ -55,7 +54,7 @@ public class VentaService {
 	DetalleCarritoRepository dcRepository;
 	UsuarioRepository userRepository;
 	ClienteRepository cliRepository;
-	VariacionRepository varRepository;
+	ItemRepository itemRepository;
 	
 	APTranslatorService apTranslator;
 	ApisPeruService apService;
@@ -150,8 +149,8 @@ public class VentaService {
 		final Venta v = venRepository.save(ven);
 		// Añadiendo items del carrito a la venta
 		car.getDetalles().forEach(det -> {
-			validarDetalle(det.getVariacion(), det.getCantidad().shortValue());
-			DetalleVenta dv = procesarDetalle(det.getVariacion(), det.getCantidad().shortValue());
+			validarDetalle(det.getItem(), det.getCantidad().shortValue());
+			DetalleVenta dv = procesarDetalle(det.getItem(), det.getCantidad().shortValue());
 			dv.setVenta(v);
 			dv = dvRepository.save(dv);
 			dets.add(dv);
@@ -188,11 +187,11 @@ public class VentaService {
 			throw new DataMismatchException("carrito", "No puede estar vacío");
 		
 		venta.getCarrito().forEach(vv -> {
-			Variacion var = var_buscarPorId(vv.getId_variacion());
+			Item item = item_buscarPorId(vv.getId_item());
 			
-			validarDetalle(var, vv.getCantidad());
+			validarDetalle(item, vv.getCantidad());
 			
-			DetalleVenta dv = procesarDetalle(var, vv.getCantidad());
+			DetalleVenta dv = procesarDetalle(item, vv.getCantidad());
 			dv.setVenta(v);
 			dv = dvRepository.save(dv);
 			dets.add(dv);
@@ -263,11 +262,11 @@ public class VentaService {
 		// Restablcer el stock de los pedidos si la venta fue cancelada
 		if(estado == EstadoPedido.CANCELADO) {
 			ven.getDetalles().forEach(dv -> {
-				Variacion var = var_buscarPorId(dv.getId_variacion());
-				var.setStock(var.getStock() + dv.getCantidad());
-				if(var.getDisponibilidad() == DisponibilidadItem.SIN_STOCK)
-					var.setDisponibilidad(DisponibilidadItem.DISPONIBLE);
-				varRepository.save(var);
+				Item item = item_buscarPorId(dv.getId_item());
+				item.setStock(item.getStock() + dv.getCantidad());
+				if(item.getDisponibilidad() == DisponibilidadItem.SIN_STOCK)
+					item.setDisponibilidad(DisponibilidadItem.DISPONIBLE);
+				itemRepository.save(item);
 			});
 		}
 		
@@ -320,51 +319,41 @@ public class VentaService {
 		return cliRepository.listarUno(id).orElseThrow( () -> new IdNotFoundException("cliente"));
 	}
 	
-	private Variacion var_buscarPorId(Integer id) {
-		return varRepository.listarUno(id).orElseThrow( () -> new IdNotFoundException("variacion"));
+	private Item item_buscarPorId(Integer id) {
+		return itemRepository.listarUno(id).orElseThrow( () -> new IdNotFoundException("item"));
 	}
 	
-	private DetalleVenta procesarDetalle(Variacion var, Short cantidad) {
-		Item itm = var.getItem();
-		
+	private DetalleVenta procesarDetalle(Item item, Short cantidad) {
 		DetalleVenta dv = new DetalleVenta();
 		
-		dv.setId_item(itm.getId_item());
-		dv.setNombre_item(itm.getNombre());
-		dv.setId_variacion(var.getId_variacion());
-		dv.setVariacion_correlativo(var.getCorrelativo());
-		dv.setTipo_variacion(var.getTipo_variacion());
-		dv.setValor_variacion(var.getValor_variacion());
-		dv.setPrecio_unitario(var.getPrecio());
-		dv.setCosto_unitario(var.getCosto());
+		dv.setId_item(item.getId_item());
+		dv.setNombre_item(item.getNombre());
+		dv.setPrecio_unitario(item.getPrecio());
+		dv.setCosto_unitario(item.getCosto());
 		dv.setCantidad(cantidad.shortValue());
-		if(itm.getDescuento() != null && var.getAplicarDescuento())
-			dv.setPorcentaje_descuento(itm.getDescuento().getPorcentaje());
+		if(item.getDescuento() != null)
+			dv.setPorcentaje_descuento(item.getDescuento().getPorcentaje());
 		else
 			dv.setPorcentaje_descuento(0);
 		
 		//Disminuir el stock
-		var.setStock(var.getStock()-cantidad);
-		if(var.getStock() == 0)
-			var.setDisponibilidad(DisponibilidadItem.SIN_STOCK);
-		varRepository.save(var);
+		item.setStock(item.getStock()-cantidad);
+		if(item.getStock() == 0)
+			item.setDisponibilidad(DisponibilidadItem.SIN_STOCK);
+		itemRepository.save(item);
 		
 		return dv;
 	}
 	
-	private void validarDetalle(Variacion var, Short cantidad) {
-		Item itm = var.getItem();
+	private void validarDetalle(Item item, Short cantidad) {
 		
 		// Validar disponibilidad de item y variación
-		if(var.getDisponibilidad() != DisponibilidadItem.DISPONIBLE || itm.getDisponibilidad() != DisponibilidadItem.DISPONIBLE)
+		if(item.getDisponibilidad() != DisponibilidadItem.DISPONIBLE)
 			throw new DataMismatchException("item", "No está disponible para la venta.");
 		
 		// Validar stock de item
-		if(var.getStock() < cantidad)
+		if(item.getStock() < cantidad)
 			throw new DataMismatchException("item", "No hay stock suficiente.");
-		
-		
-		
 	}
 	
 }

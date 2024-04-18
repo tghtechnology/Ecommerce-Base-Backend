@@ -10,11 +10,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
  * Indica que el método posee la autilización de tipo TipoCargo.CLIENTE. <br>
  * Puede ser utilizado por: <br>
  * - CLIENTE <br>
- * - EMPLEADO <br>
  * - GERENTE <br>
  * - ADMIN
  */
-@PreAuthorize("isAuthenticated() && hasAnyRole('ADMIN','GERENTE','EMPLEADO','CLIENTE')")
+@PreAuthorize("isAuthenticated()")
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 public @interface Cliente {}

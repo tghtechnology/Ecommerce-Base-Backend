@@ -83,7 +83,7 @@ public class SettingsService implements ApplicationListener<ApplicationReadyEven
 		addSetting("apisperu.token"				, "MI TOKEN" , SettingType.STRING);
 		
 		addSetting("cloudinary.url"				, "cloudinary://269427965692487:dPIsYT7kWdJoftwRYo_zGH1nYp4@dryp7amgv"	, SettingType.STRING); //TODO remover
-		addSetting("cloudinary.directory"		, "ecomm-base/"	, SettingType.STRING);
+		addSetting("cloudinary.directory"		, "ecomm-lamp/"	, SettingType.STRING);
 		
 	}
 	

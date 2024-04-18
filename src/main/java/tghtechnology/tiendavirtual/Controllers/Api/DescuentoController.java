@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
-import tghtechnology.tiendavirtual.Security.Interfaces.Empleado;
 import tghtechnology.tiendavirtual.Security.Interfaces.Gerente;
 import tghtechnology.tiendavirtual.Services.DescuentoService;
 import tghtechnology.tiendavirtual.dto.Descuento.DescuentoDTOForInsert;
@@ -28,14 +27,14 @@ public class DescuentoController {
 	@Autowired
     private DescuentoService desService;
 	
-	@Empleado
+	@Gerente
 	@GetMapping
     public ResponseEntity<List<DescuentoDTOForList>> listar(){
         List<DescuentoDTOForList> dess = desService.listarDescuentos();
         return ResponseEntity.status(HttpStatus.OK).body(dess);
     }
 	
-	@Empleado
+	@Gerente
 	@GetMapping("/{id}")
 	public ResponseEntity<DescuentoDTOForList> listarUno(@PathVariable Integer id) {
         DescuentoDTOForList des = desService.listarUno(id);

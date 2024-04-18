@@ -14,7 +14,7 @@ import tghtechnology.tiendavirtual.Utils.Exceptions.DataMismatchException;
 @NoArgsConstructor
 public class DetalleCarritoDTOForInsert implements DTOForInsert<DetalleCarrito>{
 	
-	private Integer id_variacion;
+	private Integer id_item;
 	
 	@NotNull(message = "No puede ser nulo")
 	@Min(value = 0, message = "Debe ser mayor a 0")
@@ -23,8 +23,8 @@ public class DetalleCarritoDTOForInsert implements DTOForInsert<DetalleCarrito>{
 	@Override
 	public DetalleCarrito toModel() {
 		
-		if(id_variacion == null)
-			throw new DataMismatchException("detalle_carrito.id_variacion", "No puede ser nulo");
+		if(id_item == null)
+			throw new DataMismatchException("detalle_carrito.id_item", "No puede ser nulo");
 		
 		DetalleCarrito dc = new DetalleCarrito();
 		dc.setCantidad(cantidad);

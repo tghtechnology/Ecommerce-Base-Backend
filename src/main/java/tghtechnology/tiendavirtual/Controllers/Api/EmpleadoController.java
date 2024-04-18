@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
-import tghtechnology.tiendavirtual.Security.Interfaces.Empleado;
 import tghtechnology.tiendavirtual.Security.Interfaces.Gerente;
 import tghtechnology.tiendavirtual.Services.EmpleadoService;
 import tghtechnology.tiendavirtual.dto.Empleado.EmpleadoDTOForInsert;
@@ -37,7 +36,7 @@ public class EmpleadoController {
         return ResponseEntity.status(HttpStatus.OK).body(emps);
     }
 	
-	@Empleado
+	@Gerente
 	@GetMapping("/{id}")
 	public ResponseEntity<EmpleadoDTOForList> ListarUno(@PathVariable Integer id) {
 		EmpleadoDTOForList emp = empService.listarUno(id);

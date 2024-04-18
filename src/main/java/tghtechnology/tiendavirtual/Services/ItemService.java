@@ -23,12 +23,10 @@ import tghtechnology.tiendavirtual.Models.Descuento;
 import tghtechnology.tiendavirtual.Models.Imagen;
 import tghtechnology.tiendavirtual.Models.Item;
 import tghtechnology.tiendavirtual.Models.Marca;
-import tghtechnology.tiendavirtual.Models.Variacion;
 import tghtechnology.tiendavirtual.Repository.CategoriaRepository;
 import tghtechnology.tiendavirtual.Repository.DescuentoRepository;
 import tghtechnology.tiendavirtual.Repository.ImagenRepository;
 import tghtechnology.tiendavirtual.Repository.ItemRepository;
-import tghtechnology.tiendavirtual.Repository.VariacionRepository;
 import tghtechnology.tiendavirtual.Utils.Cloudinary.MediaManager;
 import tghtechnology.tiendavirtual.Utils.Exceptions.DataMismatchException;
 import tghtechnology.tiendavirtual.Utils.Exceptions.IdNotFoundException;
@@ -43,7 +41,6 @@ public class ItemService {
     private ItemRepository itemRepository;
 	private DescuentoRepository desRepository;
 	private CategoriaRepository catRepository;
-	private VariacionRepository varRepository;
 	private ImagenRepository imaRepository;
 	
 	private MarcaService marService;
@@ -103,14 +100,6 @@ public class ItemService {
     	item.setMarca(mar);
     	
     	Item item2 = itemRepository.save(item); // Asignar a otra instancia para que no muera la transaccion
-    	
-    	Variacion var = iItem.toVariacion();
-    	var.setItem(item2);
-    	var.setCorrelativo(1);
-    	
-    	var = varRepository.save(var);
-    	
-    	item2.getVariaciones().add(var);
     	
     	if(imagen != null) {
 	        Imagen img = mediaManager.subirImagenItem(item2.getText_id(), imagen);

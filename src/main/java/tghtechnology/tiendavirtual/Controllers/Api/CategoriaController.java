@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
-import tghtechnology.tiendavirtual.Security.Interfaces.Empleado;
 import tghtechnology.tiendavirtual.Security.Interfaces.Gerente;
 import tghtechnology.tiendavirtual.Services.CategoriaService;
 import tghtechnology.tiendavirtual.dto.Categoria.CategoriaDTOForInsert;
@@ -40,14 +39,14 @@ public class CategoriaController {
         return ResponseEntity.status(HttpStatus.OK).body(cat);
 	}
 	
-	@Empleado
+	@Gerente
 	@PostMapping
 	public ResponseEntity<CategoriaDTOForList> crear(@RequestBody @Valid CategoriaDTOForInsert iCat){
 		CategoriaDTOForList cat = catService.crearCategoria(iCat);
 		return ResponseEntity.status(HttpStatus.CREATED).body(cat); 
 	}
 	
-	@Empleado
+	@Gerente
 	@PutMapping("/{id}")
 	public ResponseEntity<Void> modificar(@PathVariable Integer id,
 											@RequestBody @Valid CategoriaDTOForInsert mCat){
