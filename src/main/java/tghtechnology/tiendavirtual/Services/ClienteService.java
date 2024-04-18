@@ -83,6 +83,8 @@ public class ClienteService {
     	if(userRepository.listUser().isEmpty()) {
   			throw new BadCredentialsException(null);
   		}
+    	//Asignar el campo de correo personal al cliente
+    	iCli.getPersona().setCorreo_personal(iCli.getUsuario().getEmail());
     	
     	Persona per = perRepository.save(iCli.getPersona().toModel());
         

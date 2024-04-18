@@ -28,18 +28,22 @@ public interface ItemRepository extends JpaRepository<Item, Integer>{
 	 */
     @Query("SELECT i FROM Item i "
     		+ "LEFT JOIN i.categoria AS c "
+    		+ "LEFT JOIN i.rebajas AS r "
+    		+ "LEFT JOIN c.rebajas AS r2 "
     		+ "WHERE "
     		+ "(i.nombre LIKE %:query% "
     		+ "OR i.descripcion LIKE %:query%) "
     		+ "AND i.precio > :min "
     		+ "AND i.precio < :max "
     		+ "AND (:catId LIKE '' OR c.text_id = :catId) "
+    		+ "AND (:rebId LIKE '' OR r.text_id = :rebId OR r2.text_id = :rebId) "
     		+ "AND (:allowDisabled = true OR i.disponibilidad != 1)"
     		+ "AND i.estado=true")
     List<Item> listar(@Param("query") String query,
 					  @Param("min") BigDecimal min,
 					  @Param("max") BigDecimal max,
 					  @Param("catId") String catId,
+					  @Param("rebId") String rebId,
 					  @Param("allowDisabled") boolean allowDisabled,
 					  Pageable pageable);
     

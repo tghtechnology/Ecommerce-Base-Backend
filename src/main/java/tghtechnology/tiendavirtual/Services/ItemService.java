@@ -69,7 +69,7 @@ public class ItemService {
         Boolean extendedPermission = checkExtendedPermission(auth);
         
         Pageable pag = PageRequest.of(pagina-1, settings.getInt("paginado.items"));
-        List<Item> items = (List<Item>) itemRepository.listar(query, min, max, categoria, extendedPermission, pag);
+        List<Item> items = (List<Item>) itemRepository.listar(query, min, max, categoria, rebaja, extendedPermission, pag);
         
         
         items.forEach( x -> {

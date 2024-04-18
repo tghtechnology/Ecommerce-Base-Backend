@@ -19,8 +19,8 @@ import tghtechnology.tiendavirtual.dto.Usuario.UsuarioDTOForInsert;
 public class EmpleadoDTOForInsert implements DTOForInsert<Empleado>{
     
     @Valid
+    @NotNull(message = "Los datos de la persona no pueden ser nulos")
     private PersonaDTOForInsert persona;
-    private Integer id_persona;
     
     @Valid
     @NotNull(message = "El usuario no puede ser nulo")

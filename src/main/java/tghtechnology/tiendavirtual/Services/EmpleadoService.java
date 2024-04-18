@@ -78,13 +78,12 @@ public class EmpleadoService {
     	
     	if(!TipoUsuario.checkRole(auth.getAuthorities(), iEmp.getUsuario().getCargo()))
     		throw new AccessDeniedException("");
-    		
-    	if(iEmp.getId_persona() == null && iEmp.getPersona() == null)
-    		throw new DataMismatchException("persona", "No se ha proporcionado una persona");
     	
-    	Persona per = perRepository.obtenerUno(iEmp.getId_persona())
-    					.orElseGet(() -> perRepository.save(iEmp.getPersona().toModel()));
-        
+    	// Asignar el mismo correo al usuario y persona
+    	iEmp.getPersona().setCorreo_personal(iEmp.getUsuario().getEmail());
+    	
+    	Persona per = perRepository.save(iEmp.getPersona().toModel());
+    	
     	Empleado emp = iEmp.toModel();
     	emp.setPersona(per);
     	emp.setId_persona(per.getId_persona());

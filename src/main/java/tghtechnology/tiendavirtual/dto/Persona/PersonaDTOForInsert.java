@@ -36,9 +36,9 @@ public class PersonaDTOForInsert implements DTOForInsert<Persona>{
     @Size(min = 7, max = 12, message = "El teléfono debe tener entre 7 y 12 caracteres")
 	private String telefono;
 	
-	@NotEmpty(message = "El campo no puede estar vacío")
-	@Pattern(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", message = "El correo es invalido")
-    @Size(min = 10, max = 80, message = "El correo debe tener entre 10 y 80 caracteres")
+//	@NotEmpty(message = "El campo no puede estar vacío")
+//	@Pattern(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", message = "El correo es invalido")
+//  @Size(min = 10, max = 80, message = "El correo debe tener entre 10 y 80 caracteres")
 	private String correo_personal;
 	
 	
@@ -67,7 +67,7 @@ public class PersonaDTOForInsert implements DTOForInsert<Persona>{
 		per.setNombres(nombres);
 		per.setApellidos(apellidos);
 		per.setTelefono(telefono);
-		per.setCorreo_personal(correo_personal);
+//		per.setCorreo_personal(correo_personal);
 		
 		
 		per.setFecha_modificacion(LocalDateTime.now());
