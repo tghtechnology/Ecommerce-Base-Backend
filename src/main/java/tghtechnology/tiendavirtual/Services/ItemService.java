@@ -83,21 +83,17 @@ public class ItemService {
         
         Pageable pag = PageRequest.of(pagina-1, settings.getInt("paginado.items"));
         List<Item> items = (List<Item>) itemRepository.listar(query, min, max, categoria, pag);
-        
-        Boolean extendedPermission = (auth != null 
-        								&& auth.getAuthorities() != null
-        								&& TipoUsuario.checkRole(auth.getAuthorities(), TipoUsuario.GERENTE));
-        
+
         items.forEach( x -> {
-            itemList.add(new ItemDTOForList().from(x, imaRepository.listarPorObjeto(TipoImagen.PRODUCTO, x.getId_item()), extendedPermission));
+            itemList.add(new ItemDTOForList().from(x, imaRepository.listarPorObjeto(TipoImagen.PRODUCTO, x.getId_item()), getExtendedPermission(auth)));
         });
         return itemList;
     }
     
     /*Obtener un item especifico*/
-    public ItemDTOForListFull listarUno(Integer id){
+    public ItemDTOForListFull listarUno(Integer id, Authentication auth){
     	Item item = itemRepository.listarUno(id).orElse(null);
-        return item == null ? null : new ItemDTOForListFull().from(item, imaRepository.listarPorObjeto(TipoImagen.PRODUCTO, item.getId_item()));
+        return item == null ? null : new ItemDTOForListFull().from(item, imaRepository.listarPorObjeto(TipoImagen.PRODUCTO, item.getId_item()), getExtendedPermission(auth));
     }
     
     /*Obtener un item especifico*/
@@ -238,6 +234,12 @@ public class ItemService {
     	
     	imagenes.forEach(i -> i.set_index(i.get_index()-1));
     	imaRepository.saveAll(imagenes);
+    }
+    
+    private Boolean getExtendedPermission(Authentication auth) {
+    	return (auth != null 
+				&& auth.getAuthorities() != null
+				&& TipoUsuario.checkRole(auth.getAuthorities(), TipoUsuario.GERENTE));
     }
     
     

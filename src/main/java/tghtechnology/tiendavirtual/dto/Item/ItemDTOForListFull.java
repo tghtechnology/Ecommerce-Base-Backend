@@ -45,6 +45,10 @@ public class ItemDTOForListFull implements DTOForList<Item>{
     
 	@Override
 	public ItemDTOForListFull from(Item item) {
+		return from(item, false);
+	}
+	
+	public ItemDTOForListFull from(Item item, Boolean extendedPermission) {
 		this.id_item = item.getId_item();
 		this.url = item.getText_id();
 		this.nombre = item.getNombre();
@@ -57,14 +61,22 @@ public class ItemDTOForListFull implements DTOForList<Item>{
 		this.valoraciones = item.getValoraciones();
 		this.estrellas = BigDecimal.valueOf(item.getEstrellas()).setScale(2, RoundingMode.HALF_UP);
 		this.descuento = item.getDescuento() == null ? null : new DescuentoDTOForListMinimal().from(item.getDescuento());
-		item.getVariaciones().forEach(var -> variaciones.add(new VariacionDTOForList().from(var)));
+		item.getVariaciones().forEach(var -> {
+			VariacionDTOForList vv = new VariacionDTOForList().from(var);
+			if(!extendedPermission) vv.setCosto(null);
+			variaciones.add(vv);
+		});
 		this.categoria = new CategoriaDTOForList().from(item.getCategoria());
 		this.marca = new MarcaDTOForListMinimal().from(item.getMarca());
 		return this;
 	}
 	
 	public ItemDTOForListFull from(Item item, List<Imagen> imgs){
-		from(item);
+		return from(item, imgs, false);
+	}
+    
+	public ItemDTOForListFull from(Item item, List<Imagen> imgs, Boolean extendedPermission){
+		from(item, extendedPermission);
 		
 		imgs.forEach(img -> {
 			imagenes.put(img.get_index(), img.getImagen()); 
@@ -72,7 +84,5 @@ public class ItemDTOForListFull implements DTOForList<Item>{
 		
 		return this;
 	}
-    
-    
    
 }
