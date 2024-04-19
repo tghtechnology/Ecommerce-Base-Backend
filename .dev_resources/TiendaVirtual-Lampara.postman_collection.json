@@ -1,11 +1,155 @@
 {
 	"info": {
-		"_postman_id": "aad94f9d-4add-41a2-b418-33316c9fa33b",
-		"name": "TiendaVirtual-Base",
+		"_postman_id": "73240a78-a862-40d6-952c-054d5ee967b7",
+		"name": "TiendaVirtual-Lampara",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "29571097"
+		"_exporter_id": "31763898",
+		"_collection_link": "https://winter-equinox-881682.postman.co/workspace/Base~1dd33edd-a5f1-48e2-8384-d7cb95fa3661/collection/31763898-73240a78-a862-40d6-952c-054d5ee967b7?action=share&source=collection_link&creator=31763898"
 	},
 	"item": [
+		{
+			"name": "Valoracion",
+			"item": [
+				{
+					"name": "Leer por Item",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API}}/api/valoracion/item/lampara_grande_de_3_patas",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"valoracion",
+								"item",
+								"lampara_grande_de_3_patas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Leer por Usuario",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{API}}/api/valoracion/user/2",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"valoracion",
+								"user",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id_item\": 1,\r\n    \"estrellas\": 5,\r\n    \"comentario\": \"Yo lo hice\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API}}/api/valoracion",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"valoracion"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Editar",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id_item\": 1,\r\n    \"estrellas\": 2,\r\n    \"comentario\": \"Yo lo hice, pero no me gusta\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API}}/api/valoracion/103",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"valoracion",
+								"103"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{API}}/api/valoracion/103",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"valoracion",
+								"103"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
 		{
 			"name": "Usuario",
 			"item": [
@@ -92,7 +236,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\":\"cliente@test.com\",\r\n    \"password\":\"Te$t1234\"\r\n}",
+							"raw": "{\r\n    \"username\":\"admin@test.com\",\r\n    \"password\":\"Te$t1234\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -322,105 +466,203 @@
 			]
 		},
 		{
-			"name": "Item",
+			"name": "Publicidad",
 			"item": [
 				{
-					"name": "Variacion",
-					"item": [
-						{
-							"name": "Crear",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "{{AUTH}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"id_item\": 1,\r\n    \"tipo_variacion\": \"COLOR\",\r\n    \"valor_variacion\": \"CCCCCC\",\r\n    \"precio\": 70.00,\r\n    \"disponibilidad\": \"DISPONIBLE\",\r\n    \"stock\": 20\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{API}}/api/variacion",
-									"host": [
-										"{{API}}"
-									],
-									"path": [
-										"api",
-										"variacion"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Editar",
-							"request": {
-								"method": "PUT",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "{{AUTH}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"id_item\": 1,\r\n    \"tipo_variacion\": \"COLOR\",\r\n    \"valor_variacion\": \"CDFFFF\",\r\n    \"precio\": 950.90,\r\n    \"disponibilidad\": \"DISPONIBLE\",\r\n    \"stock\": 100\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{API}}/api/variacion/102",
-									"host": [
-										"{{API}}"
-									],
-									"path": [
-										"api",
-										"variacion",
-										"102"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Eliminar",
-							"request": {
-								"method": "DELETE",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "{{AUTH}}",
-										"type": "text"
-									}
-								],
-								"url": {
-									"raw": "{{API}}/api/variacion/1",
-									"host": [
-										"{{API}}"
-									],
-									"path": [
-										"api",
-										"variacion",
-										"1"
-									]
-								}
-							},
-							"response": []
+					"name": "Leer",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{API}}/api/publicidad",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"publicidad"
+							]
 						}
-					]
+					},
+					"response": []
 				},
+				{
+					"name": "Leer Filtrado",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{API}}/api/publicidad?mostrar=true",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"publicidad"
+							],
+							"query": [
+								{
+									"key": "mostrar",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LeerUno",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{API}}/api/publicidad/2",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"publicidad",
+								"2"
+							],
+							"query": [
+								{
+									"key": "mostrar",
+									"value": "false",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "publicidad",
+									"value": "{\n    \"nombre\": \"gran cierrapuertas\",\n    \"enlace\": \"lamparas.com/promociones/gran_cierra_puertas\",\n    \"mostrar\": false\n}",
+									"type": "text"
+								},
+								{
+									"key": "imagen",
+									"type": "file",
+									"src": "/C:/Users/Usuario/Downloads/imagen.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{API}}/api/publicidad",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"publicidad"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Editar",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "publicidad",
+									"value": "{\n    \"nombre\": \"gran cierrapuertas editado\",\n    \"enlace\": \"lamparas.com/promociones/gran_cierra_puertas_editado\",\n    \"mostrar\": true\n}",
+									"type": "text"
+								},
+								{
+									"key": "imagen",
+									"type": "file",
+									"src": "/C:/Users/Usuario/Downloads/gato.jpeg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{API}}/api/publicidad/2",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"publicidad",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{API}}/api/categoria/3",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"categoria",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Item",
+			"item": [
 				{
 					"name": "Imagen",
 					"item": [
@@ -585,7 +827,7 @@
 							"formdata": [
 								{
 									"key": "item",
-									"value": "{\n    \"nombre\": \"iPad\",\n    \"descripcion\": \"Una tablet grande\",\n    \"precio\": 60.00,\n\"costo\": 30,\n    \"disponibilidad\": \"DISPONIBLE\",\n    \"stock\": 150,\n    \"id_marca\": 1,\n\"id_categoria\": 1\n}",
+									"value": "{\n    \"nombre\": \"Lampara grande de 3 patas\",\n    \"descripcion\": \"Una lampara grande\",\n    \"precio\": 120.00,\n    \"costo\": 40.00,\n    \"disponibilidad\": \"DISPONIBLE\",\n    \"stock\": 150,\n    \"id_marca\": 1,\n\"id_categoria\": 1\n}",
 									"type": "text"
 								},
 								{
@@ -1328,7 +1570,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id_variacion\": 102,\r\n    \"cantidad\": 200\r\n}",
+							"raw": "{\r\n    \"id_variacion\": 7,\r\n    \"cantidad\": 10\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1469,7 +1711,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"tipo_comprobante\": \"BOLETA_DE_VENTA\",\r\n    \"tipo_documento\": \"DNI\",\r\n    \"numero_documento\": \"12345678\",\r\n    \"nombres\": \"Juanito\",\r\n    \"apellidos\": \"Ramirez\",\r\n    \"telefono\": \"+51987654321\",\r\n    \"correo\": \"cliente_anonimo@test.com\",\r\n    \"region\": \"LIMA\",\r\n    \"provincia\": \"LIMA\",\r\n    \"distrito\": \"LIMA\",\r\n    \"direccion\": \"Al lado de la casa del vecino\",\r\n    \"referencia\": \"Al lado de mi otro vecino\",\r\n    \"carrito\":[\r\n        {\r\n            \"id_variacion\": 2,\r\n            \"cantidad\": 1001\r\n        }\r\n    ]\r\n}",
+							"raw": "{\r\n    \"tipo_comprobante\": \"BOLETA_DE_VENTA\",\r\n    \"tipo_documento\": \"DNI\",\r\n    \"numero_documento\": \"12345678\",\r\n    \"nombres\": \"Juanito\",\r\n    \"apellidos\": \"Ramirez\",\r\n    \"telefono\": \"+51987654321\",\r\n    \"correo\": \"cliente_anonimo@test.com\",\r\n    \"region\": \"LIMA\",\r\n    \"provincia\": \"LIMA\",\r\n    \"distrito\": \"LIMA\",\r\n    \"direccion\": \"Al lado de la casa del vecino\",\r\n    \"referencia\": \"Al lado de mi otro vecino\",\r\n    \"carrito\":[\r\n        {\r\n            \"id_variacion\": 2,\r\n            \"cantidad\": 400\r\n        },\r\n        {\r\n            \"id_variacion\": 1,\r\n            \"cantidad\": 30\r\n        },\r\n        {\r\n            \"id_variacion\": 3,\r\n            \"cantidad\": 100\r\n        },\r\n        {\r\n            \"id_variacion\": 7,\r\n            \"cantidad\": 40\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
