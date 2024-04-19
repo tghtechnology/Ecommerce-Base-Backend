@@ -50,7 +50,26 @@ public class ItemService {
 	private MediaManager mediaManager;
 	private SettingsService settings;
 
-    /*Listar item*/
+    /**
+     * Lista todos los items no eliminados siguiendo unos filtros 
+     * específicos.<br>
+     * Posee un paginado  con tamaño configurable desde 
+     * {@link tghtechnology.tiendavirtual.Services.SettingsService SettingsService}.
+     * <p>
+     * Si el usuario que solicita la lista está autenticado y 
+     * tiene rol de {@link tghtechnology.tiendavirtual.Security.Interfaces.Gerente Gerente} 
+     * o superior, se muestra el campo de costo en las variaciones.
+     * 
+     * @param query Filtro de texto: Se compara con los textos del nombre 
+     * y la descripción del item.
+     * @param min Filtro de precio: Excluye a todos los que tengan menos del precio elegido.
+     * @param max Filtro de precio: Excluye a todos los que tengan más del precio elegido.
+     * @param categoria Filtro de categoría: Solo incluye los items que pertenezcan a la categoría.
+     * @param pagina Selector de paginado.
+     * @param auth La autenticación del usuario.
+     * 
+     * @return Una lista de los items en formato DTOForList.
+     */
     public List<ItemDTOForList> listar (String query,
 									    BigDecimal min,
 									    BigDecimal max,

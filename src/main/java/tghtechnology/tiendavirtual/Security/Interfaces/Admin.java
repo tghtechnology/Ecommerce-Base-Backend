@@ -7,7 +7,7 @@ import java.lang.annotation.RetentionPolicy;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 /**
- * Indica que el método posee la autilización de tipo TipoCargo.ADMIN. <br>
+ * Indica que el método posee la autorización de tipo TipoCargo.ADMIN. <br>
  * Puede ser utilizado por: <br>
  * - ADMIN
  */
