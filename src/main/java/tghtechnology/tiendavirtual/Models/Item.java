@@ -46,12 +46,6 @@ public class Item {
     private String descripcion;
     
     @Column(nullable = false)
-    private Integer valoraciones;
-    
-    @Column(nullable = false)
-    private Double estrellas;
-    
-    @Column(nullable = false)
     private BigDecimal costo;
     
     @Column(nullable = false)

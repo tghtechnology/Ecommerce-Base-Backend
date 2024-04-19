@@ -40,9 +40,6 @@ public class ItemDTOForListFull implements DTOForList<Item>{
     private CategoriaDTOForList categoria;
     private MarcaDTOForListMinimal marca;
     private DescuentoDTOForListMinimal descuento;
-    
-    private BigDecimal estrellas;
-    private Integer valoraciones;
 
 	public ItemDTOForListFull from(Item item, boolean extendedPermission) {
 		this.id_item = item.getId_item();
@@ -59,9 +56,6 @@ public class ItemDTOForListFull implements DTOForList<Item>{
 		this.precio = item.getPrecio();
 		this.costo = !extendedPermission ? null : item.getCosto();
 		
-		
-		this.valoraciones = item.getValoraciones();
-		this.estrellas = BigDecimal.valueOf(item.getEstrellas()).setScale(2, RoundingMode.HALF_UP);
 		this.descuento = item.getDescuento() == null ? null : new DescuentoDTOForListMinimal().from(item.getDescuento());
 		item.getVariaciones().forEach(var -> modelos.add(new VariacionDTOForList().from(var)));
 		this.categoria = new CategoriaDTOForList().from(item.getCategoria());

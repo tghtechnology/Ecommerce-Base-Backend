@@ -36,9 +36,6 @@ public class ItemDTOForList implements DTOForList<Item>{
     private CategoriaDTOForList categoria;
     private MarcaDTOForListMinimal marca;
     
-    private BigDecimal estrellas;
-    private Integer valoraciones;
-    
     private List<VariacionDTOForListMinimal> modelos = new ArrayList<>();
     
 	@Override
@@ -59,9 +56,6 @@ public class ItemDTOForList implements DTOForList<Item>{
 		
 		
 		this.descuento = item.getDescuento() == null ? null : new DescuentoDTOForListMinimal().from(item.getDescuento());
-		
-		this.valoraciones = item.getValoraciones();
-		this.estrellas = BigDecimal.valueOf(item.getEstrellas()).setScale(2, RoundingMode.HALF_UP);
 		
 		this.precio = item.getPrecio();
 		if(extendedPermission)
