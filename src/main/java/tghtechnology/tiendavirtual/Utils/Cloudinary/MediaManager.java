@@ -3,6 +3,7 @@ package tghtechnology.tiendavirtual.Utils.Cloudinary;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -111,7 +112,7 @@ public class MediaManager {
 	/**
 	 * Elimina una lista de imágenes de cloudinary
 	 * 
-	 * @param public_ids Lista de ids públicas de las imágenes a borrar
+	 * @param public_ids Lista de IDs públicas de las imágenes a borrar
 	 * @return Si se eliminó con éxito
 	 * @throws Exception
 	 */
@@ -120,6 +121,17 @@ public class MediaManager {
 		ApiResponse response =  cloudinary.api().deleteResources(public_ids, ObjectUtils.emptyMap());
 		//System.out.println(response);
 		return !((boolean) response.get("partial"));
+	}
+	
+	/**
+	 * Elimina una lista de imágenes de cloudinary
+	 * 
+	 * @param public_id Las IDs públicas de las imágenes a borrar
+	 * @return Si se eliminó con éxito
+	 * @throws Exception
+	 */
+	public boolean eliminarImagenes(String... public_ids) throws Exception {
+		return eliminarImagenes(Arrays.asList(public_ids));
 	}
 	
 	private Map<?, ?> upload(String name, String folder, MultipartFile file) throws IOException{

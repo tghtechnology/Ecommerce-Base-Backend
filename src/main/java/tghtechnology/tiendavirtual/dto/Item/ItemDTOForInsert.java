@@ -61,6 +61,10 @@ public class ItemDTOForInsert implements DTOForInsert<Item>{
 		item.setPrecio(precio);
 		item.setCosto(costo);
 		item.setStock(stock);
+		
+		item.setValoraciones(0);
+		item.setEstrellas(0.0);
+		
 		item.setFecha_creacion(now);
 		item.setFecha_modificacion(now);
 		item.setEstado(true);

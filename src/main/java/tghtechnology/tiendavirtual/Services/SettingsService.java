@@ -262,7 +262,13 @@ public class SettingsService implements ApplicationListener<ApplicationReadyEven
 	@Override
 	public void onApplicationEvent(ApplicationReadyEvent event) {
 
-		Map<String, Setting> s = StreamSupport.stream(setRepository.findAll().spliterator(), false).collect(Collectors.toMap(ss -> ss.getId(),Function.identity()));
+		Map<String, Setting> s = StreamSupport
+								.stream(setRepository
+										.findAll()
+										.spliterator()
+										, false)
+								.collect(Collectors
+										.toMap(ss -> ss.getId(),Function.identity()));
 
 		log.info("Comprobando settings...");
 		settings.entrySet().forEach(entry -> {

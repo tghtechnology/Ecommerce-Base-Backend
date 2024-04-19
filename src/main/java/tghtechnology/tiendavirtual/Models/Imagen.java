@@ -20,14 +20,14 @@ public class Imagen {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 	
-	@Column(nullable = false, unique = true, length = 200)
+	@Column(nullable = false, unique = true, length = 300)
 	private String Imagen;
-	@Column(nullable = true, length = 200)
+	@Column(nullable = true, length = 300)
 	private String public_id_Imagen;
 	
-	@Column(nullable = true, length = 200)
+	@Column(nullable = true, length = 300)
 	private String Miniatura;
-	@Column(nullable = true, length = 200)
+	@Column(nullable = true, length = 300)
 	private String public_id_Miniatura;
 	
 	@Column(nullable = false)
