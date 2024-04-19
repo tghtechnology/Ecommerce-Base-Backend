@@ -1,5 +1,7 @@
 package tghtechnology.tiendavirtual.dto.Item;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +29,8 @@ public class ItemDTOForList implements DTOForList<Item>{
     
     private String thumbnail;
     private DescuentoDTOForListMinimal descuento;
+    private BigDecimal estrellas;
+    private Integer valoraciones;
     private CategoriaDTOForList categoria;
     private MarcaDTOForListMinimal marca;
     
@@ -44,6 +48,10 @@ public class ItemDTOForList implements DTOForList<Item>{
 		this.disponibilidad = item.getDisponibilidad();
 		this.categoria = new CategoriaDTOForList().from(item.getCategoria());
 		this.marca = new MarcaDTOForListMinimal().from(item.getMarca());
+		this.valoraciones = item.getValoraciones();
+		this.estrellas = BigDecimal.valueOf(item.getEstrellas()).setScale(2, RoundingMode.HALF_UP);
+		
+		
 		this.descuento = item.getDescuento() == null ? null : new DescuentoDTOForListMinimal().from(item.getDescuento());
 		
 		item.getVariaciones()

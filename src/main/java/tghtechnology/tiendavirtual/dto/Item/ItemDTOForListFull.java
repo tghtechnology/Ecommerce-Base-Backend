@@ -1,5 +1,7 @@
 package tghtechnology.tiendavirtual.dto.Item;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +29,8 @@ public class ItemDTOForListFull implements DTOForList<Item>{
 	private String url;
 	private String nombre;
     private String descripcion;
+    private BigDecimal estrellas;
+    private Integer valoraciones;
     private DisponibilidadItem disponibilidad;
     private LocalDateTime fecha_creacion;
     private LocalDateTime fecha_modificacion;
@@ -49,6 +53,9 @@ public class ItemDTOForListFull implements DTOForList<Item>{
 		this.fecha_creacion = item.getFecha_creacion();
 		this.fecha_modificacion = item.getFecha_modificacion();
 		
+		
+		this.valoraciones = item.getValoraciones();
+		this.estrellas = BigDecimal.valueOf(item.getEstrellas()).setScale(2, RoundingMode.HALF_UP);
 		this.descuento = item.getDescuento() == null ? null : new DescuentoDTOForListMinimal().from(item.getDescuento());
 		item.getVariaciones().forEach(var -> variaciones.add(new VariacionDTOForList().from(var)));
 		this.categoria = new CategoriaDTOForList().from(item.getCategoria());

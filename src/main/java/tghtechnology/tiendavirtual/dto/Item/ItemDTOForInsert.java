@@ -62,6 +62,8 @@ public class ItemDTOForInsert implements DTOForInsert<Item>{
 		item.setDisponibilidad(disponibilidad);
 		item.setFecha_creacion(now);
 		item.setFecha_modificacion(now);
+		item.setValoraciones(0);
+		item.setEstrellas(0.0);
 		item.setEstado(true);
 		
 		return item;
