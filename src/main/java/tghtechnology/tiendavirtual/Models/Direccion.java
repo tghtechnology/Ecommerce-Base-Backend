@@ -37,11 +37,11 @@ public class Direccion {
 	@Column(nullable = true, length = 150)
 	private String referencia;
 	
-	@Column(nullable = true)
-	private Double latitud;
+	@Column(nullable = false)
+	private Boolean shalom;
 	
 	@Column(nullable = true)
-	private Double longitud;
+	private Integer id_shalom;
 	
 	@Column(nullable = false)
 	private boolean estado;

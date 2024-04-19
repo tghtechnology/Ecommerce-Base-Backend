@@ -69,10 +69,6 @@ public class VentaDTOForInsert implements DTOForInsert<Venta>{
 	@Size(max = 150, message = "La referencia debe tener un maximo de 150 caracteres")
 	private String referencia;
 	
-	private Double latitud;
-	
-	private Double longitud;
-	
 	@Size(max = 250, message = "La observacion debe tener un maximo de 250 caracteres")
 	private String observacion;
 
@@ -99,8 +95,6 @@ public class VentaDTOForInsert implements DTOForInsert<Venta>{
 		ven.setDistrito(distrito);
 		ven.setDireccion(direccion);
 		ven.setReferencia(referencia);
-		ven.setLatitud(latitud);
-		ven.setLongitud(longitud);
 		
 		return ven;
 	}

@@ -35,7 +35,7 @@ public class Publicidad {
     private Imagen imagen;
 	
 	public String get_img_id() {
-		return String.format("publicidad_%06d", id_publicidad);
+		return String.format("novedades_%08d", id_publicidad);
 	}
 	
 }

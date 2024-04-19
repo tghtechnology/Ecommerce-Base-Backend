@@ -20,6 +20,7 @@ import jakarta.validation.Valid;
 import tghtechnology.tiendavirtual.Security.Interfaces.Cliente;
 import tghtechnology.tiendavirtual.Services.DireccionService;
 import tghtechnology.tiendavirtual.dto.Direccion.DireccionDTOForInsert;
+import tghtechnology.tiendavirtual.dto.Direccion.DireccionDTOForInsertShalom;
 import tghtechnology.tiendavirtual.dto.Direccion.DireccionDTOForList;
 
 @RequestMapping("/api/direccion")
@@ -48,6 +49,14 @@ public class DireccionController {
 	@Cliente
 	@PostMapping
 	public ResponseEntity<DireccionDTOForList> crear(@RequestBody @Valid DireccionDTOForInsert iDir,
+														Authentication auth){
+		DireccionDTOForList dir = dirService.crearDireccion(iDir, auth);
+		return ResponseEntity.status(HttpStatus.CREATED).body(dir); 
+	}
+	
+	@Cliente
+	@PostMapping("/shalom")
+	public ResponseEntity<DireccionDTOForList> crearPorShalom(@RequestBody @Valid DireccionDTOForInsertShalom iDir,
 														Authentication auth){
 		DireccionDTOForList dir = dirService.crearDireccion(iDir, auth);
 		return ResponseEntity.status(HttpStatus.CREATED).body(dir); 

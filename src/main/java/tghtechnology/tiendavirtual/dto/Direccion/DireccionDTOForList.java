@@ -16,6 +16,7 @@ public class DireccionDTOForList implements DTOForList<Direccion>{
 	private String distrito;
 	private String direccion;
 	private String referencia;
+	private Boolean es_shalom;
 
 	@Override
 	public DireccionDTOForList from(Direccion direccion) {
@@ -24,6 +25,7 @@ public class DireccionDTOForList implements DTOForList<Direccion>{
 		this.distrito = direccion.getDistrito();
 		this.direccion = direccion.getDireccion();
 		this.referencia = direccion.getReferencia();
+		this.es_shalom = direccion.getShalom();
 		return this;
 	}
 	

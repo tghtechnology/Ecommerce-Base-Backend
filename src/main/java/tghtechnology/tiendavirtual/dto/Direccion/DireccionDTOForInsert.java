@@ -36,9 +36,6 @@ public class DireccionDTOForInsert implements DTOForInsert<Direccion>{
     @Size(max = 150, message = "La referencia debe tener un maximo de 150 caracteres")
 	private String referencia;
 	
-    private Double latitud;
-    
-    private Double longitud;
 
 	@Override
 	public Direccion toModel() {
@@ -49,8 +46,7 @@ public class DireccionDTOForInsert implements DTOForInsert<Direccion>{
 		dir.setDistrito(distrito);
 		dir.setDireccion(direccion);
 		dir.setReferencia(referencia);
-		dir.setLatitud(latitud);
-		dir.setLongitud(longitud);
+		dir.setShalom(false);
 		dir.setEstado(true);
 		
 		return dir;
@@ -64,8 +60,6 @@ public class DireccionDTOForInsert implements DTOForInsert<Direccion>{
 		dir.setDistrito(distrito);
 		dir.setDireccion(direccion);
 		dir.setReferencia(referencia);
-		dir.setLatitud(latitud);
-		dir.setLongitud(longitud);
 		
 		return dir;
 	}
