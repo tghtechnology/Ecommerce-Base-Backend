@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.AllArgsConstructor;
+import tghtechnology.tiendavirtual.Security.Interfaces.Empleado;
 import tghtechnology.tiendavirtual.Security.Interfaces.Gerente;
 import tghtechnology.tiendavirtual.Services.PublicidadService;
 import tghtechnology.tiendavirtual.Utils.CustomBeanValidator;
@@ -41,7 +42,7 @@ public class PublicidadController {
         return ResponseEntity.status(HttpStatus.OK).body(publ);
     }
 	
-	@Gerente
+	@Empleado
 	@GetMapping("/{id}")
 	public ResponseEntity<PublicidadDTOForList> listarUno(@PathVariable Integer id) {
         PublicidadDTOForList pub = pubService.listarUno(id);

@@ -661,13 +661,19 @@
 							}
 						],
 						"url": {
-							"raw": "{{API}}/api/item",
+							"raw": "{{API}}/api/item?sale=rebajas_de_navidad",
 							"host": [
 								"{{API}}"
 							],
 							"path": [
 								"api",
 								"item"
+							],
+							"query": [
+								{
+									"key": "sale",
+									"value": "rebajas_de_navidad"
+								}
 							]
 						}
 					},
@@ -728,7 +734,7 @@
 							"formdata": [
 								{
 									"key": "item",
-									"value": "{\n    \"nombre\": \"Protector de pantalla 2\",\n    \"descripcion\": \"Una tablet grande\",\n\"codigo\": \"0000002\",\n    \"precio\": 7.00,\n\"costo\": 2.50,\n    \"stock\": 150,\n    \"id_marca\": 1,\n\"id_categoria\": 1\n}",
+									"value": "{\n    \"nombre\": \"Protector de pantalla 3\",\n    \"descripcion\": \"Una tablet grande\",\n\"codigo\": \"0000003\",\n    \"precio\": 7.00,\n\"costo\": 2.50,\n    \"stock\": 150,\n    \"id_marca\": 1,\n\"id_categoria\": 1\n}",
 									"type": "text"
 								},
 								{
@@ -868,7 +874,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{API}}/api/valoracion/item/1?order=RECENT&page=1",
+							"raw": "{{API}}/api/valoracion/item/protector_de_pantalla_2",
 							"host": [
 								"{{API}}"
 							],
@@ -876,17 +882,7 @@
 								"api",
 								"valoracion",
 								"item",
-								"1"
-							],
-							"query": [
-								{
-									"key": "order",
-									"value": "RECENT"
-								},
-								{
-									"key": "page",
-									"value": "1"
-								}
+								"protector_de_pantalla_2"
 							]
 						}
 					},
@@ -1620,6 +1616,178 @@
 			]
 		},
 		{
+			"name": "Rebaja",
+			"item": [
+				{
+					"name": "Leer",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{API}}/api/rebaja",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"rebaja"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Leer Uno",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{API}}/api/rebaja/52",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"rebaja",
+								"52"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"Rebajas de primavera\",\r\n    \"descripcion\": \"rebajas\",\r\n    \"fecha_inicio\": [\r\n        2024,\r\n        10,\r\n        11\r\n    ],\r\n    \"fecha_fin\": [\r\n        2024,\r\n        10,\r\n        12\r\n    ],\r\n    \"es_descuento\": false,\r\n    \"es_evento\": false,\r\n    \"activo\": false,\r\n    \"items\":[\r\n        \"protector_de_pantalla_3\"\r\n    ],\r\n    \"categorias\":[\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API}}/api/rebaja",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"rebaja"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Editar",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id_item\": 1,\r\n    \"nuevo_precio\": 110.00,\r\n    \"activado\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API}}/api/descuento/2",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"descuento",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cambiar activado",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{API}}/api/descuento/53/true",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"descuento",
+								"53",
+								"true"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{API}}/api/descuento/2",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"descuento",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Venta",
 			"item": [
 				{
@@ -1686,7 +1854,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"tipo_comprobante\": \"BOLETA_DE_VENTA\",\r\n    \"tipo_documento\": \"DNI\",\r\n    \"numero_documento\": \"12345678\",\r\n    \"nombres\": \"Juanito\",\r\n    \"apellidos\": \"Ramirez\",\r\n    \"telefono\": \"+51987654321\",\r\n    \"correo\": \"cliente_anonimo@test.com\",\r\n    \"region\": \"LIMA\",\r\n    \"provincia\": \"LIMA\",\r\n    \"distrito\": \"LIMA\",\r\n    \"direccion\": \"Al lado de la casa del vecino\",\r\n    \"referencia\": \"Al lado de mi otro vecino\",\r\n    \"carrito\":[\r\n        {\r\n            \"id_variacion\": 1,\r\n            \"cantidad\": 10\r\n        }\r\n    ]\r\n}",
+							"raw": "{\r\n    \"tipo_comprobante\": \"BOLETA_DE_VENTA\",\r\n    \"tipo_documento\": \"DNI\",\r\n    \"numero_documento\": \"12345678\",\r\n    \"nombres\": \"Juanito\",\r\n    \"apellidos\": \"Ramirez\",\r\n    \"telefono\": \"+51987654321\",\r\n    \"correo\": \"cliente_anonimo@test.com\",\r\n    \"region\": \"LIMA\",\r\n    \"provincia\": \"LIMA\",\r\n    \"distrito\": \"LIMA\",\r\n    \"direccion\": \"Al lado de la casa del vecino\",\r\n    \"referencia\": \"Al lado de mi otro vecino\",\r\n    \"carrito\":[\r\n        {\r\n            \"id_variacion\": 1,\r\n            \"id_especificacion\": 1,\r\n            \"cantidad\": 2\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1830,6 +1998,201 @@
 							"body": "The specified formula '=SUMA(B2:B13)' starts with an equals sign which is not allowed."
 						}
 					]
+				}
+			]
+		},
+		{
+			"name": "Publicidad",
+			"item": [
+				{
+					"name": "Leer",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{API}}/api/publicidad",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"publicidad"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Leer Filtrado",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{API}}/api/publicidad?mostrar=true",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"publicidad"
+							],
+							"query": [
+								{
+									"key": "mostrar",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LeerUno",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{API}}/api/publicidad/2",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"publicidad",
+								"2"
+							],
+							"query": [
+								{
+									"key": "mostrar",
+									"value": "false",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "publicidad",
+									"value": "{\n    \"nombre\": \"gran cierrapuertas\",\n    \"enlace\": \"lamparas.com/promociones/gran_cierra_puertas\",\n    \"mostrar\": false\n}",
+									"type": "text"
+								},
+								{
+									"key": "imagen",
+									"type": "file",
+									"src": "/C:/Users/Usuario/Downloads/imagen.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{API}}/api/publicidad",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"publicidad"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Editar",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "publicidad",
+									"value": "{\n    \"nombre\": \"gran cierrapuertas editado\",\n    \"enlace\": \"lamparas.com/promociones/gran_cierra_puertas_editado\",\n    \"mostrar\": true\n}",
+									"type": "text"
+								},
+								{
+									"key": "imagen",
+									"type": "file",
+									"src": "/C:/Users/Usuario/Downloads/gato.jpeg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{API}}/api/publicidad/2",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"publicidad",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{API}}/api/publicidad/2",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"publicidad",
+								"2"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}
