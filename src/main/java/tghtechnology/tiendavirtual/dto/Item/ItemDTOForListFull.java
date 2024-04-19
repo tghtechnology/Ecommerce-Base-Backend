@@ -26,6 +26,8 @@ public class ItemDTOForListFull implements DTOForList<Item>{
 	private String url;
 	private String nombre;
     private String descripcion;
+    private BigDecimal estrellas;
+    private Integer valoraciones;
     private DisponibilidadItem disponibilidad;
     private LocalDateTime fecha_creacion;
     private LocalDateTime fecha_modificacion;
@@ -57,6 +59,9 @@ public class ItemDTOForListFull implements DTOForList<Item>{
 		this.precio = item.getPrecio();
 		this.costo = !extendedPermission ? null : item.getCosto();
 		
+		
+		this.valoraciones = item.getValoraciones();
+		this.estrellas = BigDecimal.valueOf(item.getEstrellas()).setScale(2, RoundingMode.HALF_UP);
 		this.descuento = item.getDescuento() == null ? null : new DescuentoDTOForListMinimal().from(item.getDescuento());
 		item.getVariaciones().forEach(var -> modelos.add(new VariacionDTOForList().from(var)));
 		this.categoria = new CategoriaDTOForList().from(item.getCategoria());

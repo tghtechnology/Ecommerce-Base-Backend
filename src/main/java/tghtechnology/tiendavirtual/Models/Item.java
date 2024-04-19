@@ -65,6 +65,12 @@ public class Item {
 
     @Column(nullable = false)
     private LocalDateTime fecha_modificacion;
+    
+    @Column(nullable = false)
+    private Double estrellas;
+    
+    @Column(nullable = false)
+    private Integer valoraciones;
 
     @Column(nullable = false)
     private Boolean estado;

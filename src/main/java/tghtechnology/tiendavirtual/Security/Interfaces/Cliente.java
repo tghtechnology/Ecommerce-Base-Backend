@@ -7,7 +7,7 @@ import java.lang.annotation.RetentionPolicy;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 /**
- * Indica que el método posee la autilización de tipo TipoCargo.CLIENTE. <br>
+ * Indica que el método posee la autorización de tipo TipoCargo.CLIENTE. <br>
  * Puede ser utilizado por: <br>
  * - CLIENTE <br>
  * - EMPLEADO <br>
