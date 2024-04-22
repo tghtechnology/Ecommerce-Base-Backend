@@ -33,6 +33,10 @@ public class ItemDTOForListFull implements DTOForList<Item>{
     private BigDecimal estrellas;
     private Integer valoraciones;
     
+	private BigDecimal precio;
+	private BigDecimal costo;
+	private Integer stock;
+    
     private final SortedMap<Integer, String> imagenes = new TreeMap<>();
     
     private CategoriaDTOForList categoria;
@@ -50,6 +54,10 @@ public class ItemDTOForListFull implements DTOForList<Item>{
 		this.fecha_creacion = item.getFecha_creacion();
 		this.fecha_modificacion = item.getFecha_modificacion();
 		
+		this.precio = item.getPrecio();
+		this.costo = item.getCosto();
+		this.stock = item.getStock();
+		
 		this.descuento = item.getDescuento() == null ? null : new DescuentoDTOForListMinimal().from(item.getDescuento());
 		this.categoria = new CategoriaDTOForList().from(item.getCategoria());
 		this.marca = new MarcaDTOForListMinimal().from(item.getMarca());
@@ -65,6 +73,16 @@ public class ItemDTOForListFull implements DTOForList<Item>{
 			imagenes.put(img.get_index(), img.getImagen()); 
 		});
 		
+		return this;
+	}
+	
+	public ItemDTOForListFull from(Item item, List<Imagen> imgs, Boolean extendedPermission){
+		from(item, imgs);
+		if(!extendedPermission) {
+			this.fecha_creacion = null;
+			this.fecha_modificacion = null;
+			this.costo = null;
+		}
 		return this;
 	}
     

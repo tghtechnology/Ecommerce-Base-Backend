@@ -62,26 +62,22 @@ public class ItemService {
         Pageable pag = PageRequest.of(pagina-1, settings.getInt("paginado.items"));
         List<Item> items = (List<Item>) itemRepository.listar(query, min, max, categoria, pag);
         
-        Boolean extendedPermission = (auth != null 
-        								&& auth.getAuthorities() != null
-        								&& TipoUsuario.checkRole(auth.getAuthorities(), TipoUsuario.GERENTE));
-        
         items.forEach( x -> {
-            itemList.add(new ItemDTOForList().from(x, imaRepository.listarPorObjeto(TipoImagen.PRODUCTO, x.getId_item()), extendedPermission));
+            itemList.add(new ItemDTOForList().from(x, imaRepository.listarPorObjeto(TipoImagen.PRODUCTO, x.getId_item()), getExtendedPermission(auth)));
         });
         return itemList;
     }
     
     /*Obtener un item especifico*/
-    public ItemDTOForListFull listarUno(Integer id){
+    public ItemDTOForListFull listarUno(Integer id, Authentication auth){
     	Item item = itemRepository.listarUno(id).orElse(null);
-        return item == null ? null : new ItemDTOForListFull().from(item, imaRepository.listarPorObjeto(TipoImagen.PRODUCTO, item.getId_item()));
+        return item == null ? null : new ItemDTOForListFull().from(item, imaRepository.listarPorObjeto(TipoImagen.PRODUCTO, item.getId_item()), getExtendedPermission(auth));
     }
     
     /*Obtener un item especifico*/
-    public ItemDTOForListFull listarUno(String text_id){
+    public ItemDTOForListFull listarUno(String text_id, Authentication auth){
     	Item item = buscarPorId(text_id);
-        return new ItemDTOForListFull().from(item, imaRepository.listarPorObjeto(TipoImagen.PRODUCTO, item.getId_item()));
+        return new ItemDTOForListFull().from(item, imaRepository.listarPorObjeto(TipoImagen.PRODUCTO, item.getId_item()), getExtendedPermission(auth));
     }
     
     /**Registrar nuevo item
@@ -210,6 +206,11 @@ public class ItemService {
     	imaRepository.saveAll(imagenes);
     }
     
+    private Boolean getExtendedPermission(Authentication auth) {
+    	return (auth != null 
+				&& auth.getAuthorities() != null
+				&& TipoUsuario.checkRole(auth.getAuthorities(), TipoUsuario.GERENTE));
+    }
     
     public Item buscarPorId(Integer id) {
 		return itemRepository.listarUno(id).orElseThrow( () -> new IdNotFoundException("item"));
