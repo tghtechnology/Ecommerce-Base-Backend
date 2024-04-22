@@ -79,8 +79,7 @@ public class ItemService {
     		){
         List<ItemDTOForList> itemList = new ArrayList<>();
         
-        if(auth != null)
-        	System.out.println(auth.getCredentials());
+        //System.out.println(((Jwt)auth.getPrincipal()).getClaimAsString("action"));
         
         if(pagina < 1) throw new DataMismatchException("pagina", "No puede ser menor a 1");
         

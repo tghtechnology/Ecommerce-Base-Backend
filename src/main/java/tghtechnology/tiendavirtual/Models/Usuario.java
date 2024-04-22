@@ -41,6 +41,9 @@ public class Usuario implements UserDetails {
 	private boolean autenticado;
 	
 	@Column(nullable = false)
+	private boolean cambio_de_pass;
+	
+	@Column(nullable = false)
 	private LocalDateTime fecha_creacion;
 	
 	@Column(nullable = false)

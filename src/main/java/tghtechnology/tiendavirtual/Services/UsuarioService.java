@@ -184,8 +184,20 @@ public class UsuarioService {
     	return new UsuarioDTOForLoginResponse().from(user, token, uid);
     }
     
+    /* Solicitar validacion */
+    public void solicitar_validacion(Authentication auth) {
+    	
+    	Usuario user = buscarPorUserName(auth.getName());
+    	
+    	
+    }
+    
     private Usuario buscarPorId(Integer id) {
 		return userRepository.listarUno(id).orElseThrow( () -> new IdNotFoundException("usuario"));
+	}
+    
+    private Usuario buscarPorUserName(String username) {
+		return userRepository.listarPorUserName(username).orElseThrow( () -> new IdNotFoundException("usuario"));
 	}
 
 }
