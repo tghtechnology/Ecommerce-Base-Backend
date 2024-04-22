@@ -79,6 +79,9 @@ public class ItemService {
     		){
         List<ItemDTOForList> itemList = new ArrayList<>();
         
+        if(auth != null)
+        	System.out.println(auth.getCredentials());
+        
         if(pagina < 1) throw new DataMismatchException("pagina", "No puede ser menor a 1");
         
         Pageable pag = PageRequest.of(pagina-1, settings.getInt("paginado.items"));
@@ -97,9 +100,9 @@ public class ItemService {
     }
     
     /*Obtener un item especifico*/
-    public ItemDTOForListFull listarUno(String text_id){
+    public ItemDTOForListFull listarUno(String text_id, Authentication auth){
     	Item item = buscarPorId(text_id);
-        return new ItemDTOForListFull().from(item, imaRepository.listarPorObjeto(TipoImagen.PRODUCTO, item.getId_item()));
+        return new ItemDTOForListFull().from(item, imaRepository.listarPorObjeto(TipoImagen.PRODUCTO, item.getId_item()), getExtendedPermission(auth));
     }
     
     /**Registrar nuevo item

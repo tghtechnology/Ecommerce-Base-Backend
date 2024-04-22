@@ -53,14 +53,14 @@ public class ItemController {
     }
 	
 	@GetMapping("/id/{id}")
-	public ResponseEntity<ItemDTOForListFull> listarUno(@PathVariable Integer id) {
-		ItemDTOForListFull item = itemService.listarUno(id);
+	public ResponseEntity<ItemDTOForListFull> listarUno(@PathVariable Integer id, Authentication auth) {
+		ItemDTOForListFull item = itemService.listarUno(id, auth);
         return ResponseEntity.status(HttpStatus.OK).body(item);
 	}
 	
 	@GetMapping("/{text_id}")
-	public ResponseEntity<ItemDTOForListFull> listarUno(@PathVariable String text_id) {
-		ItemDTOForListFull item = itemService.listarUno(text_id);
+	public ResponseEntity<ItemDTOForListFull> listarUno(@PathVariable String text_id, Authentication auth) {
+		ItemDTOForListFull item = itemService.listarUno(text_id, auth);
         return ResponseEntity.status(HttpStatus.OK).body(item);
 	}
 	

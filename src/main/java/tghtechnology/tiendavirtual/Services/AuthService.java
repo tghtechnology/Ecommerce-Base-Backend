@@ -18,6 +18,7 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Service;
 
+import tghtechnology.tiendavirtual.Enums.TokenActions;
 import tghtechnology.tiendavirtual.Security.Models.IpLog;
 import tghtechnology.tiendavirtual.Security.Models.UserLog;
 import tghtechnology.tiendavirtual.Security.Repository.IpLogRepository;
@@ -59,6 +60,7 @@ public class AuthService {
 				.expiresAt(now.plus(settings.getInt("seguridad.token_duration"), ChronoUnit.HOURS))
 				.subject(authentication.getName())
 				.claim("rol", scope)
+				.claim("action", TokenActions.LOGIN)
 				.build();
 		return this.encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
 		
