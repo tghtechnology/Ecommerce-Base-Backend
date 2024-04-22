@@ -73,6 +73,15 @@ public class PublicidadController {
 	}
 	
 	@Gerente
+	@PutMapping("/{id}/mostrar")
+	public ResponseEntity<Void> modificarVisibilidad(@PathVariable Integer id,
+														@RequestParam(required = false, name = "value") Boolean value) throws Exception{
+		
+		pubService.actualizarMostrarPublicidad(id, value);
+		return ResponseEntity.status(HttpStatus.OK).build();
+	}
+	
+	@Gerente
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> eliminar(@PathVariable Integer id) throws Exception{
 		pubService.eliminarPublicidad(id);
