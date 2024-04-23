@@ -256,6 +256,63 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Solicitar validacion",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{API}}/api/usuario/validar",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"usuario",
+								"validar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Completar Validacion",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{API}}/api/usuario/validar/success?token=eyJraWQiOiJlZmQwODEzMC0zYjEzLTQ4OTctOWYyYi1iOTU2ZTUyYzE3N2YiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoiY2xpZW50ZTVAdGVzdC5jb20iLCJhY3Rpb24iOiJWRVJJRlkiLCJleHAiOjE3MTM5MjAxNjMsImlhdCI6MTcxMzkxMjk2M30.klhUZps8WV8dEiYz2K51oJAQFOd-M8xT1sm1Tw_WZP2M8hS8qlrcg60C0GjW_6Rb4F_V1BDfG0F2fA5sQj9eVHEtAZgiurprdEvdEt4rqTz3v9iVHi5LAvg7eqiimJxtNIBB265IcpZboy9bJ-ugVHbIhh1BYPKbVp1iwxOBAMKQvy6LjBrT2daHiVfCiQjoYEJc28uXHKrtr1SheHAVjq-GOp_BX8jLoWr903pCRVgGPDJJ6f4Qw4oDjSkxUF0hkc1cSJuOoJGzBD0S9nEhSulhvtHbsCaXGdjKEL5U5m6jOrdTl_Tfcy5c4i4bvsD7Lyb1Ni64Cnkl_FNb0cScCQ",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"usuario",
+								"validar",
+								"success"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": "eyJraWQiOiJlZmQwODEzMC0zYjEzLTQ4OTctOWYyYi1iOTU2ZTUyYzE3N2YiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoiY2xpZW50ZTVAdGVzdC5jb20iLCJhY3Rpb24iOiJWRVJJRlkiLCJleHAiOjE3MTM5MjAxNjMsImlhdCI6MTcxMzkxMjk2M30.klhUZps8WV8dEiYz2K51oJAQFOd-M8xT1sm1Tw_WZP2M8hS8qlrcg60C0GjW_6Rb4F_V1BDfG0F2fA5sQj9eVHEtAZgiurprdEvdEt4rqTz3v9iVHi5LAvg7eqiimJxtNIBB265IcpZboy9bJ-ugVHbIhh1BYPKbVp1iwxOBAMKQvy6LjBrT2daHiVfCiQjoYEJc28uXHKrtr1SheHAVjq-GOp_BX8jLoWr903pCRVgGPDJJ6f4Qw4oDjSkxUF0hkc1cSJuOoJGzBD0S9nEhSulhvtHbsCaXGdjKEL5U5m6jOrdTl_Tfcy5c4i4bvsD7Lyb1Ni64Cnkl_FNb0cScCQ"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -971,7 +1028,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"persona\":{\r\n        \"tipo_documento\": \"DNI\",\r\n        \"numero_documento\": \"98765432\",\r\n        \"nombres\": \"Juanito\",\r\n        \"apellidos\": \"Perez\",\r\n        \"telefono\": \"999888777\",\r\n        \"correo_personal\": \"cliente@test.com\"\r\n    },\r\n    \"usuario\":{\r\n        \"email\": \"cliente@test.com\",\r\n        \"password\":\"Te$t1234\",\r\n        \"cargo\": \"CLIENTE\"\r\n    },\r\n    \"recibe_correos\": true\r\n}",
+							"raw": "{\r\n    \"persona\":{\r\n        \"tipo_documento\": \"DNI\",\r\n        \"numero_documento\": \"98765432\",\r\n        \"nombres\": \"Juanito\",\r\n        \"apellidos\": \"Perez\",\r\n        \"telefono\": \"999888777\",\r\n        \"correo_personal\": \"cliente5@test.com\"\r\n    },\r\n    \"usuario\":{\r\n        \"email\": \"cliente5@test.com\",\r\n        \"password\":\"Te$t1234\",\r\n        \"cargo\": \"CLIENTE\"\r\n    },\r\n    \"recibe_correos\": true\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
