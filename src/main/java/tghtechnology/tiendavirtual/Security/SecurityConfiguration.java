@@ -31,7 +31,6 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 
@@ -78,12 +77,12 @@ public class SecurityConfiguration {
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 			)
 			.oauth2ResourceServer((oauth2) -> oauth2
-					.jwt(Customizer.withDefaults())
+					.jwt(jwt -> jwt
+							.jwtAuthenticationConverter(customJwtAuthenticationConverter()))
 			)
 			.logout((logout) -> logout
 								.logoutUrl("/admin/logout")
 								.logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK)))
-			
 			.build();
 	}
 
@@ -114,8 +113,8 @@ public class SecurityConfiguration {
     }
     
     @Bean
-    public JwtAuthenticationConverter customJwtAuthenticationConverter() {
-        JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
+    public CustomJwtAuthConverter customJwtAuthenticationConverter() {
+    	CustomJwtAuthConverter converter = new CustomJwtAuthConverter();
         converter.setJwtGrantedAuthoritiesConverter(new CustomJwtGrantedAuthoritiesConverter());
         return converter;
     }
@@ -124,9 +123,8 @@ public class SecurityConfiguration {
 
         @Override
         public Collection<GrantedAuthority> convert(Jwt jwt) {
-
         	Object obj = jwt.getClaim("rol");
-        	List<String> str = (obj instanceof List) ? jwt.getClaim("rol") : new ArrayList<>();         	
+        	List<String> str = (obj instanceof List) ? jwt.getClaim("rol") : new ArrayList<>();
             return str.stream()
                     .map(role -> new SimpleGrantedAuthority(role))
                     .collect(Collectors.toList());
@@ -137,5 +135,6 @@ public class SecurityConfiguration {
             return Converter.super.andThen(after);
         }
     }
+    
     
 }

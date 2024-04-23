@@ -51,14 +51,21 @@ public class SettingsService implements ApplicationListener<ApplicationReadyEven
 		addSetting("facturacion.serie_boleta"	, "1"			, SettingType.INT, false);
 		addSetting("facturacion.serie_factura"	, "1"			, SettingType.INT, false);
 		
-		addSetting("notificaciones.intervalo"	, "3"				, SettingType.INT);
+		addSetting("notificaciones.intervalo"	, "3"								, SettingType.INT);
 		addSetting("notificaciones.email"		, "programer.christopher@gmail.com"	, SettingType.STRING);
 		
-		addSetting("seguridad.lockout_user"		, "30"			, SettingType.INT);
-		addSetting("seguridad.attempts_user"	, "5"			, SettingType.INT);
-		addSetting("seguridad.lockout_ip"		, "1440"		, SettingType.INT);
-		addSetting("seguridad.attempts_ip"		, "16"			, SettingType.INT);
-		addSetting("seguridad.token_duration"	, "24"			, SettingType.INT);
+		addSetting("url.seguridad.validacion"	, "http://localhost:8080/api/usuario/validar/success"		, SettingType.STRING);
+		addSetting("url.seguridad.changepass"	, "http://localhost:8080/changepass"	, SettingType.STRING);
+		
+		addSetting("seguridad.lockout_user"			, "30"			, SettingType.INT);
+		addSetting("seguridad.attempts_user"		, "5"			, SettingType.INT);
+		addSetting("seguridad.lockout_ip"			, "1440"		, SettingType.INT);
+		addSetting("seguridad.attempts_ip"			, "16"			, SettingType.INT);
+		addSetting("seguridad.login_token_duration"	, "24"			, SettingType.INT);
+		addSetting("seguridad.valid_token_duration"	, "2"			, SettingType.INT);
+		addSetting("seguridad.chpass_token_duration", "2"			, SettingType.INT);
+		addSetting("seguridad.validation_interval"	, "5"			, SettingType.INT);
+		addSetting("seguridad.chpass_interval"		, "15"			, SettingType.INT);
 		
 		addSetting("company.ruc"				, "20000000000"	, SettingType.STRING);
 		addSetting("company.razon_social"		, "COMPAÑIA"	, SettingType.STRING);

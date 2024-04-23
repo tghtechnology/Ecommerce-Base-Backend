@@ -11,18 +11,27 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
 import tghtechnology.tiendavirtual.Enums.TipoUsuario;
+import tghtechnology.tiendavirtual.Enums.TokenActions;
 import tghtechnology.tiendavirtual.Models.Persona;
 import tghtechnology.tiendavirtual.Models.Usuario;
 import tghtechnology.tiendavirtual.Repository.PersonaRepository;
 import tghtechnology.tiendavirtual.Repository.UsuarioRepository;
+import tghtechnology.tiendavirtual.Security.CustomJwtAuthConverter;
+import tghtechnology.tiendavirtual.Security.CustomJwtAuthToken;
+import tghtechnology.tiendavirtual.Security.TokenDetails;
+import tghtechnology.tiendavirtual.Security.TokenGenerator;
 import tghtechnology.tiendavirtual.Utils.CustomBeanValidator;
+import tghtechnology.tiendavirtual.Utils.Emails.EmailService;
+import tghtechnology.tiendavirtual.Utils.Exceptions.AccountConfigurationException;
 import tghtechnology.tiendavirtual.Utils.Exceptions.CustomValidationFailedException;
 import tghtechnology.tiendavirtual.Utils.Exceptions.DataMismatchException;
 import tghtechnology.tiendavirtual.Utils.Exceptions.IdNotFoundException;
@@ -43,7 +52,11 @@ public class UsuarioService {
     
     private SocketIOAuth socketAuth;
 	private CustomBeanValidator validator;
-
+	private TokenGenerator tokens;
+	private EmailService emailService;
+	private SettingsService settings;
+	CustomJwtAuthConverter jwtAuthConverter;
+	private JwtDecoder jwtDecoder;
 
     /*Listar usuarios */
     public List<UsuarioDTOForList> listarUsuarios(){
@@ -185,11 +198,53 @@ public class UsuarioService {
     }
     
     /* Solicitar validacion */
-    public void solicitar_validacion(Authentication auth) {
+    public void solicitar_validacion(CustomJwtAuthToken auth) throws MessagingException {
+    	
+    	TokenDetails dets = TokenDetails.getDetails(auth);
+    	
+    	
+    	// Finalizar si el usuario ya esta validado
+    	if(dets.getVerificado())
+    		throw new DataMismatchException("usuario", "El usuario ya esta verificado");
+    	
+    	// TODO comprobar intervalo de validacion
+    	Usuario user = buscarPorUserName(auth.getName());
+    	String token = tokens.verificationToken(user);
+//    	emailService.enviarEmail(new EmailVerificacion(user, 
+//    									settings.getString("url.seguridad.validacion"),
+//    									token));
+    	System.out.println(token);
+    	System.out.println(dets);
+    }
+    
+    /* Verificar usuario */
+    public UsuarioDTOForLoginResponse verificar_usuario(CustomJwtAuthToken oldAuth, String token) throws MessagingException {
+    	
+    	CustomJwtAuthToken auth;
+    	try {
+    		auth = (CustomJwtAuthToken) jwtAuthConverter.convert(jwtDecoder.decode(token));
+    	} catch (Exception ex) {
+    		throw new AccountConfigurationException("Error al leer el token");
+    	}
+    	
+    	if(auth.getAction() != TokenActions.VERIFY)
+    		throw new AccountConfigurationException("Token incorrecto");
     	
     	Usuario user = buscarPorUserName(auth.getName());
+    	// Si el usuario ya esta validado
+    	if(user.isAutenticado())
+    		throw new AccountConfigurationException("El usuario ya esta validado");
     	
+    	user.setAutenticado(true);
+    	userRepository.save(user);
     	
+    	// Si el token activo se corresponde al usuario, devolver un nuevo token con el campo de verificado activado
+    	if(oldAuth != null && oldAuth.getName().equals(auth.getName())) {
+    		String newToken = tokens.loginToken(auth, true);
+    		return devolverLogin(user.getUsername(),newToken); 
+    	}
+    	
+    	return null;
     }
     
     private Usuario buscarPorId(Integer id) {

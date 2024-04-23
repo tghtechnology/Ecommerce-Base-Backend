@@ -17,7 +17,10 @@ public class EmailVerificacion extends BaseEmail{
 	}
 	
 	private void setFormato() {
-		this.formato = "";
+		this.formato = "Hola, ${nombre-personal}!\n Este es un e-mail de verificación de cuenta. "
+				+ "Haz click en el siguiente enlace para verificarte:\n\n"
+				+ "<a href=\"${url-validacion}?token=${token}\">Verifica tu cuenta</a> <br>"
+				+ "${url-validacion}?token=${token}";
 	}
 	
 }

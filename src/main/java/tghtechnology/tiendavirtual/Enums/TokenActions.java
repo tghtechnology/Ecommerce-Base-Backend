@@ -3,7 +3,11 @@ package tghtechnology.tiendavirtual.Enums;
 public enum TokenActions {
 	
 	LOGIN,
-	VALIDATE,
-	CHANGE_PASSWORD
+	VERIFY,
+	CHANGE_PASSWORD;
+	
+	public Boolean is(String other) {
+		return this.equals(TokenActions.valueOf(other));
+	}
 	
 }

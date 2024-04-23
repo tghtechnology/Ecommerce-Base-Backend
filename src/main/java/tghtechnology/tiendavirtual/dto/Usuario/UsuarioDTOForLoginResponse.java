@@ -19,6 +19,7 @@ public class UsuarioDTOForLoginResponse implements DTOForList<Usuario>{
 	private int id;
     private String email;
     private TipoUsuario cargo;
+    private Boolean verificado;
     private Map<String, String> payload = new HashMap<>();
     
 	@Override
@@ -26,6 +27,7 @@ public class UsuarioDTOForLoginResponse implements DTOForList<Usuario>{
 		this.id = user.getPersona().getId_persona();
 		this.email = user.getUsername();
 		this.cargo = user.getCargo();
+		this.verificado = user.isAutenticado();
 		return this;
 	}
 	

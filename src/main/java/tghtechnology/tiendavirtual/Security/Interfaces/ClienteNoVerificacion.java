@@ -13,14 +13,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
  * - EMPLEADO <br>
  * - GERENTE <br>
  * - ADMIN <br>
- * Además, el sujeto debe estar verificado. Para clientes no verificados, utilizar 
- * {@link package tghtechnology.tiendavirtual.Security.Interfaces.ClienteNoVerificacion ClienteNoVerificacion}.<br>
- * Y la acción debe ser de tipo LOGIN.
+ * Además, el sujeto NO requiere estar verificado, y la acción debe ser de tipo LOGIN.
  */
-@PreAuthorize("isAuthenticated() "
-		+ "&& hasAnyRole('ADMIN','GERENTE','EMPLEADO','CLIENTE') "
-		+ "&& #auth.getVerified() == true "
-		+ "&& #auth.getAction().is('LOGIN')")
+@PreAuthorize("isAuthenticated() && hasAnyRole('ADMIN','GERENTE','EMPLEADO','CLIENTE') && #auth.getAction().is('LOGIN')")
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
-public @interface Cliente {}
+public @interface ClienteNoVerificacion {}

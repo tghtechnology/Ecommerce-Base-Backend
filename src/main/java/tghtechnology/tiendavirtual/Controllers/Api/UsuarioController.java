@@ -1,40 +1,39 @@
 package tghtechnology.tiendavirtual.Controllers.Api;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
+import tghtechnology.tiendavirtual.Security.CustomJwtAuthToken;
+import tghtechnology.tiendavirtual.Security.Interfaces.ClienteNoVerificacion;
+import tghtechnology.tiendavirtual.Services.UsuarioService;
+import tghtechnology.tiendavirtual.dto.Usuario.UsuarioDTOForLoginResponse;
 
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/usuario")
 public class UsuarioController {
 
-//	@Autowired
-//	private UsuarioService usService;
-//
-//	// Leer datos de usuario (solo propios)
-//	@Cliente
-//	@GetMapping("/{id}")
-//	public ResponseEntity<UsuarioDTOForList> listarUno(@PathVariable Integer id,
-//															Authentication auth){
-//		UsuarioDTOForList u = usService.listarUsuario(id,auth);
-//		return ResponseEntity.status(HttpStatus.OK).body(u);
-//	}
-//	
-//	// Registrar usuario básico
-//	@PostMapping
-//	public ResponseEntity<UsuarioDTOForList> crear(@RequestBody UsuarioDTOForInsert usuario) throws Exception {
-//		UsuarioDTOForList u = new UsuarioDTOForList().from(usService.crearUsuario(usuario));
-//		return ResponseEntity.status(HttpStatus.CREATED).body(u);
-//	}
-//	
-//	@PutMapping("/{id}")
-//	public ResponseEntity<Void> actualizar(@PathVariable Integer id,
-//													@RequestBody UsuarioDTOForModify usuario,
-//													Authentication auth){
-//		
-//		usService.actualizarUsuarioCliente(id, usuario, auth);
-//		return ResponseEntity.status(HttpStatus.OK).build();
-//	}
+
+private UsuarioService usService;
+
+	@ClienteNoVerificacion
+	@PostMapping("/validar")
+	public ResponseEntity<Void> validar(CustomJwtAuthToken auth) throws MessagingException{
+		usService.solicitar_validacion(auth);
+		return ResponseEntity.status(HttpStatus.OK).build(); 
+	}
+	
+	@PostMapping("/validar/success")
+	public ResponseEntity<UsuarioDTOForLoginResponse> validar_success(@RequestParam(required = true, name = "token") String token
+																		,CustomJwtAuthToken oldToken) throws MessagingException{
+		UsuarioDTOForLoginResponse resp = usService.verificar_usuario(oldToken, token);
+		return ResponseEntity.status(HttpStatus.OK).body(resp); 
+	}
+
 }
