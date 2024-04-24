@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import tghtechnology.tiendavirtual.Enums.DisponibilidadItem;
 import tghtechnology.tiendavirtual.Security.Interfaces.Gerente;
 import tghtechnology.tiendavirtual.Services.ItemService;
 import tghtechnology.tiendavirtual.Utils.CustomBeanValidator;
@@ -88,6 +89,14 @@ public class ItemController {
 		itemService.eliminarItem(id);
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
+	
+	@Gerente
+	@PostMapping("/{id}/disp")
+    public ResponseEntity<Void> actualizarDisponibilidad(@PathVariable Integer id,
+    													 @RequestParam(name = "value") DisponibilidadItem disp){
+        itemService.actualizarDisponibilidad(id, disp);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
 	
 	@Gerente
 	@PostMapping("/{id}/imagen")

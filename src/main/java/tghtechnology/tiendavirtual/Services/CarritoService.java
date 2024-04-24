@@ -10,12 +10,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.AllArgsConstructor;
+import tghtechnology.tiendavirtual.Enums.TipoImagen;
 import tghtechnology.tiendavirtual.Enums.TipoUsuario;
 import tghtechnology.tiendavirtual.Models.Carrito;
 import tghtechnology.tiendavirtual.Models.DetalleCarrito;
 import tghtechnology.tiendavirtual.Models.Item;
 import tghtechnology.tiendavirtual.Models.Usuario;
 import tghtechnology.tiendavirtual.Repository.DetalleCarritoRepository;
+import tghtechnology.tiendavirtual.Repository.ImagenRepository;
 import tghtechnology.tiendavirtual.Repository.ItemRepository;
 import tghtechnology.tiendavirtual.Repository.UsuarioRepository;
 import tghtechnology.tiendavirtual.Utils.Exceptions.IdNotFoundException;
@@ -29,6 +31,7 @@ public class CarritoService {
 	private ItemRepository itemRepository;
 	private DetalleCarritoRepository dcRepository;
 	private UsuarioRepository userRepository;
+	private ImagenRepository imaRepository;
     
     /**
      * Obtiene un carrito en específico según su ID de usuario
@@ -46,7 +49,19 @@ public class CarritoService {
         if(!checkPermitted(user, auth))
     		throw new AccessDeniedException("");
         
-        return new CarritoDTOForList().from(car);
+        //Añade las imagenes a cada detalle
+        car.getDetalles().forEach(det -> {
+        	
+        	
+        	det.setImg(imaRepository.listarPorObjeto(TipoImagen.PRODUCTO, det.getItem().getId_item())
+        			.stream()
+        			.findFirst()
+        			.orElse(null));
+        });
+        
+        CarritoDTOForList cardto = new CarritoDTOForList().from(car);
+        
+        return cardto;
     }
 
     /**
@@ -160,5 +175,7 @@ public class CarritoService {
     private Item item_buscarPorId(Integer id) {
 		return itemRepository.listarUno(id).orElseThrow( () -> new IdNotFoundException("item"));
 	}
+    
+    
     
 }

@@ -42,9 +42,9 @@ public class ItemDTOForInsert implements DTOForInsert<Item>{
 	@Positive(message = "El stock debe ser positivo")
 	private Integer stock;
     
-    private Integer id_categoria;
-	
 	@NotNull(message = "No puede ser nulo")
+    private Integer id_categoria;
+    
     private Integer id_marca;
 	
 	private Integer id_descuento;

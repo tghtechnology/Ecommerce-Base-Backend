@@ -66,11 +66,11 @@ public class Item {
     private Boolean estado;
     
     @ManyToOne
-    @JoinColumn(name = "id_categoria", nullable = true)
+    @JoinColumn(name = "id_categoria", nullable = false)
     private Categoria categoria;
     
     @ManyToOne
-    @JoinColumn(name = "id_marca", nullable = false)
+    @JoinColumn(name = "id_marca", nullable = true)
     private Marca marca;
     
     @OneToOne

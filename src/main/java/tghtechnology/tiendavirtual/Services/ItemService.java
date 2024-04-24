@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.AllArgsConstructor;
+import tghtechnology.tiendavirtual.Enums.DisponibilidadItem;
 import tghtechnology.tiendavirtual.Enums.TipoImagen;
 import tghtechnology.tiendavirtual.Enums.TipoUsuario;
 import tghtechnology.tiendavirtual.Models.Categoria;
@@ -92,7 +93,7 @@ public class ItemService {
     	Categoria cat = cat_buscarPorId(iItem.getId_categoria());
     	item.setCategoria(cat);
     	
-    	Marca mar = marService.buscarPorId(iItem.getId_marca());
+    	Marca mar = iItem.getId_marca() == null ? null : marService.buscarPorId(iItem.getId_marca());
     	item.setMarca(mar);
     	
     	Item item2 = itemRepository.save(item); // Asignar a otra instancia para que no muera la transaccion
@@ -125,7 +126,7 @@ public class ItemService {
         		item.setCategoria(cat);
     		}
     		if(item.getMarca().getId_marca() != mItem.getId_marca()) {
-    			Marca mar = marService.buscarPorId(mItem.getId_marca());
+    			Marca mar = mItem.getId_marca() == null ? null : marService.buscarPorId(mItem.getId_marca());
         		item.setMarca(mar);
     		}
     		if(mItem.getId_descuento() != null && (item.getDescuento() == null || item.getDescuento().getId_descuento() != mItem.getId_descuento())) {
@@ -204,6 +205,17 @@ public class ItemService {
     	
     	imagenes.forEach(i -> i.set_index(i.get_index()-1));
     	imaRepository.saveAll(imagenes);
+    }
+    
+    /**
+     * Actualiza la disponibilidad del item.
+     * @param id_item La ID del item a modificar.
+     * @param disp La nueva disponibilidad del item.
+     */
+    public void actualizarDisponibilidad(Integer id_item, DisponibilidadItem disp) {
+    	Item item = buscarPorId(id_item);
+    	item.setDisponibilidad(disp);
+    	itemRepository.save(item);
     }
     
     private Boolean getExtendedPermission(Authentication auth) {
