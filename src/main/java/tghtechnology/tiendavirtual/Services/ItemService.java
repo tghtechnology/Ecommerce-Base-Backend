@@ -128,7 +128,7 @@ public class ItemService {
     			Marca mar = marService.buscarPorId(mItem.getId_marca());
         		item.setMarca(mar);
     		}
-    		if(item.getDescuento() == null || item.getDescuento().getId_descuento() != mItem.getId_descuento()) {
+    		if(mItem.getId_descuento() != null && (item.getDescuento() == null || item.getDescuento().getId_descuento() != mItem.getId_descuento())) {
     			if(mItem.getId_descuento() == null) {
     				item.setDescuento(null);
     			} else {
