@@ -24,7 +24,7 @@ public class DetalleCarritoDTOForList implements DTOForList<DetalleCarrito>{
 
 		this.correlativo = det.getCorrelativo();
 		this.cantidad = det.getCantidad();
-		this.item = new ItemDTOForListCarrito().from(det.getItem());
+		this.item = new ItemDTOForListCarrito().from(det.getItem(), det.getImg());
 		
 		this.subtotal = new BigDecimal(cantidad).multiply(item.getPrecio().subtract(item.getDescuento()));
 		
