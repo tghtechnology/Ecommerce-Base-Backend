@@ -1,8 +1,12 @@
 package tghtechnology.tiendavirtual.Services;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -18,7 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.mail.MessagingException;
-import lombok.AllArgsConstructor;
+import lombok.Getter;
+import tghtechnology.tiendavirtual.Emails.EmailVerificacion;
 import tghtechnology.tiendavirtual.Enums.TipoUsuario;
 import tghtechnology.tiendavirtual.Enums.TokenActions;
 import tghtechnology.tiendavirtual.Models.Persona;
@@ -43,22 +48,46 @@ import tghtechnology.tiendavirtual.dto.Usuario.UsuarioDTOForLoginResponse;
 import tghtechnology.tiendavirtual.dto.Usuario.UsuarioDTOForModify;
 
 @Service
-@AllArgsConstructor
 public class UsuarioService {
 
-    private UsuarioRepository userRepository;
-    private PersonaRepository perRepository;
-    private PasswordEncoder passwordEncoder;
+    private final UsuarioRepository userRepository;
+    private final PersonaRepository perRepository;
+    private final PasswordEncoder passwordEncoder;
     
-    private SocketIOAuth socketAuth;
-	private CustomBeanValidator validator;
-	private TokenGenerator tokens;
-	private EmailService emailService;
-	private SettingsService settings;
-	CustomJwtAuthConverter jwtAuthConverter;
-	private JwtDecoder jwtDecoder;
+    private final SocketIOAuth socketAuth;
+	private final CustomBeanValidator validator;
+	private final TokenGenerator tokens;
+	private final EmailService emailService;
+	private final SettingsService settings;
+	private final CustomJwtAuthConverter jwtAuthConverter;
+	private final JwtDecoder jwtDecoder;
+	
+	@Getter
+	private final Map<String, LocalDateTime> passChangeRequestCache = new HashMap<>();
 
-    /*Listar usuarios */
+    public UsuarioService(UsuarioRepository userRepository,
+	    		PersonaRepository perRepository,
+				PasswordEncoder passwordEncoder,
+				SocketIOAuth socketAuth,
+				CustomBeanValidator validator,
+				TokenGenerator tokens,
+				EmailService emailService,
+				SettingsService settings,
+				CustomJwtAuthConverter jwtAuthConverter,
+				JwtDecoder jwtDecoder) {
+		this.userRepository = userRepository;
+		this.perRepository = perRepository;
+		this.passwordEncoder = passwordEncoder;
+		this.socketAuth = socketAuth;
+		this.validator = validator;
+		this.tokens = tokens;
+		this.emailService = emailService;
+		this.settings = settings;
+		this.jwtAuthConverter = jwtAuthConverter;
+		this.jwtDecoder = jwtDecoder;
+	}
+
+	/*Listar usuarios */
     public List<UsuarioDTOForList> listarUsuarios(){
         List<UsuarioDTOForList> userList = new ArrayList<>();
         List<Usuario> users = userRepository.listUser();
@@ -197,8 +226,14 @@ public class UsuarioService {
     	return new UsuarioDTOForLoginResponse().from(user, token, uid);
     }
     
-    /* Solicitar validacion */
-    public void solicitar_validacion(CustomJwtAuthToken auth) throws MessagingException {
+    
+    /**
+     * Solicita una verificación de cuenta para un usuario.
+     * @param auth La autenticación del usuario
+     * @throws MessagingException Si hay un error al enviar el correo de verificación.
+     * @throws DataMismatchException Si el usuario ya está verificado
+     */
+    public void solicitar_verificacion(CustomJwtAuthToken auth) throws MessagingException {
     	
     	TokenDetails dets = TokenDetails.getDetails(auth);
     	
@@ -217,8 +252,20 @@ public class UsuarioService {
     	System.out.println(dets);
     }
     
-    /* Verificar usuario */
-    public UsuarioDTOForLoginResponse verificar_usuario(CustomJwtAuthToken oldAuth, String token) throws MessagingException {
+    /**
+     * Intenta verificar al usuario según un token de verificación recibido desde el email 
+     * enviado por {@link #solicitar_verificacion(CustomJwtAuthToken) solicitar_verificacion}.
+     * @param oldAuth La autenticación del usuario (si es que está verificándose desde el mismo navegador)
+     * @param token El token de verificación.
+     * @return Una respuesta de login que incluye un nuevo token de verificación si es que la autenticación
+     * no es {@code null} y si coincide con el usuario que solicitó la verificación. En otro caso devuelve 
+     * {@code null}
+     * @throws AccountConfigurationException Si:<br>
+     * - Hubo un error al leer el token de verificación. <br>
+     * - El token proporcionado no es de verificación. <br>
+     * - El usuario ya está validado.
+     */
+    public UsuarioDTOForLoginResponse verificar_usuario(CustomJwtAuthToken oldAuth, String token) {
     	
     	CustomJwtAuthToken auth;
     	try {
@@ -245,6 +292,68 @@ public class UsuarioService {
     	}
     	
     	return null;
+    }
+    
+    /**
+     * Solicita un cambio de contraseña para el usuario correspondiente al
+     * nombre de usuario proporcionado y guarda un Cache de las solicitudes. <br>
+     * Si el usuario no existe, no devuelve un error, pero si guarda el registro.
+     * @param username El nombre de usuario de la cuenta a la cual solicitar cambio de contraseña.
+     * @throws MessagingException Si hay un error al enviar el correo de cambio
+     */
+    public void solicitar_cambio_pass(String username) throws MessagingException {
+    	
+    	final Integer interval = settings.getInt("seguridad.chpass_interval");
+    	final LocalDateTime now = LocalDateTime.now();
+    	final LocalDateTime nextRequest = passChangeRequestCache.get(username);
+    	
+    	// Limitar las solicitudes de cambio de contraseña para que
+    	// solo se realizen cada X minutos (definido en Settings).
+    	if(nextRequest != null) {
+    		if(nextRequest.isBefore(now))
+    			throw new DataMismatchException("usuario", String.format("Ya se solicitó un cambio de contraseña para esta cuenta. Espera %d minutos", interval));
+    	}
+    	
+    	Usuario user = userRepository.listarPorUserName(username).orElse(null);
+    	
+    	// Guardar el intento en el cache local
+    	passChangeRequestCache.put(username, now.plus(interval, ChronoUnit.MINUTES));
+    	
+    	// Si el usuario no existe, devolver respuesta correcta.
+    	// No notificar al usuario si cierta cuenta existe o no.
+    	if(user == null) return;
+
+    	// Enviar el correo de cambio de contraseña junto con el token respectivo
+    	String token = tokens.changePassToken(user);
+    	
+//    	try {
+//    	emailService.enviarEmail(new EmailVerificacion(user, 
+//    									settings.getString("url.seguridad.changepass"),
+//    									token));
+//    	} catch( MessagingException ex) {
+//    		// No guardar en cache si hubo un error y no se envio el correo
+//    		passChangeRequestCache.remove(username);
+//    		throw ex;
+//    	}
+    	System.out.println(token);
+    }
+    
+    public void cambiar_pass(String token, String newPass) {
+    	
+    	CustomJwtAuthToken auth;
+    	try {
+    		auth = (CustomJwtAuthToken) jwtAuthConverter.convert(jwtDecoder.decode(token));
+    	} catch (Exception ex) {
+    		throw new AccountConfigurationException("Error al leer el token");
+    	}
+    	
+    	if(auth.getAction() != TokenActions.CHANGE_PASSWORD)
+    		throw new AccountConfigurationException("Token incorrecto");
+    	
+    	Usuario user = buscarPorUserName(auth.getName());
+    	user.setHashed_pass(passwordEncoder.encode(newPass));
+    	
+    	userRepository.save(user);
     }
     
     private Usuario buscarPorId(Integer id) {
