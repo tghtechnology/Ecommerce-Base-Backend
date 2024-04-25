@@ -20,6 +20,7 @@ import tghtechnology.tiendavirtual.Repository.DetalleCarritoRepository;
 import tghtechnology.tiendavirtual.Repository.ImagenRepository;
 import tghtechnology.tiendavirtual.Repository.ItemRepository;
 import tghtechnology.tiendavirtual.Repository.UsuarioRepository;
+import tghtechnology.tiendavirtual.Utils.Exceptions.DataMismatchException;
 import tghtechnology.tiendavirtual.Utils.Exceptions.IdNotFoundException;
 import tghtechnology.tiendavirtual.dto.Carrito.CarritoDTOForList;
 import tghtechnology.tiendavirtual.dto.Carrito.DetalleCarrito.DetalleCarritoDTOForInsert;
@@ -70,6 +71,7 @@ public class CarritoService {
      * @param iDet detalle del carrito en formato DTOForInsert
      * @param auth La autenticación del usuario
      * @throws IdNotFoundException Si una ID no se corresponde con ningún usuario o variación.
+     * @throws DataMismatchException Si el carrito ya contiene un item con esa ID.
      */
     @Transactional(rollbackFor = {DataIntegrityViolationException.class, AccessDeniedException.class})
     public void addDetalle(DetalleCarritoDTOForInsert iDet, Authentication auth){
@@ -83,6 +85,16 @@ public class CarritoService {
         if(!checkPermitted(user, auth))
     		throw new AccessDeniedException("");
     	
+        // No permite tener items duplicados en el carrito
+        Boolean contains = user.getCarrito()
+        						.getDetalles()
+        						.stream()
+        						.map(det -> det.getItem().getId_item())
+        						.anyMatch(id -> id.equals(iDet.getId_item()));
+        
+        if(contains) 
+        	throw new DataMismatchException("item", "El carrito ya contiene este item");
+        
         DetalleCarrito dc = iDet.toModel();
         dc.setCarrito(user.getCarrito());
         dc.setCorrelativo(user.getCarrito().getDetalles().size()+1);
