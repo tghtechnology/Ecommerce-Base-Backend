@@ -25,7 +25,7 @@ public class CategoriaService {
      */
     public List<CategoriaDTOForList> listarCategoria (){
         List<CategoriaDTOForList> categoriaList = new ArrayList<>();
-        List<Categoria> cats = (List<Categoria>) catRepository.listarCategoria();
+        List<Categoria> cats = catRepository.listarCategoria();
         
         cats.forEach( x -> {
             categoriaList.add(new CategoriaDTOForList().from(x));

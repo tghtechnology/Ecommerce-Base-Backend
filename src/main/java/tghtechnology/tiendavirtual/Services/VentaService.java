@@ -3,6 +3,7 @@ package tghtechnology.tiendavirtual.Services;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -61,6 +62,19 @@ public class VentaService {
 	SocketIOService socketService;
 	SettingsService settings;
 	
+	public List<VentaDTOForListMinimal> listarVentas(Integer pagina) {
+
+		if(pagina < 1) throw new DataMismatchException("pagina", "No puede ser menor a 1");
+        Pageable pag = PageRequest.of(pagina-1, settings.getInt("paginado.venta"));
+		
+		List<Venta> ventas = venRepository.listar(pag);
+		
+		return ventas
+				.stream()
+				.map(ven -> new VentaDTOForListMinimal().from(ven))
+				.collect(Collectors.toList());
+	}
+	
 	
 	/**
 	 * Lista todas las ventas de un cliente en formato DTOForList (Minimal).
@@ -77,6 +91,13 @@ public class VentaService {
 	public List<VentaDTOForListMinimal> listarVentasPorUsuario(Integer page, Authentication auth) {
 		Usuario user = user_buscarPorUsername(auth.getName());
 		return listarVentasPorUsuario(page, user.getPersona().getId_persona());
+	}
+	
+	public List<VentaDTOForListMinimal> listarAdmin(Integer page, Integer id_persona){
+		if(id_persona != null)
+			return listarVentasPorUsuario(page, id_persona);
+		else
+			return listarVentas(page);
 	}
 	
 	/**

@@ -14,7 +14,7 @@ import tghtechnology.tiendavirtual.Models.Venta;
 public interface VentaRepository extends JpaRepository<Venta, Integer>{
 
 	@Query("SELECT v FROM Venta v WHERE v.estado = true")
-    List<Venta> listarPedido(Pageable pageable);
+    List<Venta> listar(Pageable pageable);
 	
 	@Query("SELECT v FROM Venta v WHERE v.estado = true AND v.cliente = :cli")
     List<Venta> listarPorCliente(@Param("cli") Cliente cli, Pageable pageable);

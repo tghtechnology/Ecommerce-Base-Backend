@@ -41,10 +41,20 @@ public class VentaController {
 	
 	@Cliente
 	@GetMapping
-	public ResponseEntity<List<VentaDTOForListMinimal>> listar(@RequestParam(defaultValue = "1", name = "page") Integer page,
+	public ResponseEntity<List<VentaDTOForListMinimal>> listarPropios(@RequestParam(defaultValue = "1", name = "page") Integer page,
 														Authentication auth){
 		
 		List<VentaDTOForListMinimal> ventas = venService.listarVentasPorUsuario(page, auth);
+		return ResponseEntity.status(HttpStatus.OK).body(ventas);
+	}
+	
+	@Gerente
+	@GetMapping("/admin")
+	public ResponseEntity<List<VentaDTOForListMinimal>> listarAdmin(@RequestParam(defaultValue = "1", name = "page") Integer page,
+														@RequestParam(required = false, name = "id_cliente") Integer id_cliente,	
+														Authentication auth){
+		
+		List<VentaDTOForListMinimal> ventas = venService.listarAdmin(page, id_cliente);
 		return ResponseEntity.status(HttpStatus.OK).body(ventas);
 	}
 	
