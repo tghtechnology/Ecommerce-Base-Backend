@@ -51,8 +51,7 @@ public class VentaController {
 	@Gerente
 	@GetMapping("/admin")
 	public ResponseEntity<List<VentaDTOForListMinimal>> listarAdmin(@RequestParam(defaultValue = "1", name = "page") Integer page,
-														@RequestParam(required = false, name = "id_cliente") Integer id_cliente,	
-														Authentication auth){
+														@RequestParam(required = false, name = "id_cliente") Integer id_cliente){
 		
 		List<VentaDTOForListMinimal> ventas = venService.listarAdmin(page, id_cliente);
 		return ResponseEntity.status(HttpStatus.OK).body(ventas);

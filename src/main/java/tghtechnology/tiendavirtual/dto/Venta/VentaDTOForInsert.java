@@ -49,6 +49,10 @@ public class VentaDTOForInsert implements DTOForInsert<Venta>{
     @Size(min = 10, max = 80, message = "El correo debe tener entre 10 y 80 caracteres")
 	private String correo;
 	
+	@NotEmpty(message = "El campo no puede estar vacío")
+    @Size(min = 1, max = 150, message = "La dirección debe tener un maximo de 150 caracteres")
+	private String direccion_facturacion;
+	
 	// Direccion
 	@NotEmpty(message = "El campo no puede estar vacío")
     @Size(min = 3, max = 30, message = "la región debe tener entre 3 y 30 caracteres")
@@ -63,7 +67,7 @@ public class VentaDTOForInsert implements DTOForInsert<Venta>{
 	private String distrito;
 	
 	@NotEmpty(message = "El campo no puede estar vacío")
-    @Size(min = 1, max = 150, message = "La dirección no debe estar vacía y debe tener un maximo de 150 caracteres")
+    @Size(min = 1, max = 150, message = "La dirección debe tener un maximo de 150 caracteres")
 	private String direccion;
 	
 	@Size(max = 150, message = "La referencia debe tener un maximo de 150 caracteres")
@@ -86,7 +90,7 @@ public class VentaDTOForInsert implements DTOForInsert<Venta>{
 		
 		ven.setTipo_documento(tipo_documento);
 		ven.setNumero_documento(numero_documento);
-		ven.setRazon_social(nombres + (apellidos == null || apellidos.isBlank() ? "" : " " + apellidos));
+		ven.setRazon_social(nombres + (apellidos == null || apellidos.isBlank() ? "" : (" " + apellidos)));
 		ven.setTelefono(telefono);
 		ven.setCorreo(correo);
 		
