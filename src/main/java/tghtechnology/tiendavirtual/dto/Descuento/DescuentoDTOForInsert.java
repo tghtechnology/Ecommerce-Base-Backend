@@ -23,7 +23,6 @@ public class DescuentoDTOForInsert implements DTOForInsert<Descuento>{
 	@Max(value = 100, message = "El campo no puede ser mayor a 100")
 	private Integer porcentaje;
 	
-	
 	private LocalDate programacion_inicio;
 	
 	private LocalDate programacion_final;

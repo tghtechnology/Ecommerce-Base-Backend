@@ -63,7 +63,11 @@ public class DescuentoService {
         Item item = itemService.buscarPorId(iDes.getId_item());
         
         des.setItem(item);
-        desRepository.save(des);
+        des = desRepository.save(des);
+        
+        if(iDes.getActivado() != null && iDes.getActivado()) {
+        	actualizarActivado(des, true);
+        }
         
         return new DescuentoDTOForList().from(des);
     }
