@@ -17,6 +17,7 @@ public class MarcaDTOForListMinimal implements DTOForList<Marca>{
 	
 	@Override
 	public MarcaDTOForListMinimal from(Marca mar) {
+		if(mar == null) return null;
 		this.nombre = mar.getNombre();
 		this.url = mar.getText_id();
 		this.logo = mar.getLogo() == null ? null : mar.getLogo().getImagen();

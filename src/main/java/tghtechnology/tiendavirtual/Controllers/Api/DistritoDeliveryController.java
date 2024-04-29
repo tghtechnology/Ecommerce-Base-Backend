@@ -43,20 +43,20 @@ public class DistritoDeliveryController {
         return ResponseEntity.status(HttpStatus.OK).body(dist);
 	}
 	
-	@Gerente
-	@PutMapping("/{id}")
-	public ResponseEntity<Void> modificar(@PathVariable DistritoLima id,
-											@RequestBody @Valid DistritoDeliveryDTOForInsert mDist){
-		ddService.actualizarDistrito(id, mDist);
-		return ResponseEntity.status(HttpStatus.OK).build();
-	}
-
-	@Gerente
-	@PutMapping("/{id}/activo")
-	public ResponseEntity<Void> modificar(@PathVariable DistritoLima id,
-											@RequestBody @Valid DistritoDeliveryDTOForInsert mDist){
-		ddService.actualizarDistrito(id, mDist);
-		return ResponseEntity.status(HttpStatus.OK).build();
-	}
+//	@Gerente
+//	@PutMapping("/{id}")
+//	public ResponseEntity<Void> modificar(@PathVariable DistritoLima id,
+//											@RequestBody @Valid DistritoDeliveryDTOForInsert mDist){
+//		ddService.actualizarDistrito(id, mDist);
+//		return ResponseEntity.status(HttpStatus.OK).build();
+//	}
+//
+//	@Gerente
+//	@PutMapping("/{id}/activo")
+//	public ResponseEntity<Void> modificar(@PathVariable DistritoLima id,
+//											@RequestBody @Valid DistritoDeliveryDTOForInsert mDist){
+//		ddService.actualizarDistrito(id, mDist);
+//		return ResponseEntity.status(HttpStatus.OK).build();
+//	}
 
 }
