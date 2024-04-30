@@ -28,6 +28,7 @@ import tghtechnology.tiendavirtual.Repository.CategoriaRepository;
 import tghtechnology.tiendavirtual.Repository.DescuentoRepository;
 import tghtechnology.tiendavirtual.Repository.ImagenRepository;
 import tghtechnology.tiendavirtual.Repository.ItemRepository;
+import tghtechnology.tiendavirtual.Repository.MarcaRepository;
 import tghtechnology.tiendavirtual.Utils.Cloudinary.MediaManager;
 import tghtechnology.tiendavirtual.Utils.Exceptions.DataMismatchException;
 import tghtechnology.tiendavirtual.Utils.Exceptions.IdNotFoundException;
@@ -43,8 +44,8 @@ public class ItemService {
 	private DescuentoRepository desRepository;
 	private CategoriaRepository catRepository;
 	private ImagenRepository imaRepository;
+	private MarcaRepository marRepository;
 	
-	private MarcaService marService;
 	private MediaManager mediaManager;
 	private SettingsService settings;
 
@@ -93,7 +94,7 @@ public class ItemService {
     	Categoria cat = cat_buscarPorId(iItem.getId_categoria());
     	item.setCategoria(cat);
     	
-    	Marca mar = iItem.getId_marca() == null ? null : marService.buscarPorId(iItem.getId_marca());
+    	Marca mar = mar_buscarPorId(iItem.getId_marca());
     	item.setMarca(mar);
     	
     	Item item2 = itemRepository.save(item); // Asignar a otra instancia para que no muera la transaccion
@@ -126,7 +127,7 @@ public class ItemService {
         		item.setCategoria(cat);
     		}
     		if(item.getMarca().getId_marca() != mItem.getId_marca()) {
-    			Marca mar = mItem.getId_marca() == null ? null : marService.buscarPorId(mItem.getId_marca());
+    			Marca mar = mar_buscarPorId(mItem.getId_marca());
         		item.setMarca(mar);
     		}
     		if(mItem.getId_descuento() != null && (item.getDescuento() == null || item.getDescuento().getId_descuento() != mItem.getId_descuento())) {
@@ -236,7 +237,11 @@ public class ItemService {
 	}
     
     public Categoria cat_buscarPorId(Integer id){
-		return catRepository.listarUno(id).orElse(null);
+		return id == null ? null : catRepository.listarUno(id).orElse(null);
+	}
+    
+    public Marca mar_buscarPorId(Integer id){
+		return id == null ? null : marRepository.listarUno(id).orElse(null);
 	}
 
 }
