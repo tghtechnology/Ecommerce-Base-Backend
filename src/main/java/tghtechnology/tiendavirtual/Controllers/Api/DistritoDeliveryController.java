@@ -23,7 +23,7 @@ import tghtechnology.tiendavirtual.Services.DistritoDeliveryService;
 import tghtechnology.tiendavirtual.dto.DistritoDelivery.DistritoDeliveryDTOForInsert;
 import tghtechnology.tiendavirtual.dto.DistritoDelivery.DistritoDeliveryDTOForList;
 
-@RequestMapping("/api/categoria")
+@RequestMapping("/api/distrito")
 @RestController
 public class DistritoDeliveryController {
 

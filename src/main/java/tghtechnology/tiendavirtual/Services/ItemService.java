@@ -122,11 +122,11 @@ public class ItemService {
     		
     		Item item = mItem.updateModel(i);
     		
-    		if(item.getCategoria().getId_categoria() != mItem.getId_categoria()) {
+    		if(item.getCategoria() == null || item.getCategoria().getId_categoria() != mItem.getId_categoria()) {
     			Categoria cat = cat_buscarPorId(mItem.getId_categoria());
         		item.setCategoria(cat);
     		}
-    		if(item.getMarca().getId_marca() != mItem.getId_marca()) {
+    		if(item.getMarca() == null || item.getMarca().getId_marca() != mItem.getId_marca()) {
     			Marca mar = mar_buscarPorId(mItem.getId_marca());
         		item.setMarca(mar);
     		}
