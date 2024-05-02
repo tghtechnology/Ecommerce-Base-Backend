@@ -52,7 +52,7 @@ public class DistritoDeliveryController {
 	@Gerente
 	@PutMapping("/{id}/activo")
 	public ResponseEntity<Void> modificarActivo(@PathVariable DistritoLima id,
-											@RequestParam(defaultValue = "true", name = "value") Boolean activo){
+											@RequestParam(defaultValue = "false", name = "value") Boolean activo){
 		ddService.actualizarActivo(id, activo);
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
