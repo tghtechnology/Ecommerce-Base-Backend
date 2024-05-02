@@ -1,155 +1,11 @@
 {
 	"info": {
-		"_postman_id": "73240a78-a862-40d6-952c-054d5ee967b7",
+		"_postman_id": "df750275-6bc8-40d1-96b8-a6d62d36ccd7",
 		"name": "TiendaVirtual-Lampara",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "31763898",
-		"_collection_link": "https://winter-equinox-881682.postman.co/workspace/Base~1dd33edd-a5f1-48e2-8384-d7cb95fa3661/collection/31763898-73240a78-a862-40d6-952c-054d5ee967b7?action=share&source=collection_link&creator=31763898"
+		"_exporter_id": "29571097"
 	},
 	"item": [
-		{
-			"name": "Valoracion",
-			"item": [
-				{
-					"name": "Leer por Item",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{API}}/api/valoracion/item/lampara_grande_de_3_patas",
-							"host": [
-								"{{API}}"
-							],
-							"path": [
-								"api",
-								"valoracion",
-								"item",
-								"lampara_grande_de_3_patas"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Leer por Usuario",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{AUTH}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{API}}/api/valoracion/user/2",
-							"host": [
-								"{{API}}"
-							],
-							"path": [
-								"api",
-								"valoracion",
-								"user",
-								"2"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Crear",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{AUTH}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"id_item\": 1,\r\n    \"estrellas\": 5,\r\n    \"comentario\": \"Yo lo hice\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{API}}/api/valoracion",
-							"host": [
-								"{{API}}"
-							],
-							"path": [
-								"api",
-								"valoracion"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Editar",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{AUTH}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"id_item\": 1,\r\n    \"estrellas\": 2,\r\n    \"comentario\": \"Yo lo hice, pero no me gusta\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{API}}/api/valoracion/103",
-							"host": [
-								"{{API}}"
-							],
-							"path": [
-								"api",
-								"valoracion",
-								"103"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Eliminar",
-					"request": {
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{AUTH}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{API}}/api/valoracion/103",
-							"host": [
-								"{{API}}"
-							],
-							"path": [
-								"api",
-								"valoracion",
-								"103"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
 		{
 			"name": "Usuario",
 			"item": [
@@ -192,12 +48,14 @@
 								"key": "x-forwarded-for",
 								"value": "123.123.123.123",
 								"type": "text",
+								"uuid": "4aaa7648-fa90-42ee-b884-b675d3649ea5",
 								"disabled": true
 							},
 							{
 								"key": "Authorization",
 								"value": "{{AUTH}}",
-								"type": "text"
+								"type": "text",
+								"uuid": "8c751368-fbca-44bc-9b18-2f73b24e4dc5"
 							}
 						],
 						"body": {
@@ -231,7 +89,8 @@
 							{
 								"key": "x-forwarded-for",
 								"value": "123.123.123.123",
-								"type": "text"
+								"type": "text",
+								"uuid": "497e99f7-d961-4fa3-becc-85c4ea6d3f8e"
 							}
 						],
 						"body": {
@@ -270,7 +129,8 @@
 							{
 								"key": "Authorization",
 								"value": "{{AUTH}}",
-								"type": "text"
+								"type": "text",
+								"uuid": "806764a5-61bb-4887-ac7b-8ade9eebcbca"
 							}
 						],
 						"body": {
@@ -304,7 +164,8 @@
 							{
 								"key": "Authorization",
 								"value": "{{AUTH}}",
-								"type": "text"
+								"type": "text",
+								"uuid": "d73da0f4-87fa-4768-bc2f-e54a594a9396"
 							}
 						],
 						"body": {
@@ -379,7 +240,8 @@
 							{
 								"key": "Authorization",
 								"value": "{{AUTH}}",
-								"type": "text"
+								"type": "text",
+								"uuid": "4181f076-a5fd-4083-b793-d19c1c1b11e5"
 							}
 						],
 						"body": {
@@ -412,7 +274,8 @@
 							{
 								"key": "Authorization",
 								"value": "{{AUTH}}",
-								"type": "text"
+								"type": "text",
+								"uuid": "5301ca64-589e-4bb5-9f03-a2debc578480"
 							}
 						],
 						"body": {
@@ -446,7 +309,8 @@
 							{
 								"key": "Authorization",
 								"value": "{{AUTH}}",
-								"type": "text"
+								"type": "text",
+								"uuid": "83819033-f44a-4817-a640-b381ef294853"
 							}
 						],
 						"url": {
@@ -466,7 +330,7 @@
 			]
 		},
 		{
-			"name": "Publicidad",
+			"name": "DistritoDelivery",
 			"item": [
 				{
 					"name": "Leer",
@@ -476,118 +340,43 @@
 							{
 								"key": "Authorization",
 								"value": "{{AUTH}}",
-								"type": "text"
+								"uuid": "53e32381-c944-43f4-947a-a718f83f5780",
+								"disabled": true
 							}
 						],
 						"url": {
-							"raw": "{{API}}/api/publicidad",
+							"raw": "{{API}}/api/distrito",
 							"host": [
 								"{{API}}"
 							],
 							"path": [
 								"api",
-								"publicidad"
+								"distrito"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Leer Filtrado",
+					"name": "Leer Uno",
 					"request": {
 						"method": "GET",
 						"header": [
 							{
 								"key": "Authorization",
 								"value": "{{AUTH}}",
-								"type": "text"
+								"uuid": "c8dc6199-4167-4c0e-9bfd-b6468cc3d836"
 							}
 						],
 						"url": {
-							"raw": "{{API}}/api/publicidad?mostrar=true",
+							"raw": "{{API}}/api/distrito/ATE",
 							"host": [
 								"{{API}}"
 							],
 							"path": [
 								"api",
-								"publicidad"
-							],
-							"query": [
-								{
-									"key": "mostrar",
-									"value": "true"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "LeerUno",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{AUTH}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{API}}/api/publicidad/2",
-							"host": [
-								"{{API}}"
-							],
-							"path": [
-								"api",
-								"publicidad",
-								"2"
-							],
-							"query": [
-								{
-									"key": "mostrar",
-									"value": "false",
-									"disabled": true
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Crear",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{AUTH}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "publicidad",
-									"value": "{\n    \"nombre\": \"gran cierrapuertas\",\n    \"enlace\": \"lamparas.com/promociones/gran_cierra_puertas\",\n    \"mostrar\": false\n}",
-									"type": "text"
-								},
-								{
-									"key": "imagen",
-									"type": "file",
-									"src": "/C:/Users/Usuario/Downloads/imagen.jpg"
-								}
-							]
-						},
-						"url": {
-							"raw": "{{API}}/api/publicidad",
-							"host": [
-								"{{API}}"
-							],
-							"path": [
-								"api",
-								"publicidad"
+								"distrito",
+								"ATE"
 							]
 						}
 					},
@@ -601,58 +390,59 @@
 							{
 								"key": "Authorization",
 								"value": "{{AUTH}}",
-								"type": "text"
+								"uuid": "2b78248a-b21d-45fd-b7d4-ec84ee71492a"
 							}
 						],
 						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "publicidad",
-									"value": "{\n    \"nombre\": \"gran cierrapuertas editado\",\n    \"enlace\": \"lamparas.com/promociones/gran_cierra_puertas_editado\",\n    \"mostrar\": true\n}",
-									"type": "text"
-								},
-								{
-									"key": "imagen",
-									"type": "file",
-									"src": "/C:/Users/Usuario/Downloads/gato.jpeg"
+							"mode": "raw",
+							"raw": "{\r\n    \"precio_delivery\": 12.0,\r\n    \"activo\": true \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
 								}
-							]
+							}
 						},
 						"url": {
-							"raw": "{{API}}/api/publicidad/2",
+							"raw": "{{API}}/api/distrito/ANCON",
 							"host": [
 								"{{API}}"
 							],
 							"path": [
 								"api",
-								"publicidad",
-								"2"
+								"distrito",
+								"ANCON"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Eliminar",
+					"name": "Editar activo",
 					"request": {
-						"method": "DELETE",
+						"method": "PUT",
 						"header": [
 							{
 								"key": "Authorization",
 								"value": "{{AUTH}}",
-								"type": "text"
+								"uuid": "c9bee21e-908f-4807-94a1-72f5bdcb14ba"
 							}
 						],
 						"url": {
-							"raw": "{{API}}/api/categoria/3",
+							"raw": "{{API}}/api/distrito/ANCON/activo?value=true",
 							"host": [
 								"{{API}}"
 							],
 							"path": [
 								"api",
-								"categoria",
-								"3"
+								"distrito",
+								"ANCON",
+								"activo"
+							],
+							"query": [
+								{
+									"key": "value",
+									"value": "true"
+								}
 							]
 						}
 					},
@@ -674,7 +464,8 @@
 									{
 										"key": "Authorization",
 										"value": "{{AUTH}}",
-										"type": "text"
+										"type": "text",
+										"uuid": "64cf72b8-2143-4c3a-b10d-6a67e9dbd8a1"
 									}
 								],
 								"body": {
@@ -716,7 +507,8 @@
 									{
 										"key": "Authorization",
 										"value": "{{AUTH}}",
-										"type": "text"
+										"type": "text",
+										"uuid": "3528c7c3-e4c2-460d-a348-cc099043e0f5"
 									}
 								],
 								"body": {
@@ -758,7 +550,15 @@
 					"name": "Leer",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text",
+								"uuid": "195c9667-e8f6-4445-95a1-b8b4b0f4973b",
+								"disabled": true
+							}
+						],
 						"url": {
 							"raw": "{{API}}/api/item",
 							"host": [
@@ -819,7 +619,8 @@
 							{
 								"key": "Authorization",
 								"value": "{{AUTH}}",
-								"type": "text"
+								"type": "text",
+								"uuid": "437f5dcf-cf9a-4f3d-8541-e9cc710e63df"
 							}
 						],
 						"body": {
@@ -827,7 +628,7 @@
 							"formdata": [
 								{
 									"key": "item",
-									"value": "{\n    \"nombre\": \"Lampara grande de 3 patas\",\n    \"descripcion\": \"Una lampara grande\",\n    \"precio\": 120.00,\n    \"costo\": 40.00,\n    \"disponibilidad\": \"DISPONIBLE\",\n    \"stock\": 150,\n    \"id_marca\": 1,\n\"id_categoria\": 1\n}",
+									"value": "{\n    \"nombre\": \"Protector de pantalla\",\n    \"descripcion\": \"Una tablet grande\",\n    \"precio\": 7.00,\n\"costo\": 2.50,\n    \"disponibilidad\": \"DISPONIBLE\",\n    \"stock\": 150,\n    \"id_marca\": 1,\n\"id_categoria\": 1\n}",
 									"type": "text"
 								},
 								{
@@ -860,6 +661,7 @@
 								"key": "Authorization",
 								"value": "{{AUTH}}",
 								"type": "text",
+								"uuid": "1bfa3eed-844a-4e78-bb1c-446ec51dadb9",
 								"disabled": true
 							}
 						],
@@ -895,6 +697,7 @@
 								"key": "Authorization",
 								"value": "{{AUTH}}",
 								"type": "text",
+								"uuid": "045bf83f-d2de-41f3-8b68-1359d87f687c",
 								"disabled": true
 							}
 						],
@@ -971,7 +774,8 @@
 							{
 								"key": "Authorization",
 								"value": "{{AUTH}}",
-								"type": "text"
+								"type": "text",
+								"uuid": "bd87d1d2-a1fc-4d89-af71-abb9d814f6d8"
 							}
 						],
 						"body": {
@@ -1005,7 +809,8 @@
 							{
 								"key": "Authorization",
 								"value": "{{AUTH}}",
-								"type": "text"
+								"type": "text",
+								"uuid": "38701213-5c8c-4fea-b1cd-cfbf9f6ef13b"
 							}
 						],
 						"body": {
@@ -1040,7 +845,8 @@
 							{
 								"key": "Authorization",
 								"value": "{{AUTH}}",
-								"type": "text"
+								"type": "text",
+								"uuid": "e29e6036-b6df-44bc-8002-a7d3b00c92b7"
 							}
 						],
 						"url": {
@@ -1097,7 +903,8 @@
 							{
 								"key": "Authorization",
 								"value": "{{AUTH}}",
-								"type": "text"
+								"type": "text",
+								"uuid": "35488e5f-a70c-48bb-9e0b-83db67da0c8f"
 							}
 						],
 						"body": {
@@ -1131,7 +938,8 @@
 							{
 								"key": "Authorization",
 								"value": "{{AUTH}}",
-								"type": "text"
+								"type": "text",
+								"uuid": "93c8f352-9dfa-41e0-b53b-cf81527bef61"
 							}
 						],
 						"url": {
@@ -1155,7 +963,8 @@
 							{
 								"key": "Authorization",
 								"value": "{{AUTH}}",
-								"type": "text"
+								"type": "text",
+								"uuid": "bcc9ceb1-a3ab-4e38-b42f-21baa577bc34"
 							}
 						],
 						"url": {
@@ -1180,7 +989,8 @@
 							{
 								"key": "Authorization",
 								"value": "{{AUTH}}",
-								"type": "text"
+								"type": "text",
+								"uuid": "c155a96d-a1a4-4988-9fb1-e7a85d917172"
 							}
 						],
 						"url": {
@@ -1217,7 +1027,8 @@
 							{
 								"key": "Authorization",
 								"value": "{{AUTH}}",
-								"type": "text"
+								"type": "text",
+								"uuid": "fa72f878-e3dc-4533-a551-d88e92a18d93"
 							}
 						],
 						"body": {
@@ -1250,7 +1061,8 @@
 							{
 								"key": "Authorization",
 								"value": "{{AUTH}}",
-								"type": "text"
+								"type": "text",
+								"uuid": "8465a029-b339-4630-8951-d1e332773494"
 							}
 						],
 						"body": {
@@ -1284,7 +1096,8 @@
 							{
 								"key": "Authorization",
 								"value": "{{AUTH}}",
-								"type": "text"
+								"type": "text",
+								"uuid": "2575f558-5056-4331-a47c-10e9a1322a75"
 							}
 						],
 						"url": {
@@ -1309,7 +1122,8 @@
 							{
 								"key": "Authorization",
 								"value": "{{AUTH}}",
-								"type": "text"
+								"type": "text",
+								"uuid": "4c33c359-381a-4439-a95a-650e2f88cb9d"
 							}
 						],
 						"url": {
@@ -1339,7 +1153,8 @@
 							{
 								"key": "Authorization",
 								"value": "{{AUTH}}",
-								"type": "text"
+								"type": "text",
+								"uuid": "d4ac91c6-476b-4942-9295-46961ce1a821"
 							}
 						],
 						"url": {
@@ -1369,7 +1184,8 @@
 							{
 								"key": "Authorization",
 								"value": "{{AUTH}}",
-								"type": "text"
+								"type": "text",
+								"uuid": "a2b4fba5-bf1f-4a11-a685-f3f04a0ac87f"
 							}
 						],
 						"url": {
@@ -1393,7 +1209,8 @@
 							{
 								"key": "Authorization",
 								"value": "{{AUTH}}",
-								"type": "text"
+								"type": "text",
+								"uuid": "6c5dceed-a232-43f3-91cf-4e9ad956da41"
 							}
 						],
 						"url": {
@@ -1418,7 +1235,8 @@
 							{
 								"key": "Authorization",
 								"value": "{{AUTH}}",
-								"type": "text"
+								"type": "text",
+								"uuid": "f5013fc3-d6ab-4253-935b-32267facb273"
 							}
 						],
 						"body": {
@@ -1451,7 +1269,8 @@
 							{
 								"key": "Authorization",
 								"value": "{{AUTH}}",
-								"type": "text"
+								"type": "text",
+								"uuid": "8e0bf2cc-f468-4541-b1d1-d6bace5ee18c"
 							}
 						],
 						"body": {
@@ -1485,7 +1304,8 @@
 							{
 								"key": "Authorization",
 								"value": "{{AUTH}}",
-								"type": "text"
+								"type": "text",
+								"uuid": "58dcdffd-cdcd-4660-80b8-654c0c162719"
 							}
 						],
 						"url": {
@@ -1511,7 +1331,8 @@
 							{
 								"key": "Authorization",
 								"value": "{{AUTH}}",
-								"type": "text"
+								"type": "text",
+								"uuid": "86636269-bb01-4bfb-83eb-db8444883ea8"
 							}
 						],
 						"url": {
@@ -1541,7 +1362,8 @@
 							{
 								"key": "Authorization",
 								"value": "{{AUTH}}",
-								"type": "text"
+								"type": "text",
+								"uuid": "d8718174-c15e-4847-8ed3-94f938a68233"
 							}
 						],
 						"url": {
@@ -1565,12 +1387,13 @@
 							{
 								"key": "Authorization",
 								"value": "{{AUTH}}",
-								"type": "text"
+								"type": "text",
+								"uuid": "2ac9b468-dd3a-47fa-b14f-1b4116d9a567"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id_variacion\": 7,\r\n    \"cantidad\": 10\r\n}",
+							"raw": "{\r\n    \"id_variacion\": 102,\r\n    \"cantidad\": 200\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1598,7 +1421,8 @@
 							{
 								"key": "Authorization",
 								"value": "{{AUTH}}",
-								"type": "text"
+								"type": "text",
+								"uuid": "73e60ee3-a844-4326-9bc8-3df109f4020b"
 							}
 						],
 						"body": {
@@ -1632,7 +1456,8 @@
 							{
 								"key": "Authorization",
 								"value": "{{AUTH}}",
-								"type": "text"
+								"type": "text",
+								"uuid": "0ba076b8-81e3-44bd-a5a8-2d0915e4bcf7"
 							}
 						],
 						"body": {
@@ -1671,7 +1496,8 @@
 							{
 								"key": "Authorization",
 								"value": "{{AUTH}}",
-								"type": "text"
+								"type": "text",
+								"uuid": "191db7c1-b469-4929-86e3-4338e04aabf1"
 							}
 						],
 						"body": {
@@ -1698,6 +1524,58 @@
 					"response": []
 				},
 				{
+					"name": "Cancelar",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text",
+								"uuid": "da821d06-97d0-4e26-bee4-93fe485b61c4"
+							}
+						],
+						"url": {
+							"raw": "{{API}}/api/venta/502",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"venta",
+								"502"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Leer",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH}}",
+								"type": "text",
+								"uuid": "0460dd31-3636-4e7c-909f-12e4c50dd360"
+							}
+						],
+						"url": {
+							"raw": "{{API}}/api/venta/502",
+							"host": [
+								"{{API}}"
+							],
+							"path": [
+								"api",
+								"venta",
+								"502"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Venta anonima",
 					"request": {
 						"method": "POST",
@@ -1706,12 +1584,13 @@
 								"key": "Authorization",
 								"value": "{{AUTH}}",
 								"type": "text",
+								"uuid": "fc384d79-e533-4df7-b778-9b824dccd6fe",
 								"disabled": true
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"tipo_comprobante\": \"BOLETA_DE_VENTA\",\r\n    \"tipo_documento\": \"DNI\",\r\n    \"numero_documento\": \"12345678\",\r\n    \"nombres\": \"Juanito\",\r\n    \"apellidos\": \"Ramirez\",\r\n    \"telefono\": \"+51987654321\",\r\n    \"correo\": \"cliente_anonimo@test.com\",\r\n    \"region\": \"LIMA\",\r\n    \"provincia\": \"LIMA\",\r\n    \"distrito\": \"LIMA\",\r\n    \"direccion\": \"Al lado de la casa del vecino\",\r\n    \"referencia\": \"Al lado de mi otro vecino\",\r\n    \"carrito\":[\r\n        {\r\n            \"id_variacion\": 2,\r\n            \"cantidad\": 400\r\n        },\r\n        {\r\n            \"id_variacion\": 1,\r\n            \"cantidad\": 30\r\n        },\r\n        {\r\n            \"id_variacion\": 3,\r\n            \"cantidad\": 100\r\n        },\r\n        {\r\n            \"id_variacion\": 7,\r\n            \"cantidad\": 40\r\n        }\r\n    ]\r\n}",
+							"raw": "{\r\n    \"tipo_comprobante\": \"BOLETA_DE_VENTA\",\r\n    \"tipo_documento\": \"DNI\",\r\n    \"numero_documento\": \"12345678\",\r\n    \"nombres\": \"Juanito\",\r\n    \"apellidos\": \"Ramirez\",\r\n    \"telefono\": \"+51987654321\",\r\n    \"correo\": \"cliente_anonimo@test.com\",\r\n    \"region\": \"LIMA\",\r\n    \"provincia\": \"LIMA\",\r\n    \"distrito\": \"LIMA\",\r\n    \"direccion\": \"Al lado de la casa del vecino\",\r\n    \"referencia\": \"Al lado de mi otro vecino\",\r\n    \"carrito\":[\r\n        {\r\n            \"id_variacion\": 1,\r\n            \"cantidad\": 10\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1745,7 +1624,8 @@
 							{
 								"key": "Authorization",
 								"value": "{{AUTH}}",
-								"type": "text"
+								"type": "text",
+								"uuid": "1aac0123-cb9f-460d-bd74-cb60284a4fc1"
 							}
 						],
 						"url": {
@@ -1765,7 +1645,97 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Obtener",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{AUTH}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{API}}/api/reporte/xlsx?year=2024",
+									"host": [
+										"{{API}}"
+									],
+									"path": [
+										"api",
+										"reporte",
+										"xlsx"
+									],
+									"query": [
+										{
+											"key": "year",
+											"value": "2024"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "text/plain;charset=ISO-8859-1"
+								},
+								{
+									"key": "Content-Length",
+									"value": "86"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 10 Apr 2024 23:04:19 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "The specified formula '=SUMA(B2:B13)' starts with an equals sign which is not allowed."
+						}
+					]
 				}
 			]
 		}

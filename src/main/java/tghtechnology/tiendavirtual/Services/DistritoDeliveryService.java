@@ -2,6 +2,7 @@ package tghtechnology.tiendavirtual.Services;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -46,7 +47,7 @@ public class DistritoDeliveryService implements ApplicationListener<ApplicationR
     	
     	return dists
     			.stream()
-    			.map(new DistritoDeliveryDTOForList()::from)
+    			.map(dd -> new DistritoDeliveryDTOForList().from(dd))
     			.sorted()
     			.toList();
     	
@@ -116,10 +117,12 @@ public class DistritoDeliveryService implements ApplicationListener<ApplicationR
     		log.info("Tabla de distritos vacía, llenando distritos...");
     		
     		List<DistritoDelivery> dds = new ArrayList<>();
-    		for(DistritoLima dist : DistritoLima.values()) {
-    			dds.add(new DistritoDelivery(dist, BigDecimal.ZERO, false));
-    		}
+    		
+    		Arrays.asList(DistritoLima.values()).forEach(dist -> dds.add(new DistritoDelivery(dist, BigDecimal.ZERO, false)));
+
     		log.info("Finalizado el llenado de distritos");
+    		ddRepository.saveAll(dds);
+    		log.info("Distritos guardados en BD");
     	}
 		
 	}

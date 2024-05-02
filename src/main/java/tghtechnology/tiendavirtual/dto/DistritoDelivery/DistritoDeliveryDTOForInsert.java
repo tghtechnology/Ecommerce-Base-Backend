@@ -20,7 +20,6 @@ public class DistritoDeliveryDTOForInsert implements DTOForInsert<DistritoDelive
 	@Min(value = 0, message = "No puede ser menor a 0")
 	private BigDecimal precio_delivery;
 	
-	@NotNull(message = "No puede ser nulo")
 	private Boolean activo;
 	
 	@Override
@@ -31,7 +30,7 @@ public class DistritoDeliveryDTOForInsert implements DTOForInsert<DistritoDelive
 	@Override
 	public DistritoDelivery updateModel(DistritoDelivery dd) {
 		dd.setPrecio_delivery(precio_delivery);
-		dd.setActivo(activo);
+		if(activo != null) dd.setActivo(activo);
 		return dd;
 	}
 
