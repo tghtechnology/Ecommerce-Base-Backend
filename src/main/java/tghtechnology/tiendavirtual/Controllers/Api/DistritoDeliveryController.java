@@ -6,10 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,20 +41,20 @@ public class DistritoDeliveryController {
         return ResponseEntity.status(HttpStatus.OK).body(dist);
 	}
 	
-//	@Gerente
-//	@PutMapping("/{id}")
-//	public ResponseEntity<Void> modificar(@PathVariable DistritoLima id,
-//											@RequestBody @Valid DistritoDeliveryDTOForInsert mDist){
-//		ddService.actualizarDistrito(id, mDist);
-//		return ResponseEntity.status(HttpStatus.OK).build();
-//	}
-//
-//	@Gerente
-//	@PutMapping("/{id}/activo")
-//	public ResponseEntity<Void> modificar(@PathVariable DistritoLima id,
-//											@RequestBody @Valid DistritoDeliveryDTOForInsert mDist){
-//		ddService.actualizarDistrito(id, mDist);
-//		return ResponseEntity.status(HttpStatus.OK).build();
-//	}
+	@Gerente
+	@PutMapping("/{id}")
+	public ResponseEntity<Void> modificar(@PathVariable DistritoLima id,
+											@RequestBody @Valid DistritoDeliveryDTOForInsert mDist){
+		ddService.actualizarDistrito(id, mDist);
+		return ResponseEntity.status(HttpStatus.OK).build();
+	}
+
+	@Gerente
+	@PutMapping("/{id}/activo")
+	public ResponseEntity<Void> modificarActivo(@PathVariable DistritoLima id,
+											@RequestParam(defaultValue = "true", name = "value") Boolean activo){
+		ddService.actualizarActivo(id, activo);
+		return ResponseEntity.status(HttpStatus.OK).build();
+	}
 
 }

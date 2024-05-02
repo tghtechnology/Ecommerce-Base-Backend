@@ -163,6 +163,7 @@ public class VentaService {
 		if(car.getDetalles().isEmpty()) throw new DataMismatchException("carrito", "No se puede realizar una compra con el carrito vacío");
 		
 		Venta ven = venta.toModel();
+		ven.setCorrelativo(nextComprobante(ven.getTipo_comprobante()));
 		ven.setCliente(cli);
 		ven.setPorcentaje_igv(settings.getInt("facturacion.igv"));
 		ven.setAntes_de_igv(settings.getBoolean("facturacion.antes_de_igv"));

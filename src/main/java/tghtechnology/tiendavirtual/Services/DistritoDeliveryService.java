@@ -1,11 +1,18 @@
 package tghtechnology.tiendavirtual.Services;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.ApplicationListener;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import tghtechnology.tiendavirtual.Enums.DistritoLima;
 import tghtechnology.tiendavirtual.Enums.TipoUsuario;
 import tghtechnology.tiendavirtual.Models.DistritoDelivery;
@@ -14,9 +21,10 @@ import tghtechnology.tiendavirtual.Utils.Exceptions.IdNotFoundException;
 import tghtechnology.tiendavirtual.dto.DistritoDelivery.DistritoDeliveryDTOForInsert;
 import tghtechnology.tiendavirtual.dto.DistritoDelivery.DistritoDeliveryDTOForList;
 
+@Slf4j
 @Service
 @AllArgsConstructor
-public class DistritoDeliveryService {
+public class DistritoDeliveryService implements ApplicationListener<ApplicationReadyEvent>{
 
     private DistritoRepository ddRepository;
 
@@ -95,4 +103,27 @@ public class DistritoDeliveryService {
     public DistritoDelivery buscarPorId(DistritoLima id) throws IdNotFoundException{
 		return ddRepository.listarUno(id).orElseThrow( () -> new IdNotFoundException("distrito"));
 	}
+
+    /**
+     * Al inicializarse la aplicación, si la tabla de distritos está vacía,
+     * la pobla con todos los distritos del enumerador
+     */
+    @Transactional(rollbackOn = {DataIntegrityViolationException.class})
+	@Override
+	public void onApplicationEvent(ApplicationReadyEvent event) {
+
+    	if(ddRepository.count() == 0) {
+    		log.info("Tabla de distritos vacía, llenando distritos...");
+    		
+    		List<DistritoDelivery> dds = new ArrayList<>();
+    		for(DistritoLima dist : DistritoLima.values()) {
+    			dds.add(new DistritoDelivery(dist, BigDecimal.ZERO, false));
+    		}
+    		log.info("Finalizado el llenado de distritos");
+    	}
+		
+	}
+    
+    
+    
 }
