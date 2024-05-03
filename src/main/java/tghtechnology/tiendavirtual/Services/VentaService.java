@@ -225,6 +225,7 @@ public class VentaService {
 		ven.setAntes_de_igv(settings.getBoolean("facturacion.antes_de_igv"));
 		
 		// Calculando precio de delivery si es que lo requiera
+		ven.setPrecio_delivery(BigDecimal.ZERO);
 		if(!venta.getShalom()) {
 			DistritoLima dist = null;
 			try {
@@ -236,7 +237,7 @@ public class VentaService {
 			if(!dd.getActivo())
 				throw new DataMismatchException("distrito", "El distrito no está disponible para delivery");
 			ven.setPrecio_delivery(dd.getPrecio_delivery());
-		}
+		} 
 		
 		// Guardando venta para obtener una ID
 		final Venta v = venRepository.save(ven);

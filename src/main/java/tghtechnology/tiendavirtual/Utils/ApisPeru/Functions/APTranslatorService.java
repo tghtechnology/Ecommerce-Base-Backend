@@ -49,7 +49,7 @@ public class APTranslatorService {
 		final List<SaleDetail> detalles = new ArrayList<>();
 		ven.getDetalles().forEach(d -> detalles.add(toSaleDetail(d)));
 		
-		if (!ven.getPrecio_Delivery().equals(BigDecimal.ZERO))
+		if (ven.getPrecio_Delivery().compareTo(BigDecimal.ZERO) != 0)
 			detalles.add(toDeliveryDetail(ven.getPrecio_Delivery(), ven.getCliente().getDistrito()));
 		
 		final Address direccion_entrega = toDeliveryAddress(ven.getCliente());
