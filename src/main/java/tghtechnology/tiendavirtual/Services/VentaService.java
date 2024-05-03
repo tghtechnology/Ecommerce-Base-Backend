@@ -18,18 +18,21 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import lombok.AllArgsConstructor;
 import tghtechnology.tiendavirtual.Enums.DisponibilidadItem;
+import tghtechnology.tiendavirtual.Enums.DistritoLima;
 import tghtechnology.tiendavirtual.Enums.EstadoPedido;
 import tghtechnology.tiendavirtual.Enums.SettingType;
 import tghtechnology.tiendavirtual.Enums.TipoUsuario;
 import tghtechnology.tiendavirtual.Models.Carrito;
 import tghtechnology.tiendavirtual.Models.Cliente;
 import tghtechnology.tiendavirtual.Models.DetalleVenta;
+import tghtechnology.tiendavirtual.Models.DistritoDelivery;
 import tghtechnology.tiendavirtual.Models.Item;
 import tghtechnology.tiendavirtual.Models.Usuario;
 import tghtechnology.tiendavirtual.Models.Venta;
 import tghtechnology.tiendavirtual.Repository.ClienteRepository;
 import tghtechnology.tiendavirtual.Repository.DetalleCarritoRepository;
 import tghtechnology.tiendavirtual.Repository.DetalleVentaRepository;
+import tghtechnology.tiendavirtual.Repository.DistritoRepository;
 import tghtechnology.tiendavirtual.Repository.ItemRepository;
 import tghtechnology.tiendavirtual.Repository.UsuarioRepository;
 import tghtechnology.tiendavirtual.Repository.VentaRepository;
@@ -56,6 +59,7 @@ public class VentaService {
 	UsuarioRepository userRepository;
 	ClienteRepository cliRepository;
 	ItemRepository itemRepository;
+	DistritoRepository ddRepository;
 	
 	APTranslatorService apTranslator;
 	ApisPeruService apService;
@@ -167,6 +171,21 @@ public class VentaService {
 		ven.setCliente(cli);
 		ven.setPorcentaje_igv(settings.getInt("facturacion.igv"));
 		ven.setAntes_de_igv(settings.getBoolean("facturacion.antes_de_igv"));
+		
+		// Calculando precio de delivery si es que lo requiera
+		if(!venta.getShalom()) {
+			DistritoLima dist = null;
+			try {
+				dist = DistritoLima.valueOf(venta.getDistrito());
+			} catch (IllegalArgumentException ex) {
+				throw new DataMismatchException("distrito", "El distrito no está registrado en Lima Metropolitana");
+			}
+			DistritoDelivery dd = ddRepository.listarUno(dist).get();
+			if(!dd.getActivo())
+				throw new DataMismatchException("distrito", "El distrito no está disponible para delivery");
+			ven.setPrecio_delivery(dd.getPrecio_delivery());
+		}
+		
 		// Guardando venta para obtener una ID
 		final Venta v = venRepository.save(ven);
 		// Añadiendo items del carrito a la venta
@@ -202,6 +221,21 @@ public class VentaService {
 		ven.setCorrelativo(nextComprobante(ven.getTipo_comprobante()));
 		ven.setPorcentaje_igv(settings.getInt("facturacion.igv"));
 		ven.setAntes_de_igv(settings.getBoolean("facturacion.antes_de_igv"));
+		
+		// Calculando precio de delivery si es que lo requiera
+		if(!venta.getShalom()) {
+			DistritoLima dist = null;
+			try {
+				dist = DistritoLima.valueOf(venta.getDistrito());
+			} catch (IllegalArgumentException ex) {
+				throw new DataMismatchException("distrito", "El distrito no está registrado en Lima Metropolitana");
+			}
+			DistritoDelivery dd = ddRepository.listarUno(dist).get();
+			if(!dd.getActivo())
+				throw new DataMismatchException("distrito", "El distrito no está disponible para delivery");
+			ven.setPrecio_delivery(dd.getPrecio_delivery());
+		}
+		
 		// Guardando venta para obtener una ID
 		final Venta v = venRepository.save(ven);
 		// Añadiendo items del carrito a la venta

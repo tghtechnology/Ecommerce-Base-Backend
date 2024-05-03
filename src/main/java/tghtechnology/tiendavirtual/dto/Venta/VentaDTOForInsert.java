@@ -75,6 +75,9 @@ public class VentaDTOForInsert implements DTOForInsert<Venta>{
 	
 	@Size(max = 250, message = "La observacion debe tener un maximo de 250 caracteres")
 	private String observacion;
+	
+	@NotNull(message = "No puede ser nulo")
+	private Boolean shalom = false;
 
 	@Size(min = 1, message = "No puede estar vacío")
 	private List<DetalleVentaDTOForInsert> carrito;
@@ -99,6 +102,8 @@ public class VentaDTOForInsert implements DTOForInsert<Venta>{
 		ven.setDistrito(distrito);
 		ven.setDireccion(direccion);
 		ven.setReferencia(referencia);
+		
+		ven.setDireccion_facturacion(direccion_facturacion);
 		
 		return ven;
 	}

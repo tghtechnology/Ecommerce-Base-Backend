@@ -84,7 +84,7 @@ public class VentaController {
 		Venta ven = venService.realizarVentaCliente(iVen, auth);
 		venService.notificarVenta(ven);
 		byte[] resp = venService.apisPeruPDF(ven);
-		return ResponseEntity.status(HttpStatus.CREATED).body(resp); 
+		return ResponseEntity.status(HttpStatus.CREATED).body(resp);
 	}
 	
 //	//Venta test

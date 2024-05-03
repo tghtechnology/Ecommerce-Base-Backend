@@ -1,5 +1,6 @@
 package tghtechnology.tiendavirtual.Models;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -77,6 +78,9 @@ public class Venta implements Comparable<Venta>{
 	@Column(nullable = false, length = 150)
 	private String direccion;
 	
+	@Column(nullable = false, length = 150)
+	private String direccion_facturacion;
+	
 	@Column(nullable = true, length = 150)
 	private String referencia;
 	
@@ -85,6 +89,9 @@ public class Venta implements Comparable<Venta>{
 	
 	@Column(nullable = true)
 	private Double longitud;
+	
+	@Column(nullable = false)
+	private BigDecimal precio_delivery;
 	
 	@Column(nullable = true, length = 250)
 	private String observacion;

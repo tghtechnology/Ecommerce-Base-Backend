@@ -20,6 +20,7 @@ public class ClienteVentaDTOForList implements DTOForList<Venta>{
 	private String correo;
     
 	// Datos de direccion
+	private String direccion_facturacion;
 	private String region;
 	private String provincia;
 	private String distrito;
@@ -43,6 +44,7 @@ public class ClienteVentaDTOForList implements DTOForList<Venta>{
 		this.referencia = ven.getReferencia();
 		this.latitud = ven.getLatitud();
 		this.longitud = ven.getLongitud();
+		this.direccion_facturacion = ven.getDireccion_facturacion();
 		return this;
 	}
 

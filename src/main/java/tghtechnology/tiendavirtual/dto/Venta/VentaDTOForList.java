@@ -11,6 +11,7 @@ import lombok.Setter;
 import tghtechnology.tiendavirtual.Enums.EstadoPedido;
 import tghtechnology.tiendavirtual.Models.Venta;
 import tghtechnology.tiendavirtual.Utils.ApisPeru.Enums.TipoComprobante;
+import tghtechnology.tiendavirtual.Utils.ApisPeru.Functions.ApisPeruUtils;
 import tghtechnology.tiendavirtual.Utils.DTOInterfaces.DTOForList;
 
 @Getter
@@ -23,6 +24,7 @@ public class VentaDTOForList implements DTOForList<Venta>{
 	private String correlativo;
 	private LocalDateTime fecha_realizacion;
 	private EstadoPedido estado_pedido;
+	private BigDecimal precio_Delivery;
 	
 	private List<DetalleVentaDTOForList> detalles = new ArrayList<>();
 	
@@ -44,17 +46,21 @@ public class VentaDTOForList implements DTOForList<Venta>{
 		this.estado_pedido = ven.getEstado_pedido();
 		this.observacion = ven.getObservacion();
 		this.porcentaje_igv = ven.getPorcentaje_igv();
+		this.precio_Delivery = ApisPeruUtils.calcularPrecioUnitario(ven.getPrecio_delivery(), ven.getPorcentaje_igv(), ven.getAntes_de_igv());
 		
+		// Detalles
 		ven.getDetalles().forEach(dv -> {
 			DetalleVentaDTOForList det = new DetalleVentaDTOForList().from(dv,ven.getPorcentaje_igv(), ven.getAntes_de_igv());
 			detalles.add(det);
 			valor_antes_de_igv = valor_antes_de_igv.add(det.getSubtotal());
 		});
 		
-		this.igv = new BigDecimal(this.porcentaje_igv).multiply(this.valor_antes_de_igv.divide(new BigDecimal(100)));
+		// Delivery
+		valor_antes_de_igv = valor_antes_de_igv.add(this.precio_Delivery);
 		
+		// IGV
+		this.igv = new BigDecimal(this.porcentaje_igv).divide(new BigDecimal(100)).multiply(this.valor_antes_de_igv);
 		this.precio_total = this.valor_antes_de_igv.add(this.igv);
-		
 		this.cliente = new ClienteVentaDTOForList().from(ven);
 		
 		return this;

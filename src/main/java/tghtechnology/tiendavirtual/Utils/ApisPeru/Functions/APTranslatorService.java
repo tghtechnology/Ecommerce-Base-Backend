@@ -5,9 +5,10 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import lombok.AllArgsConstructor;
+import tghtechnology.tiendavirtual.Enums.DistritoLima;
 import tghtechnology.tiendavirtual.Services.SettingsService;
 import tghtechnology.tiendavirtual.Utils.ApisPeru.Enums.AfectacionIGV;
 import tghtechnology.tiendavirtual.Utils.ApisPeru.Enums.Leyenda;
@@ -25,12 +26,17 @@ import tghtechnology.tiendavirtual.dto.Venta.DetalleVentaDTOForList;
 import tghtechnology.tiendavirtual.dto.Venta.VentaDTOForList;
 
 @Service
-@AllArgsConstructor
 public class APTranslatorService {
 	
+	@Autowired
 	private SettingsService settings;
 	
+	private BigDecimal igv;
+	
 	public Boleta toBoleta(VentaDTOForList ven) {
+		
+		// Actualizar igv
+		igv = new BigDecimal(settings.getInt("facturacion.igv")).divide(new BigDecimal(100), 2, RoundingMode.HALF_UP);
 		
 		final Client client = toClient(ven.getCliente());
 				
@@ -42,6 +48,11 @@ public class APTranslatorService {
 		
 		final List<SaleDetail> detalles = new ArrayList<>();
 		ven.getDetalles().forEach(d -> detalles.add(toSaleDetail(d)));
+		
+		if (!ven.getPrecio_Delivery().equals(BigDecimal.ZERO))
+			detalles.add(toDeliveryDetail(ven.getPrecio_Delivery(), ven.getCliente().getDistrito()));
+		
+		final Address direccion_entrega = toDeliveryAddress(ven.getCliente());
 		
 		return new Boleta(
 				TipoOperacion.VENTA_INTERNA,
@@ -55,7 +66,7 @@ public class APTranslatorService {
 				detalles,
 				legends,
 				ven.getObservacion(),
-				null,
+				direccion_entrega,
 				descuentos.isEmpty() ? null : descuentos,
 				cargos.isEmpty() ? null : cargos
 				);
@@ -75,11 +86,28 @@ public class APTranslatorService {
 				String.format("PROD-%06d",det.getId_item()),
 				det.getNombre_item(),
 				det.getPrecio_unitario(),
-				new BigDecimal(settings.getInt("facturacion.igv")).divide(new BigDecimal(100), 2, RoundingMode.HALF_UP),
+				igv,
 				AfectacionIGV.GRAVADO_OPERACION_ONEROSA,
 				BigDecimal.ZERO,
 				descuentos.isEmpty() ? null : descuentos,
 				cargos.isEmpty() ? null : cargos
+				);
+	}
+	
+	public SaleDetail toDeliveryDetail(BigDecimal precio_delivery, String dist) {
+		DistritoLima d = DistritoLima.valueOf(dist);
+		
+		return new SaleDetail(
+				UnidadMedida.SERVICIO,
+				1,
+				String.format("DELIV-%s", d.toString()),
+				String.format("Delivery a %s", d.getNombre()),
+				precio_delivery,
+				igv,
+				AfectacionIGV.GRAVADO_OPERACION_ONEROSA,
+				BigDecimal.ZERO,
+				null,
+				null
 				);
 	}
 	
@@ -95,6 +123,16 @@ public class APTranslatorService {
 	}
 	
 	public Address toAddress(ClienteVentaDTOForList cli) {
+		return new Address(
+				null,
+				null,
+				null,
+				null,
+				cli.getDireccion_facturacion()
+				);
+	}
+	
+	public Address toDeliveryAddress(ClienteVentaDTOForList cli) {
 		return new Address(
 				"", //TODO obtener ubigeo
 				cli.getRegion(),
