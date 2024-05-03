@@ -43,6 +43,7 @@ import tghtechnology.tiendavirtual.Utils.ApisPeru.Functions.APTranslatorService;
 import tghtechnology.tiendavirtual.Utils.ApisPeru.Functions.ApisPeruService;
 import tghtechnology.tiendavirtual.Utils.ApisPeru.Objects.Boleta;
 import tghtechnology.tiendavirtual.Utils.ApisPeru.Objects.Response.ApisPeruResponse;
+import tghtechnology.tiendavirtual.Utils.Culqi.CulqiService;
 import tghtechnology.tiendavirtual.Utils.Exceptions.DataMismatchException;
 import tghtechnology.tiendavirtual.Utils.Exceptions.IdNotFoundException;
 import tghtechnology.tiendavirtual.Utils.Sockets.SocketIOService;
@@ -66,6 +67,7 @@ public class VentaService {
 	ApisPeruService apService;
 	SocketIOService socketService;
 	SettingsService settings;
+	CulqiService culqiService;
 	
 	public List<VentaDTOForListMinimal> listarVentas(Integer pagina) {
 
@@ -299,6 +301,11 @@ public class VentaService {
 		String mapped = om.writeValueAsString(vd);
 		
 		socketService.broadcast("ventas", mapped);
+	}
+	
+	/**/
+	public void test_culqi(VentaDTOForList ven) throws Exception {
+		culqiService.getCulqi().charge.create(null);
 	}
 	
 	/**
