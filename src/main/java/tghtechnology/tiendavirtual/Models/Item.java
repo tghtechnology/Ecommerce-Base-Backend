@@ -35,7 +35,7 @@ public class Item {
     @Column(nullable = false)
     private String nombre;
 
-    @Column(nullable = false, length = 150)
+    @Column(nullable = false, length = 2250)
     private String descripcion;
 
     @Column(nullable = false)

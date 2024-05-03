@@ -25,7 +25,7 @@ public class ItemDTOForInsert implements DTOForInsert<Item>{
 	private String nombre;
 	
 	@NotEmpty(message = "El campo no puede estar vacío")
-    @Size(min = 1, max = 150, message = "La descripción del item debe tener menos de 150 caracteres")
+    @Size(min = 1, max = 2250, message = "La descripción del item debe tener menos de 2250 caracteres")
     private String descripcion;
 	
 	@NotNull
