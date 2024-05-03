@@ -25,6 +25,7 @@ import tghtechnology.tiendavirtual.Security.Interfaces.Gerente;
 import tghtechnology.tiendavirtual.Services.VentaService;
 import tghtechnology.tiendavirtual.Utils.ApisPeru.Exceptions.ApisPeruResponseException;
 import tghtechnology.tiendavirtual.Utils.ApisPeru.Functions.APTranslatorService;
+import tghtechnology.tiendavirtual.Utils.ApisPeru.Objects.Boleta;
 import tghtechnology.tiendavirtual.Utils.ApisPeru.Objects.Response.ApisPeruResponse;
 import tghtechnology.tiendavirtual.dto.Venta.VentaDTOForInsert;
 import tghtechnology.tiendavirtual.dto.Venta.VentaDTOForList;
@@ -97,11 +98,19 @@ public class VentaController {
 //	}
 	
 	//Venta anonima
+//	@PostMapping("/no-cliente2")
+//	public ResponseEntity<ApisPeruResponse> realizarAnonimo(@RequestBody @Valid VentaDTOForInsert iVen) throws IOException, ApisPeruResponseException{
+//		Venta ven = venService.realizarVentaAnonima(iVen);
+//		ApisPeruResponse resp = venService.enviarApisPeru(ven);
+//		return ResponseEntity.status(HttpStatus.CREATED).body(resp); 
+//	}
+	
 	@PostMapping("/no-cliente2")
-	public ResponseEntity<ApisPeruResponse> realizarAnonimo(@RequestBody @Valid VentaDTOForInsert iVen) throws IOException, ApisPeruResponseException{
+	public ResponseEntity<Boleta> realizarAnonimo(@RequestBody @Valid VentaDTOForInsert iVen) throws IOException, ApisPeruResponseException{
 		Venta ven = venService.realizarVentaAnonima(iVen);
-		ApisPeruResponse resp = venService.enviarApisPeru(ven);
-		return ResponseEntity.status(HttpStatus.CREATED).body(resp); 
+		VentaDTOForList vd = new VentaDTOForList().from(ven);
+		Boleta bol = apTranslator.toBoleta(vd);
+		return ResponseEntity.status(HttpStatus.CREATED).body(bol); 
 	}
 	
 	//Venta test
