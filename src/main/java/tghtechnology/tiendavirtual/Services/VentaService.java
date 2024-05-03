@@ -1,6 +1,7 @@
 package tghtechnology.tiendavirtual.Services;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -184,6 +185,8 @@ public class VentaService {
 			if(!dd.getActivo())
 				throw new DataMismatchException("distrito", "El distrito no está disponible para delivery");
 			ven.setPrecio_delivery(dd.getPrecio_delivery());
+		} else {
+			ven.setPrecio_delivery(BigDecimal.ZERO);
 		}
 		
 		// Guardando venta para obtener una ID
