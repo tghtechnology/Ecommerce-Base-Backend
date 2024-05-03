@@ -51,7 +51,7 @@ public class VentaDTOForList implements DTOForList<Venta>{
 			valor_antes_de_igv = valor_antes_de_igv.add(det.getSubtotal());
 		});
 		
-		this.igv = new BigDecimal(this.porcentaje_igv).multiply(this.valor_antes_de_igv);
+		this.igv = new BigDecimal(this.porcentaje_igv).multiply(this.valor_antes_de_igv.divide(new BigDecimal(100)));
 		
 		this.precio_total = this.valor_antes_de_igv.add(this.igv);
 		
