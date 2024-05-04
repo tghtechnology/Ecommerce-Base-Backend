@@ -28,19 +28,21 @@ public interface ItemRepository extends JpaRepository<Item, Integer>{
 	 */
     @Query("SELECT i FROM Item i "
     		+ "LEFT JOIN i.categoria AS c "
+			+" LEFT JOIN i.marca AS m "
     		+ "WHERE "
     		+ "(i.nombre LIKE %:query% "
     		+ "OR i.descripcion LIKE %:query%) "
     		+ "AND i.precio > :min "
     		+ "AND i.precio < :max "
     		+ "AND (:catId LIKE '' OR c.text_id = :catId)"
+			+ "AND (:brandId LIKE '' OR m.text_id = :brandId)"
     		+ "AND i.estado=true")
     List<Item> listar(@Param("query") String query,
     					  @Param("min") BigDecimal min,
     					  @Param("max") BigDecimal max,
     					  @Param("catId") String catId,
+						  @Param("brandId") String brandId,
     					  Pageable pageable);
-	
 	
     @Query("SELECT i FROM Item i WHERE i.estado = true AND i.id_item = :id_item")
     Optional<Item> listarUno(@Param("id_item") Integer idItem);

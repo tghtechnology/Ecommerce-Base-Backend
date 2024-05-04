@@ -55,6 +55,7 @@ public class ItemService {
 									    BigDecimal max,
 									    String categoria,
 									    Integer pagina,
+										String marca,
 									    Authentication auth
     		){
         List<ItemDTOForList> itemList = new ArrayList<>();
@@ -62,7 +63,7 @@ public class ItemService {
         if(pagina < 1) throw new DataMismatchException("pagina", "No puede ser menor a 1");
         
         Pageable pag = PageRequest.of(pagina-1, settings.getInt("paginado.items"));
-        List<Item> items = (List<Item>) itemRepository.listar(query, min, max, categoria, pag);
+        List<Item> items = (List<Item>) itemRepository.listar(query, min, max, categoria,marca, pag);
         
         items.forEach( x -> {
             itemList.add(new ItemDTOForList().from(x, imaRepository.listarPorObjeto(TipoImagen.PRODUCTO, x.getId_item()), getExtendedPermission(auth)));

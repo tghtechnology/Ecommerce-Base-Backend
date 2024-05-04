@@ -49,6 +49,17 @@ public class MarcaService {
         });
         return marcaList;
     }
+
+    public List<MarcaDTOForList> listarMarcasFull (){
+        List<MarcaDTOForList> marcaList = new ArrayList<>();
+
+        List<Marca> mars = marRepository.listarFull();
+
+        mars.forEach( x -> {
+            marcaList.add(new MarcaDTOForList().from(x));
+        });
+        return marcaList;
+    }
     
     /**
      * Obtiene una marca en específico según su ID de texto
