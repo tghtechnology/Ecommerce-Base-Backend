@@ -17,6 +17,9 @@ public interface MarcaRepository extends CrudRepository<Marca, Integer>{
 	@Query("SELECT m FROM Marca m WHERE m.estado = true")
     List<Marca> listar(Pageable pageable);
 
+    @Query("SELECT m FROM Marca m WHERE m.estado = true")
+    List<Marca> listarFull();
+
     @Query("SELECT m FROM Marca m WHERE m.estado = true AND m.id_marca = :mar_id")
     Optional<Marca> listarUno(@Param("mar_id") Integer id_marca);
     

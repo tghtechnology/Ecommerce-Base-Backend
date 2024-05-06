@@ -48,7 +48,7 @@ public class ItemController {
 														@RequestParam(defaultValue = "1", name = "page") Integer page,
 														Authentication auth
     												){
-        List<ItemDTOForList> items = itemService.listar(query, minimo, maximo, categoria, page, auth);
+        List<ItemDTOForList> items = itemService.listar(query, minimo, maximo, categoria, page,marca, auth);
         return ResponseEntity.status(HttpStatus.OK).body(items);
     }
 	
