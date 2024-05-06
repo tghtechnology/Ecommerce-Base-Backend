@@ -38,7 +38,7 @@ public class VentaDTOForListMinimal implements DTOForList<Venta>{
 			antes_de_igv.set(antes_de_igv.get().add(det.getSubtotal()));
 		});
 		
-		igv = new BigDecimal(ven.getPorcentaje_igv()).multiply(antes_de_igv.get());
+		igv = new BigDecimal(ven.getPorcentaje_igv()).divide(new BigDecimal(100)).multiply(antes_de_igv.get());
 		
 		this.precio_total = antes_de_igv.get().add(igv);
 		

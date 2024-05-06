@@ -30,66 +30,65 @@ import tghtechnology.tiendavirtual.dto.Marca.MarcaDTOForList;
 @AllArgsConstructor
 public class MarcaController {
 
-    private MarcaService marService;
-private CustomBeanValidator validator;
+	private MarcaService marService;
+	private CustomBeanValidator validator;
 
-@GetMapping
-    public ResponseEntity<List<MarcaDTOForList>> listar(@RequestParam(defaultValue = "1", name = "page") Integer page){
-        List<MarcaDTOForList> mars = marService.listarMarcas(page);
-        return ResponseEntity.status(HttpStatus.OK).body(mars);
-    }
+	@GetMapping
+	public ResponseEntity<List<MarcaDTOForList>> listar(@RequestParam(defaultValue = "1", name = "page") Integer page) {
+		List<MarcaDTOForList> mars = marService.listarMarcas(page);
+		return ResponseEntity.status(HttpStatus.OK).body(mars);
+	}
 
-@GetMapping("/full")
-    public ResponseEntity<List<MarcaDTOForList>> listar(){
-        List<MarcaDTOForList> mars = marService.listarMarcasFull();
-        return ResponseEntity.status(HttpStatus.OK).body(mars);
-    }
+	@GetMapping("/full")
+	public ResponseEntity<List<MarcaDTOForList>> listar() {
+		List<MarcaDTOForList> mars = marService.listarMarcasFull();
+		return ResponseEntity.status(HttpStatus.OK).body(mars);
+	}
 
-@GetMapping("/{id}")
-public ResponseEntity<MarcaDTOForList> listarUno(@PathVariable String id) {
-        MarcaDTOForList mar = marService.listarUno(id);
-        return ResponseEntity.status(HttpStatus.OK).body(mar);
-}
+	@GetMapping("/{id}")
+	public ResponseEntity<MarcaDTOForList> listarUno(@PathVariable String id) {
+		MarcaDTOForList mar = marService.listarUno(id);
+		return ResponseEntity.status(HttpStatus.OK).body(mar);
+	}
 
-@Gerente
-@GetMapping("/id/{id}")
-public ResponseEntity<MarcaDTOForList> listarUnoPorID(@PathVariable Integer id) {
-        MarcaDTOForList mar = marService.listarUnoPorID(id);
-        return ResponseEntity.status(HttpStatus.OK).body(mar);
-}
+	@Gerente
+	@GetMapping("/id/{id}")
+	public ResponseEntity<MarcaDTOForList> listarUnoPorID(@PathVariable Integer id) {
+		MarcaDTOForList mar = marService.listarUnoPorID(id);
+		return ResponseEntity.status(HttpStatus.OK).body(mar);
+	}
 
-@Gerente
-@PostMapping
-public ResponseEntity<MarcaDTOForList> crear(@RequestParam String marca,
- @RequestParam(value = "imagen", required = false) MultipartFile imagen)
- throws IOException, CustomValidationFailedException {
+	@Gerente
+	@PostMapping
+	public ResponseEntity<MarcaDTOForList> crear(@RequestParam String marca,
+			@RequestParam(value = "imagen", required = false) MultipartFile imagen)
+			throws IOException, CustomValidationFailedException {
 
-MarcaDTOForInsert iMar = new ObjectMapper().readValue(marca, MarcaDTOForInsert.class);
-validator.validar(iMar);
+		MarcaDTOForInsert iMar = new ObjectMapper().readValue(marca, MarcaDTOForInsert.class);
+		validator.validar(iMar);
 
-MarcaDTOForList mar = marService.crearMarca(iMar, imagen);
-return ResponseEntity.status(HttpStatus.CREATED).body(mar); 
-}
+		MarcaDTOForList mar = marService.crearMarca(iMar, imagen);
+		return ResponseEntity.status(HttpStatus.CREATED).body(mar);
+	}
 
-@Gerente
-@PutMapping("/{id}")
-public ResponseEntity<Void> actualizar(@PathVariable Integer id,
-  @RequestParam String marca,
-  @RequestParam(value = "imagen", required = false) MultipartFile imagen)
-  throws IOException, CustomValidationFailedException {
+	@Gerente
+	@PutMapping("/{id}")
+	public ResponseEntity<Void> actualizar(@PathVariable Integer id, @RequestParam String marca,
+			@RequestParam(value = "imagen", required = false) MultipartFile imagen)
+			throws IOException, CustomValidationFailedException {
 
-MarcaDTOForInsert mMar = new ObjectMapper().readValue(marca, MarcaDTOForInsert.class);
-validator.validar(mMar);
+		MarcaDTOForInsert mMar = new ObjectMapper().readValue(marca, MarcaDTOForInsert.class);
+		validator.validar(mMar);
 
-marService.actualizarMarca(id, mMar);
-return ResponseEntity.status(HttpStatus.OK).build();
-}
+		marService.actualizarMarca(id, mMar);
+		return ResponseEntity.status(HttpStatus.OK).build();
+	}
 
-@Gerente
-@DeleteMapping("/{id}")
-public ResponseEntity<Void> eliminar(@PathVariable Integer id){
-marService.eliminarMarca(id);
-return ResponseEntity.status(HttpStatus.OK).build();
-} 
+	@Gerente
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> eliminar(@PathVariable Integer id) {
+		marService.eliminarMarca(id);
+		return ResponseEntity.status(HttpStatus.OK).build();
+	}
 
 }
