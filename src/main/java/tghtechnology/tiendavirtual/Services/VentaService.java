@@ -67,7 +67,7 @@ public class VentaService {
 	ApisPeruService apService;
 	SocketIOService socketService;
 	SettingsService settings;
-	CulqiService culqiService;
+//	CulqiService culqiService;
 	
 	public List<VentaDTOForListMinimal> listarVentas(Integer pagina) {
 
@@ -304,10 +304,10 @@ public class VentaService {
 	}
 	
 	/**/
-	public void test_culqi(VentaDTOForList ven) throws Exception {
-		culqiService.getCulqi().charge.create(null);
-		//JsonData jd = new JsonData();
-	}
+//	public void test_culqi(VentaDTOForList ven) throws Exception {
+//		culqiService.getCulqi().charge.create(null);
+//		//JsonData jd = new JsonData();
+//	}
 	
 	/**
 	 * Cambia el estado de una venta.<br>
