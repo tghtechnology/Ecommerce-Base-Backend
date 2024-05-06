@@ -73,11 +73,15 @@ public class VentaDTOForInsert implements DTOForInsert<Venta>{
 	@Size(max = 150, message = "La referencia debe tener un maximo de 150 caracteres")
 	private String referencia;
 	
+	// Otros
 	@Size(max = 250, message = "La observacion debe tener un maximo de 250 caracteres")
 	private String observacion;
 	
 	@NotNull(message = "No puede ser nulo")
 	private Boolean shalom = false;
+	
+	@NotEmpty(message = "El campo no puede estar vacío")
+	private String source_id;
 
 	@Size(min = 1, message = "No puede estar vacío")
 	private List<DetalleVentaDTOForInsert> carrito;

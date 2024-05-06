@@ -20,6 +20,7 @@ public class CulqiCharge {
 	private Moneda currency_code;
 	private String email;
 	private String description;
+	private AntiFraudDetails anti_fraud;
 	private final Integer installments = 0;
 	private final Map<String, Object> metadata = new HashMap<>();
 	private Auth3DS authentication_3DS;
@@ -31,6 +32,7 @@ public class CulqiCharge {
 	 * @param currency_code Código de la moneda en tres letras (Formato ISO 4217).
 	 * @param email Correo electrónico del cliente. Máximo 50 caracteres.
 	 * @param description Descripción del cargo a realizarse. Máximo 80 caracteres.
+	 * @param anti_fraud Datos de la persona que realiza la compra, para detectar posibles fraudes.
 	 * @param authentication_3ds Parámetros para la autenticación 3-D Secure
 	 */
 	public CulqiCharge(String source_id,
@@ -38,12 +40,14 @@ public class CulqiCharge {
 					   Moneda currency_code,
 					   String email,
 					   String description,
+					   AntiFraudDetails anti_fraud,
 					   Auth3DS authentication_3ds) {
 		this.source_id = source_id;
 		this.amount = amount;
 		this.currency_code = currency_code;
 		this.email = email;
 		this.description = description;
+		this.anti_fraud = anti_fraud;
 		authentication_3DS = authentication_3ds;
 	}
 	

@@ -2,6 +2,7 @@ package tghtechnology.tiendavirtual.Controllers.Api;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,7 +27,6 @@ import tghtechnology.tiendavirtual.Services.VentaService;
 import tghtechnology.tiendavirtual.Utils.ApisPeru.Exceptions.ApisPeruResponseException;
 import tghtechnology.tiendavirtual.Utils.ApisPeru.Functions.APTranslatorService;
 import tghtechnology.tiendavirtual.Utils.ApisPeru.Objects.Boleta;
-import tghtechnology.tiendavirtual.Utils.ApisPeru.Objects.Response.ApisPeruResponse;
 import tghtechnology.tiendavirtual.dto.Venta.VentaDTOForInsert;
 import tghtechnology.tiendavirtual.dto.Venta.VentaDTOForList;
 import tghtechnology.tiendavirtual.dto.Venta.VentaDTOForListMinimal;
@@ -104,6 +104,22 @@ public class VentaController {
 //		ApisPeruResponse resp = venService.enviarApisPeru(ven);
 //		return ResponseEntity.status(HttpStatus.CREATED).body(resp); 
 //	}
+	
+	@PostMapping("/no-cliente4")
+	public ResponseEntity<Map<String, Object>> culqiTest(@RequestBody @Valid VentaDTOForInsert iVen) throws Exception{
+		Venta ven = venService.realizarVentaAnonima(iVen);
+		VentaDTOForList vd = new VentaDTOForList().from(ven);
+		Map<String, Object> test = venService.test_culqi(iVen, vd.getPrecio_total());
+		return ResponseEntity.status(HttpStatus.CREATED).body(test); 
+	}
+	
+	@PostMapping("/no-cliente3")
+	public ResponseEntity<Map<String, Object>> culqiCargo(@RequestBody @Valid VentaDTOForInsert iVen) throws Exception{
+		Venta ven = venService.realizarVentaAnonima(iVen);
+		VentaDTOForList vd = new VentaDTOForList().from(ven);
+		Map<String, Object> test = venService.cargo_culqi(iVen, vd.getPrecio_total());
+		return ResponseEntity.status(HttpStatus.CREATED).body(test); 
+	}
 	
 	@PostMapping("/no-cliente2")
 	public ResponseEntity<Boleta> realizarAnonimo(@RequestBody @Valid VentaDTOForInsert iVen) throws IOException, ApisPeruResponseException{

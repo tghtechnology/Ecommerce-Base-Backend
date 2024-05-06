@@ -3,7 +3,11 @@ package tghtechnology.tiendavirtual.Services;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.PageRequest;
@@ -13,7 +17,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.culqi.model.ResponseCulqi;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
@@ -67,7 +73,7 @@ public class VentaService {
 	ApisPeruService apService;
 	SocketIOService socketService;
 	SettingsService settings;
-//	CulqiService culqiService;
+	CulqiService culqiService;
 	
 	public List<VentaDTOForListMinimal> listarVentas(Integer pagina) {
 
@@ -304,10 +310,31 @@ public class VentaService {
 	}
 	
 	/**/
-//	public void test_culqi(VentaDTOForList ven) throws Exception {
-//		culqiService.getCulqi().charge.create(null);
-//		//JsonData jd = new JsonData();
-//	}
+	public Map<String, Object> test_culqi(VentaDTOForInsert ven, BigDecimal total) throws Exception {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+//		Map<String, Object> token = new HashMap<String, Object>();
+//		token.put("card_number", "4111111111111111");
+//		token.put("cvv", "123");
+//		token.put("email", "review@culqi.com");
+//		token.put("expiration_month", "09");
+//		token.put("expiration_year", "2025");
+//		ResponseCulqi resp = culqiService.getCulqi().token.create(token);
+//		Map<String, Object> res = mapper.readValue(resp.getBody(), new TypeReference<HashMap<String, Object>>(){});
+//		return res;
+		String source_id = "tkn_test_701ug3CDNJOAt5Q6";//res.get("id").toString();
+		System.out.println("Source_id: " + source_id);
+		ven.setSource_id(source_id);
+		
+		ResponseCulqi chargeResponse = culqiService.getCulqi().charge.create(culqiService.toCargo(ven, total).toMap());
+		
+		return mapper.readValue(chargeResponse.getBody(), new TypeReference<HashMap<String, Object>>(){});
+	}
+	
+	public Map<String, Object> cargo_culqi(VentaDTOForInsert ven, BigDecimal total) throws Exception {
+		return culqiService.toCargo(ven, total).toMap();
+	}
 	
 	/**
 	 * Cambia el estado de una venta.<br>

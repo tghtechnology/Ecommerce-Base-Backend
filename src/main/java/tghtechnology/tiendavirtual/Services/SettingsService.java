@@ -51,6 +51,8 @@ public class SettingsService implements ApplicationListener<ApplicationReadyEven
 		addSetting("facturacion.serie_boleta"	, "1"			, SettingType.INT, false);
 		addSetting("facturacion.serie_factura"	, "1"			, SettingType.INT, false);
 		
+		addSetting("culqi.nombre_cargo"			, "Compra LAMPARAS"	, SettingType.STRING);
+		
 		addSetting("notificaciones.intervalo"	, "3"				, SettingType.INT);
 		addSetting("notificaciones.email"		, "programer.christopher@gmail.com"	, SettingType.STRING);
 		
