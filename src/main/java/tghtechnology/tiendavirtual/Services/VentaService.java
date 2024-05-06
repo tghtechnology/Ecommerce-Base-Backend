@@ -306,6 +306,7 @@ public class VentaService {
 	/**/
 	public void test_culqi(VentaDTOForList ven) throws Exception {
 		culqiService.getCulqi().charge.create(null);
+		//JsonData jd = new JsonData();
 	}
 	
 	/**

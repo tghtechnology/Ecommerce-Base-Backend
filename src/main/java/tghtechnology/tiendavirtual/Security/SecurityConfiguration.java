@@ -20,6 +20,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -34,6 +35,7 @@ import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
 
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.jwk.JWKSet;
@@ -41,7 +43,10 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import tghtechnology.tiendavirtual.Repository.UsuarioRepository;
+import tghtechnology.tiendavirtual.Utils.Sockets.SocketIOAuth;
 
 @Configuration
 @EnableMethodSecurity
@@ -50,7 +55,9 @@ public class SecurityConfiguration {
 
 	@Autowired
 	private UsuarioRepository usRepo;
-	//private AdminService adminService;
+	@Autowired
+	private SocketIOAuth socketAuth;
+	
 	private RSAKey rsaKey;
 	
 	@Bean
@@ -82,11 +89,11 @@ public class SecurityConfiguration {
 			)
 			.logout((logout) -> logout
 								.logoutUrl("/admin/logout")
+								.addLogoutHandler(new SocketLogoutHandler())
 								.logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK)))
 			
 			.build();
 	}
-
 
 	@Bean
 	public UserDetailsService userDetailsService() {
@@ -136,6 +143,15 @@ public class SecurityConfiguration {
         public <U> Converter<Jwt, U> andThen(Converter<? super Collection<GrantedAuthority>, ? extends U> after) {
             return Converter.super.andThen(after);
         }
+    }
+    
+    private final class SocketLogoutHandler implements LogoutHandler{
+
+		@Override
+		public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+			socketAuth.remove(authentication.getName());
+		}
+    	
     }
     
 }

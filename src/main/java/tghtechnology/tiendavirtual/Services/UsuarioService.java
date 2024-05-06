@@ -179,7 +179,7 @@ public class UsuarioService {
     	
     	UUID uid = null;
     	if(TipoUsuario.checkRole(user.getAuthorities(), TipoUsuario.GERENTE))
-    		uid = socketAuth.add();
+    		uid = socketAuth.add(username);
     	
     	return new UsuarioDTOForLoginResponse().from(user, token, uid);
     }

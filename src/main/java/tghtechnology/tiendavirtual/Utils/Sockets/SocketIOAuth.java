@@ -2,19 +2,27 @@ package tghtechnology.tiendavirtual.Utils.Sockets;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.corundumstudio.socketio.AuthorizationResult;
 import com.corundumstudio.socketio.HandshakeData;
 
+import tghtechnology.tiendavirtual.Services.SettingsService;
+
 @Component
 public class SocketIOAuth {
 
-	final private Map<UUID, LocalDateTime> expectedIDs = new HashMap<>();
+	@Autowired
+	private SettingsService settings;
+	
+	final private Map<UUID, SocketSession> expectedIDs = new HashMap<>();
 	
 	public AuthorizationResult getAuthorizationResult(HandshakeData data) {
 		AuthorizationResult result = AuthorizationResult.FAILED_AUTHORIZATION;
@@ -23,20 +31,19 @@ public class SocketIOAuth {
 		if(sid != null) {
 			UUID uid = UUID.fromString(sid.replace('_', '-'));
 			
-			LocalDateTime expiration = expectedIDs.get(uid);
-			if(expiration != null && LocalDateTime.now().isBefore(expiration)) {
+			SocketSession session = expectedIDs.get(uid);
+			if(session != null && LocalDateTime.now().isBefore(session.getExpiration())) {
 				result =  AuthorizationResult.SUCCESSFUL_AUTHORIZATION;
-				expectedIDs.remove(uid);
 			}
+			cleanMap();
 		}
-		cleanMap();
 		return result;
 	}
 	
-	public UUID add() {
+	public UUID add(String username) {
 		UUID uid = UUID.randomUUID();
-		LocalDateTime expiration = LocalDateTime.now().plus(5L, ChronoUnit.MINUTES);
-		expectedIDs.put(uid, expiration);
+		LocalDateTime expiration = LocalDateTime.now().plus(settings.getInt("seguridad.token_duration"), ChronoUnit.HOURS);
+		expectedIDs.put(uid, new SocketSession(expiration, username));
 		return uid;
 	}
 	
@@ -47,9 +54,24 @@ public class SocketIOAuth {
 		LocalDateTime now = LocalDateTime.now();
 		
 		expectedIDs.entrySet().forEach(entry -> {
-			if(now.isAfter(entry.getValue()))
+			if(now.isAfter(entry.getValue().getExpiration()))
 				expectedIDs.remove(entry.getKey());
 		});
+	}
+	
+	/**
+	 * Elimina a una uid de la lista de UIDs esperadas.<br>
+	 * Usualmente se utilizaría en el método de LOGOUT.
+	 * @param username Nombre del usuario a remover.
+	 */
+	public void remove(String username) {
+		final List<UUID> ids = new ArrayList<>();
+		expectedIDs.entrySet().forEach(entry -> {
+			if(entry.getValue().getUsername().equals(username)) {
+				ids.add(entry.getKey());
+			}
+		});
+		ids.forEach(expectedIDs::remove);
 	}
 	
 }
