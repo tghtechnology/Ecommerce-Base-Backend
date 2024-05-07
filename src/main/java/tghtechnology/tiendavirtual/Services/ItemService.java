@@ -100,6 +100,12 @@ public class ItemService {
     	
     	Item item2 = itemRepository.save(item); // Asignar a otra instancia para que no muera la transaccion
     	
+    	//Asignar marca a la categoría
+    	if(mar != null && !mar.getCategorias().contains(cat)) {
+    		mar.getCategorias().add(cat);
+    		marRepository.save(mar);
+    	}
+    	
     	if(imagen != null) {
 	        Imagen img = mediaManager.subirImagenItem(item2.getText_id(), imagen);
 	        img.setId_owner(item.getId_item());

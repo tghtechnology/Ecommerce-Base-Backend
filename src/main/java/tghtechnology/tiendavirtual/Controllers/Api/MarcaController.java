@@ -34,8 +34,9 @@ public class MarcaController {
 	private CustomBeanValidator validator;
 
 	@GetMapping
-	public ResponseEntity<List<MarcaDTOForList>> listar(@RequestParam(defaultValue = "1", name = "page") Integer page) {
-		List<MarcaDTOForList> mars = marService.listarMarcas(page);
+	public ResponseEntity<List<MarcaDTOForList>> listar(@RequestParam(required = false, name = "page") Integer page,
+														@RequestParam(required = false, name = "id_categoria") Integer id_categoria) {
+		List<MarcaDTOForList> mars = marService.listarMarcas(page, id_categoria);
 		return ResponseEntity.status(HttpStatus.OK).body(mars);
 	}
 
@@ -69,6 +70,13 @@ public class MarcaController {
 
 		MarcaDTOForList mar = marService.crearMarca(iMar, imagen);
 		return ResponseEntity.status(HttpStatus.CREATED).body(mar);
+	}
+	
+	@Gerente
+	@PutMapping("/categoria")
+	public ResponseEntity<Void> actualizarCategorias(){
+		marService.actualizarCategorias();
+		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 
 	@Gerente

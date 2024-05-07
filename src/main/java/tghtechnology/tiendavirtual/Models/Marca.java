@@ -10,6 +10,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -43,6 +45,12 @@ public class Marca {
 
     @OneToMany(mappedBy = "marca")
     private Set<Item> items = new HashSet<>();
+    
+    @ManyToMany
+	@JoinTable(name = "id_categoria",
+			joinColumns = @JoinColumn(name = "id_marca", referencedColumnName = "id_marca"),
+			inverseJoinColumns = @JoinColumn(name = "id_categoria", referencedColumnName = "id_categoria"))
+	private Set<Categoria> categorias = new HashSet<>();
     
     @OneToOne
     @JoinColumn(name = "id_imagen")

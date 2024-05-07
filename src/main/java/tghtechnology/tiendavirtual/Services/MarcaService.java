@@ -2,7 +2,9 @@ package tghtechnology.tiendavirtual.Services;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
@@ -12,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.AllArgsConstructor;
+import tghtechnology.tiendavirtual.Models.Categoria;
 import tghtechnology.tiendavirtual.Models.Imagen;
 import tghtechnology.tiendavirtual.Models.Marca;
 import tghtechnology.tiendavirtual.Repository.ImagenRepository;
@@ -36,18 +39,22 @@ public class MarcaService {
      * Lista todas las marcas no eliminadas
      * @return Una lista de las marcas en formato ForList
      */
-    public List<MarcaDTOForList> listarMarcas (Integer pagina){
-        List<MarcaDTOForList> marcaList = new ArrayList<>();
+    public List<MarcaDTOForList> listarMarcas (Integer pagina, Integer id_categoria){
+        List<Marca> mars;
+        if(pagina == null){
+        	if(id_categoria == null)
+        		mars = marRepository.listarFull();
+        	else
+        		mars = marRepository.listarPorCategoria(id_categoria);
+        } else {
+        	if(pagina < 1)
+        		throw new DataMismatchException("pagina", "No puede ser menor a 1");
+        	
+        	Pageable pag = PageRequest.of(pagina-1, settings.getInt("paginado.marca"));
+            mars = marRepository.listar(pag);
+        }
         
-        if(pagina < 1) throw new DataMismatchException("pagina", "No puede ser menor a 1");
-        
-        Pageable pag = PageRequest.of(pagina-1, settings.getInt("paginado.marca"));
-        List<Marca> mars = marRepository.listar(pag);
-        
-        mars.forEach( x -> {
-        	marcaList.add(new MarcaDTOForList().from(x));
-        });
-        return marcaList;
+        return mars.stream().map(m -> new MarcaDTOForList().from(m)).toList();
     }
 
     public List<MarcaDTOForList> listarMarcasFull (){
@@ -125,6 +132,24 @@ public class MarcaService {
         mar.setEstado(false);
         mar.setText_id(mar.getId_marca() + "%DELETED%" + mar.getText_id());
         marRepository.save(mar);
+    }
+    
+    @Transactional
+    public void actualizarCategorias() {
+    	// Detectar las categorias de cada marca
+    	List<Marca> mars = marRepository.listarFull();
+    	mars.forEach(mar -> {
+    		Set<Categoria> cats = new HashSet<>();
+    		mar.getItems().forEach(item -> {
+    			if(item.getCategoria() != null) {
+    				cats.add(item.getCategoria());
+    			}
+    		});
+    		mar.setCategorias(cats);
+    	});
+    	
+    	marRepository.saveAll(mars);
+    	
     }
     
     
