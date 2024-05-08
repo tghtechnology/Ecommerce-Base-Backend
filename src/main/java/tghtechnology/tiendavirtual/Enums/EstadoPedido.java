@@ -2,6 +2,8 @@ package tghtechnology.tiendavirtual.Enums;
 
 public enum EstadoPedido {
 	
+	PAGO_PENDIENTE("Pago pendiente"),
+	FACTURADO("Pedido facturado"),
 	PENDIENTE("Pedido pendiente"),
 	ATENDIDO("Pedido atendido"),
 	EN_TIENDA("Esperando entrega en tienda"),
