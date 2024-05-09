@@ -3,6 +3,7 @@ package tghtechnology.tiendavirtual.Services;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
@@ -17,6 +18,8 @@ import tghtechnology.tiendavirtual.dto.Categoria.CategoriaDTOForList;
 public class CategoriaService {
 
     private CategoriaRepository catRepository;
+    @Autowired
+    private SettingsService settings;
 
     /**
      * Lista todas las categorías no eliminadas
@@ -24,15 +27,19 @@ public class CategoriaService {
      * @return Una lista de las categorías en formato ForList
      */
     public List<CategoriaDTOForList> listarCategoria (){
-        List<CategoriaDTOForList> categoriaList = new ArrayList<>();
-        List<Categoria> cats = (List<Categoria>) catRepository.listarCategoria();
-        
-        cats.forEach( x -> {
-            categoriaList.add(new CategoriaDTOForList().from(x));
-        });
-        return categoriaList;
+        if(settings.getInt("config.categorias")==1) {
+            List<CategoriaDTOForList> categoriaList = new ArrayList<>();
+            List<Categoria> cats = catRepository.listarCategoria();
+            cats.forEach(x -> {
+                categoriaList.add(new CategoriaDTOForList().from(x));
+            });
+            return categoriaList;
+        }
+        else{
+            return null;
+        }
     }
-    
+
     /**
      * Obtiene una categoría en específico según su ID
      * 

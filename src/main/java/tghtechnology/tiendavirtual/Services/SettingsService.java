@@ -91,7 +91,8 @@ public class SettingsService implements ApplicationListener<ApplicationReadyEven
 		
 		addSetting("cloudinary.url"				, "cloudinary://269427965692487:dPIsYT7kWdJoftwRYo_zGH1nYp4@dryp7amgv"	, SettingType.STRING); //TODO remover
 		addSetting("cloudinary.directory"		, "ecomm-base/"	, SettingType.STRING);
-		
+		 addSetting("config.send_error", "true",SettingType.BOOL);
+		 addSetting("config.categorias","1",SettingType.INT);
 	}
 	
 	/**
@@ -123,7 +124,7 @@ public class SettingsService implements ApplicationListener<ApplicationReadyEven
 	
 	/**
 	 * Modifica una lista de settings
-	 * @param mSetsUna lista que contiene todos los settings a modificar en formato DTOForList
+	 * @param mSets Una lista que contiene todos los settings a modificar en formato DTOForList
 	 */
 	public void modificarSettings(List<SettingDTOForInsert> mSets) {
 		mSets.forEach( mSet -> {
@@ -176,10 +177,11 @@ public class SettingsService implements ApplicationListener<ApplicationReadyEven
 	
 	/**
 	 * Obtiene un setting de tipo {@link java.lang.Integer}.
+	 *
 	 * @param key El nombre del setting.
 	 * @return El setting encontrado.
-	 * @throws NoSuchElementException Si el nombre no se corresponde 
-	 * con ningún setting.
+	 * @throws NoSuchElementException   Si el nombre no se corresponde
+	 *                                  con ningún setting.
 	 * @throws IllegalArgumentException Si el setting no es de tipo Integer.
 	 */
 	public Integer getInt(String key) {
@@ -300,7 +302,7 @@ public class SettingsService implements ApplicationListener<ApplicationReadyEven
 		alterSetting("company.provincia", "LIMA", SettingType.STRING);
 		alterSetting("company.distrito", "LIMA", SettingType.STRING);
 		alterSetting("company.direccion", "MI CASA", SettingType.STRING);
-		
+		alterSetting("config.categorias", 2, SettingType.INT);
 	}
 	
 	private void addSetting(String key, String val, SettingType type) {
