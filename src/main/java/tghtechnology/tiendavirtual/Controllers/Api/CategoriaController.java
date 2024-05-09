@@ -18,6 +18,7 @@ import jakarta.validation.Valid;
 import tghtechnology.tiendavirtual.Security.Interfaces.Empleado;
 import tghtechnology.tiendavirtual.Security.Interfaces.Gerente;
 import tghtechnology.tiendavirtual.Services.CategoriaService;
+import tghtechnology.tiendavirtual.Services.SettingsService;
 import tghtechnology.tiendavirtual.dto.Categoria.CategoriaDTOForInsert;
 import tghtechnology.tiendavirtual.dto.Categoria.CategoriaDTOForList;
 
@@ -28,10 +29,18 @@ public class CategoriaController {
 	@Autowired
     private CategoriaService catService;
 	
+	@Autowired
+	private SettingsService setService;
+	
 	@GetMapping
     public ResponseEntity<List<CategoriaDTOForList>> listar(){
-        List<CategoriaDTOForList> cats = catService.listarCategoria();
-        return ResponseEntity.status(HttpStatus.OK).body(cats);
+		
+		if (setService.getInt("config.categorias") == 1) {
+			List<CategoriaDTOForList> cats = catService.listarCategoria();
+	        return ResponseEntity.status(HttpStatus.OK).body(cats);
+		} else  {
+			return ResponseEntity.status(HttpStatus.OK).body(null);
+		} 
     }
 	
 	@GetMapping("/{id}")

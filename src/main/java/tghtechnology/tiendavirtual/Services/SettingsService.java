@@ -91,7 +91,8 @@ public class SettingsService implements ApplicationListener<ApplicationReadyEven
 		
 		addSetting("cloudinary.url"				, "cloudinary://269427965692487:dPIsYT7kWdJoftwRYo_zGH1nYp4@dryp7amgv"	, SettingType.STRING); //TODO remover
 		addSetting("cloudinary.directory"		, "ecomm-base/"	, SettingType.STRING);
-		
+		addSetting("config.send_error"			, "true", 		  SettingType.BOOL);
+		addSetting("config.categorias"			, "1",			  SettingType.INT);
 	}
 	
 	/**
