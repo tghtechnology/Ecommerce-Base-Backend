@@ -92,11 +92,6 @@ public class SettingsService implements ApplicationListener<ApplicationReadyEven
 		addSetting("cloudinary.url"				, "cloudinary://269427965692487:dPIsYT7kWdJoftwRYo_zGH1nYp4@dryp7amgv"	, SettingType.STRING); //TODO remover
 		addSetting("cloudinary.directory"		, "ecomm-base/"	, SettingType.STRING);
 		
-		addSetting("izipay.route"				, "https://api.micuentaweb.pe/api-payment/V4"	, SettingType.STRING);
-		addSetting("izipay.username"			, "username"									, SettingType.STRING);
-		addSetting("izipay.password"			, "testpassword_xxxxx"							, SettingType.STRING);
-		addSetting("izipay.mac_sha256key"		, "KEY987ABC654DEF321GHI"						, SettingType.STRING);		
-		
 	}
 	
 	/**
@@ -305,10 +300,6 @@ public class SettingsService implements ApplicationListener<ApplicationReadyEven
 		alterSetting("company.provincia", "LIMA", SettingType.STRING);
 		alterSetting("company.distrito", "LIMA", SettingType.STRING);
 		alterSetting("company.direccion", "MI CASA", SettingType.STRING);
-		
-		alterSetting("izipay.username", "66404821", SettingType.STRING);
-		alterSetting("izipay.password", "testpassword_23Wk3RwMp90KK7LWOj5upmYBBLUHG7IwKRoZRH0nDsTgC", SettingType.STRING);
-		alterSetting("izipay.mac_sha256key", "A9UNTaloqcpkGDeNoMRT5fXg8ANSjABOYJ9cKKB2i6rfF", SettingType.STRING);
 		
 	}
 	

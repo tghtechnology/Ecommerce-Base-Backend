@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tghtechnology.tiendavirtual.Models.Venta;
-import tghtechnology.tiendavirtual.Utils.ApisPeru.Enums.TipoComprobante;
 import tghtechnology.tiendavirtual.Utils.ApisPeru.Enums.TipoDocIdentidad;
 import tghtechnology.tiendavirtual.Utils.DTOInterfaces.DTOForList;
 
@@ -17,8 +16,6 @@ public class ClienteVentaDTOForList implements DTOForList<Venta>{
 	private TipoDocIdentidad tipo_documento;
 	private String numero_documento;
 	private String razon_social;
-	private String nombres;
-	private String apellidos;
 	private String telefono;
 	private String correo;
     
@@ -36,13 +33,7 @@ public class ClienteVentaDTOForList implements DTOForList<Venta>{
 	public ClienteVentaDTOForList from(Venta ven) {
 		this.tipo_documento = ven.getTipo_documento();
 		this.numero_documento = ven.getNumero_documento();
-		
-		if(ven.getTipo_comprobante() == TipoComprobante.FACTURA) {
-			this.razon_social = ven.getRazonSocial();
-		} else {
-			this.nombres = ven.getNombres();
-			this.apellidos = ven.getApellidos();
-		}
+		this.razon_social = ven.getRazon_social();
 		this.telefono = ven.getTelefono();
 		this.correo = ven.getCorreo();
 		this.region = ven.getRegion();

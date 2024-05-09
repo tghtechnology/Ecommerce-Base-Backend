@@ -3,7 +3,6 @@ package tghtechnology.tiendavirtual.Services;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -363,25 +362,8 @@ public class VentaService {
 		// Validar stock de item
 		if(var.getStock() < cantidad)
 			throw new DataMismatchException("item", "No hay stock suficiente.");
-	}
-	
-	/**
-	 * Obtiene una venta por su UUID asignada.
-	 * @param text_uid La UUID de la venta a buscar.
-	 * @return El objeto de la venta encontrada.
-	 * @throws IdNotFoundException Si la UUID no se corresponde con ninguna venta.
-	 * @throws DataMismatchException Si la UUID enviada no tiene el formato correcto.
-	 */
-	public Venta obtenerPorUid(String text_uid) {
 		
-		UUID uid;
-		try {
-			uid = UUID.fromString(text_uid.replace("_", "-"));
-		} catch(IllegalArgumentException ex) {
-			throw new DataMismatchException("uid", "La UID no es valida.");
-		}
 		
-		return venRepository.listarPorUid(uid).orElseThrow(() -> new IdNotFoundException("venta"));
 		
 	}
 	

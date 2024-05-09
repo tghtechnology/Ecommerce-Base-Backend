@@ -3,7 +3,6 @@ package tghtechnology.tiendavirtual.Models;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -29,9 +28,6 @@ public class Venta implements Comparable<Venta>{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id_venta;
-    
-    @Column(nullable = false)
-    private UUID uid;
     
     // Datos de venta
     @Column(nullable = false)
@@ -59,11 +55,8 @@ public class Venta implements Comparable<Venta>{
 	@Column(nullable = false, length = 15)
 	private String numero_documento;
 	
-	@Column(nullable = false, length = 90)
-	private String nombres;
-	
-	@Column(nullable = true, length = 90)
-	private String apellidos;
+	@Column(nullable = false, length = 190)
+	private String razon_social;
 
 	@Column(nullable = false, length = 15)
 	private String telefono;
@@ -112,10 +105,6 @@ public class Venta implements Comparable<Venta>{
 	@Override
 	public int compareTo(Venta o) {
 		return this.fecha.compareTo(o.getFecha());
-	}
-	
-	public String getRazonSocial() {
-		return nombres + (apellidos == null || apellidos.isBlank() ? "" : " " + apellidos);
 	}
   	
 }

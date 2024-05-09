@@ -2,7 +2,6 @@ package tghtechnology.tiendavirtual.dto.Venta;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -84,7 +83,6 @@ public class VentaDTOForInsert implements DTOForInsert<Venta>{
 	public Venta toModel() {
 		Venta ven = new Venta();
 		
-		ven.setUid(UUID.randomUUID());
 		ven.setTipo_comprobante(tipo_comprobante);
 		ven.setFecha(LocalDateTime.now());
 		ven.setEstado_pedido(EstadoPedido.PENDIENTE);
@@ -92,8 +90,7 @@ public class VentaDTOForInsert implements DTOForInsert<Venta>{
 		
 		ven.setTipo_documento(tipo_documento);
 		ven.setNumero_documento(numero_documento);
-		ven.setNombres(nombres);
-		ven.setApellidos(apellidos);
+		ven.setRazon_social(nombres + (apellidos == null || apellidos.isBlank() ? "" : " " + apellidos));
 		ven.setTelefono(telefono);
 		ven.setCorreo(correo);
 		

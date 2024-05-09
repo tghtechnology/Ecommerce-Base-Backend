@@ -3,7 +3,6 @@ package tghtechnology.tiendavirtual.Repository;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -22,9 +21,6 @@ public interface VentaRepository extends JpaRepository<Venta, Integer>{
 
     @Query("SELECT v FROM Venta v WHERE v.estado = true AND v.id_venta = :ven_id")
     Optional<Venta> listarUno(@Param("ven_id") Integer idVenta);
-    
-    @Query("SELECT v FROM Venta v WHERE v.estado = true AND v.uid = :uid")
-    Optional<Venta> listarPorUid(@Param("uid") UUID uid);
     
     List<Venta> findAllByFechaBetween(LocalDateTime inicio, LocalDateTime fin);
     
