@@ -18,7 +18,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
  */
 @PreAuthorize("isAuthenticated() "
 		+ "&& hasAnyRole('ADMIN','GERENTE','EMPLEADO','CLIENTE') "
-		+ "&& #auth.getAction().is('VERIFY')")
+		+ "&& authentication.getAction().is('VERIFY')")
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 public @interface VerificarUsuario {}

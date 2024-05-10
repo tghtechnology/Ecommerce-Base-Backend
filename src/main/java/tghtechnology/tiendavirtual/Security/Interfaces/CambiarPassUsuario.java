@@ -18,7 +18,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
  */
 @PreAuthorize("isAuthenticated() "
 		+ "&& hasAnyRole('ADMIN','GERENTE','EMPLEADO','CLIENTE') "
-		+ "&& #auth.getAction().is('CHANGE_PASSWORD')")
+		+ "&& authentication.getAction().is('CHANGE_PASSWORD')")
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 public @interface CambiarPassUsuario {}

@@ -15,8 +15,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
  */
 @PreAuthorize("isAuthenticated() "
 		+ "&& hasAnyRole('ADMIN','GERENTE','EMPLEADO') "
-		+ "&& #auth.getVerified() == true "
-		+ "&& #auth.getAction().is('LOGIN')")
+		+ "&& authentication.getVerified() == true "
+		+ "&& authentication.getAction().is('LOGIN')")
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 public @interface Empleado {}

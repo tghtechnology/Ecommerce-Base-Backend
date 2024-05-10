@@ -15,7 +15,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
  * - ADMIN <br>
  * Además, el sujeto NO requiere estar verificado, y la acción debe ser de tipo LOGIN.
  */
-@PreAuthorize("isAuthenticated() && hasAnyRole('ADMIN','GERENTE','EMPLEADO','CLIENTE') && #auth.getAction().is('LOGIN')")
+@PreAuthorize("isAuthenticated() && hasAnyRole('ADMIN','GERENTE','EMPLEADO','CLIENTE') && authentication.getAction().is('LOGIN')")
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 public @interface ClienteNoVerificacion {}
